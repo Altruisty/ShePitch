@@ -542,7 +542,7 @@ function RegisterFormContent() {
 
 export default function RegisterPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 space-y-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-10">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <span className="she-category-tag">Register Now</span>

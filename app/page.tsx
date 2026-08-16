@@ -11,15 +11,15 @@ export default function HomePage() {
   return (
     <div className="space-y-16 sm:space-y-24 pb-20 overflow-x-hidden">
       {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20 sm:pt-24 pb-8 sm:pb-12">
+      <section className="relative min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] flex items-center justify-center py-4 md:py-6 lg:py-8">
         {/* Background Decorative Gradients */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-gradient-to-tr from-[#6C3B8F]/15 to-[#E83E8C]/15 blur-[100px] sm:blur-[120px] rounded-full pointer-events-none -z-10" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
-            {/* Left Hero Content */}
-            <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
+            {/* Left Hero Content Column */}
+            <div className="col-span-1 lg:col-span-7 space-y-4 sm:space-y-6 text-left">
               <div>
                 <span className="she-category-tag text-xs sm:text-sm">
                   National Women's Innovation Pitch
@@ -54,83 +54,83 @@ export default function HomePage() {
               <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-gray-100">
                 <div>
                   <span className="block text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#6C3B8F]">50+</span>
-                  <span className="text-[11px] sm:text-xs text-gray-500 font-medium leading-tight block">College Collaborations</span>
+                  <span className="text-xs sm:text-sm text-gray-500 font-medium leading-tight block">College Collaborations</span>
                 </div>
                 <div>
                   <span className="block text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#6C3B8F]">1000+</span>
-                  <span className="text-[11px] sm:text-xs text-gray-500 font-medium leading-tight block">Women Participants</span>
+                  <span className="text-xs sm:text-sm text-gray-500 font-medium leading-tight block">Women Participants</span>
                 </div>
                 <div>
                   <span className="block text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#6C3B8F]">80+</span>
-                  <span className="text-[11px] sm:text-xs text-gray-500 font-medium leading-tight block">Industry Experts</span>
+                  <span className="text-xs sm:text-sm text-gray-500 font-medium leading-tight block">Industry Experts</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Featured Card */}
-            <div className="lg:col-span-5">
+            {/* Right Featured Card Column (Hidden on Mobile & Tablet, Only Shown on Desktop/Laptop lg+) */}
+            <div className="hidden lg:block lg:col-span-5">
               <motion.div
                 initial={{ opacity: 0, y: 30, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="bg-white rounded-3xl p-5 sm:p-6 lg:p-6 xl:p-8 border border-gray-100 shadow-2xl relative overflow-hidden space-y-4 sm:space-y-5"
+                className="bg-white rounded-3xl p-4 sm:p-6 lg:p-6 xl:p-8 border border-gray-100 shadow-2xl relative overflow-hidden space-y-3.5 sm:space-y-5"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#E83E8C]/10 to-transparent rounded-bl-full pointer-events-none" />
+                <div className="absolute top-0 right-0 w-28 h-28 sm:w-32 sm:h-32 bg-gradient-to-bl from-[#E83E8C]/10 to-transparent rounded-bl-full pointer-events-none" />
 
                 {/* Card Header */}
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <span className="she-gradient-bg text-white px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                  <span className="she-gradient-bg text-white px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider">
                     Grand Finale
                   </span>
-                  <span className="text-xs font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-full">
+                  <span className="text-[10px] sm:text-xs font-semibold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-full">
                     19 Sept 2026
                   </span>
                 </div>
 
                 {/* Event Heading */}
                 <div>
-                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900">ShePitch</h3>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <h3 className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-900">ShePitch</h3>
+                  <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
                     Powered by <strong className="text-gray-800">icebrkr</strong> &bull; Venue Partner: <strong className="text-gray-800">Jeppiaar University</strong>
                   </p>
                 </div>
 
                 {/* Key Points */}
-                <div className="space-y-2.5 sm:space-y-3">
-                  <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl bg-gray-50">
-                    <div className="she-svg-icon-wrapper shrink-0">
-                      <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-[#6C3B8F]" />
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-2 sm:p-3 rounded-2xl bg-gray-50">
+                    <div className="she-svg-icon-wrapper shrink-0 w-8 h-8 sm:w-10 sm:h-10">
+                      <Trophy className="w-4 h-4 text-[#6C3B8F]" />
                     </div>
                     <div>
                       <span className="font-bold text-gray-900 block text-xs sm:text-sm">₹1,00,000 Prize Pool</span>
-                      <span className="text-[11px] sm:text-xs text-gray-500">Cash prizes & certificates for winners</span>
+                      <span className="text-[10px] sm:text-xs text-gray-500">Cash prizes & certificates for winners</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl bg-gray-50">
-                    <div className="she-svg-icon-wrapper accent shrink-0">
-                      <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 text-[#E83E8C]" />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-2 sm:p-3 rounded-2xl bg-gray-50">
+                    <div className="she-svg-icon-wrapper accent shrink-0 w-8 h-8 sm:w-10 sm:h-10">
+                      <Lightbulb className="w-4 h-4 text-[#E83E8C]" />
                     </div>
                     <div>
                       <span className="font-bold text-gray-900 block text-xs sm:text-sm">2 Track Categories</span>
-                      <span className="text-[11px] sm:text-xs text-gray-500">Idea Pitch & Project Pitch</span>
+                      <span className="text-[10px] sm:text-xs text-gray-500">Idea Pitch & Project Pitch</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl bg-gray-50">
-                    <div className="she-svg-icon-wrapper shrink-0">
-                      <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[#6C3B8F]" />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-2 sm:p-3 rounded-2xl bg-gray-50">
+                    <div className="she-svg-icon-wrapper shrink-0 w-8 h-8 sm:w-10 sm:h-10">
+                      <Users className="w-4 h-4 text-[#6C3B8F]" />
                     </div>
                     <div>
                       <span className="font-bold text-gray-900 block text-xs sm:text-sm">Team Entry</span>
-                      <span className="text-[11px] sm:text-xs text-gray-500">Min. 2 members per team</span>
+                      <span className="text-[10px] sm:text-xs text-gray-500">Min. 2 members per team</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Action */}
                 <div className="pt-1">
-                  <Link href="/register" className="she-btn-primary w-full justify-center text-center text-xs sm:text-sm py-3">
+                  <Link href="/register" className="she-btn-primary w-full justify-center text-center text-xs sm:text-sm py-2.5 sm:py-3">
                     Explore & Register <ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -270,12 +270,6 @@ export default function HomePage() {
               <Image src="/assets/partners-imgs/part-1.png" alt="Jeppiaar University" width={140} height={70} className="she-partner-logo-img" />
               <span className="she-partner-label">Venue Partner</span>
             </div>
-          </div>
-
-          <div className="text-center mt-8 sm:mt-10">
-            <Link href="/partners" className="she-btn-outline text-xs">
-              View All Partners & Opportunities <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
           </div>
         </div>
       </section>

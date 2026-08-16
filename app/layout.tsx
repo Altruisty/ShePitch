@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className="antialiased bg-[#fcfbfe] text-gray-900 min-h-screen flex flex-col selection:bg-[#E83E8C]/20 selection:text-[#6C3B8F]">
         <CustomCursor />
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow pt-16 sm:pt-20">{children}</main>
         <Footer />
         <BackToTop />
       </body>
