@@ -18,6 +18,7 @@ import {
   CreditCard,
   Plus,
   Trash2,
+  X,
 } from 'lucide-react';
 import AnimatedTitle from '@/components/AnimatedTitle';
 
@@ -133,7 +134,7 @@ function RegisterFormContent() {
       setCouponSuccess(`Coupon SHEPITCH100 Applied! ₹100 off per participant (Total ₹${members.length * 100} discount).`);
     } else {
       setIsCouponApplied(false);
-      setCouponError('Invalid coupon code. Only SHEPITCH100 is valid.');
+      setCouponError('Invalid coupon code.');
     }
   };
 
@@ -316,14 +317,42 @@ const loadRazorpayScript = () => {
         </div>
       )}
 
+      {/* Error Popup Modal */}
+      {errorMsg && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl text-center relative animate-fade-in border border-red-100">
+            <button
+              type="button"
+              onClick={() => setErrorMsg('')}
+              className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-100 transition-all"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto shrink-0 shadow-inner">
+              <AlertCircle className="w-9 h-9" />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900">Registration Notice</h3>
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-medium">
+                {errorMsg}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setErrorMsg('')}
+              className="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-extrabold py-3.5 px-6 rounded-xl uppercase tracking-wider shadow-lg shadow-red-600/20 transition-all"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Main Registration Form Container */}
       <form onSubmit={handleRegisterAndPay} className="bg-white rounded-3xl p-6 sm:p-12 border border-gray-100 shadow-xl space-y-10">
-        {errorMsg && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-4.5 rounded-2xl flex items-center gap-3">
-            <AlertCircle className="w-6 h-6 shrink-0" />
-            <span>{errorMsg}</span>
-          </div>
-        )}
 
         {/* Section 1: Team & College Info */}
         <div className="space-y-5">

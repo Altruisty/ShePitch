@@ -33,6 +33,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required team registration details' }, { status: 400 });
     }
 
+    // Check if team name is already taken (case-insensitive check)
+    const [existingTeams]: any = await pool.query(
+      `SELECT id FROM she_pitch_teams WHERE LOWER(team_name) = LOWER(?) AND payment_status != 'failed'`,
+      [team_name.trim()]
+    );
+
+    if (existingTeams && existingTeams.length > 0) {
+      return NextResponse.json(
+        { error: 'Team name is already taken. Please try a different team name.' },
+        { status: 400 }
+      );
+    }
+
     const amountInPaisa = Math.round(Number(amount_in_rupees || 299 * members.length) * 100);
 
     // Create Razorpay Order

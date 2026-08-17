@@ -153,7 +153,7 @@ export default function CategoriesPage() {
         <div className="space-y-1 text-sm">
           <h4 className="font-bold text-base text-amber-950">Important Participation Rules:</h4>
           <p>
-            Each team can register for only one track. Minimum team size is 2 members, maximum 4 members. Cross-college teams are permitted as long as all team members are active women students.
+            Each team can register for only one track. Minimum team size is 2 members, maximum 4 members.
           </p>
         </div>
       </div>

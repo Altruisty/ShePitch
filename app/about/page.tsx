@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Award, Users, GraduationCap, Trophy, Globe, Lightbulb, ArrowRight, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, Award, Users, GraduationCap, Trophy, Globe, Lightbulb, ArrowRight, ShieldCheck, Building2 } from 'lucide-react';
 import AnimatedTitle from '@/components/AnimatedTitle';
 
 export default function AboutPage() {
@@ -61,6 +61,11 @@ export default function AboutPage() {
       desc: 'Institutional logo featured across official ShePitch promotions, media releases, and backdrop banners.',
       icon: Globe,
     },
+    {
+      title: 'Dedicated College Representative Portal',
+      desc: 'Access a custom administrative portal to track, view, and manage all student team registrations from your institution.',
+      icon: Building2,
+    },
   ];
 
   return (
@@ -93,7 +98,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-md">
               <span className="block text-3xl sm:text-4xl font-extrabold she-gradient-text">₹1,00,000</span>
               <span className="text-sm font-semibold text-gray-600">Total Prize Pool</span>
@@ -109,9 +114,6 @@ export default function AboutPage() {
         <div className="lg:col-span-6 bg-white rounded-3xl p-8 border border-gray-100 shadow-xl space-y-6">
           <div className="flex items-center justify-between border-b pb-4">
             <h3 className="text-2xl font-bold text-gray-900">Key Highlights</h3>
-            <span className="she-gradient-bg text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
-              National Platform
-            </span>
           </div>
 
           <div className="space-y-4">
@@ -211,13 +213,6 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* CTA */}
-        <div className="text-center pt-4">
-          <Link href="/register" className="she-btn-primary">
-            Partner or Register Your College <ArrowRight className="w-4 h-4 ml-1" />
-          </Link>
         </div>
       </div>
     </div>
