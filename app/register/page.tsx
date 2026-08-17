@@ -1,542 +1,616 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle2, AlertCircle, Sparkles, X } from 'lucide-react';
+import Script from 'next/script';
+import {
+  Users,
+  Building2,
+  Mail,
+  Phone,
+  GraduationCap,
+  Trophy,
+  CheckCircle2,
+  AlertCircle,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  CreditCard,
+  Plus,
+  Trash2,
+} from 'lucide-react';
 import AnimatedTitle from '@/components/AnimatedTitle';
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 function RegisterFormContent() {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get('category') === 'Project Pitch' ? 'Project Pitch' : 'Idea Pitch';
+  const initialCategory = searchParams.get('category') || 'Idea Pitch';
 
-  // Form State
-  const [teamName, setTeamName] = useState('');
-  const [leaderName, setLeaderName] = useState('');
-  const [leaderEmail, setLeaderEmail] = useState('');
-  const [leaderPhone, setLeaderPhone] = useState('');
-  const [collegeName, setCollegeName] = useState('');
-  const [department, setDepartment] = useState('');
-  const [yearOfStudy, setYearOfStudy] = useState('');
-  const [city, setCity] = useState('');
-  const [memberCount, setMemberCount] = useState<number>(2);
+  const [registeredColleges, setRegisteredColleges] = useState<any[]>([]);
+  const [selectedCollegeOption, setSelectedCollegeOption] = useState('');
+  const [customCollegeName, setCustomCollegeName] = useState('');
+  const [collegeId, setCollegeId] = useState<number | null>(null);
 
-  // Additional Members
-  const [members, setMembers] = useState<Array<{ name: string; email: string; phone: string }>>([
-    { name: '', email: '', phone: '' },
-    { name: '', email: '', phone: '' },
-    { name: '', email: '', phone: '' },
-  ]);
-
-  // Proposal State
-  const [category, setCategory] = useState<string>(initialCategory);
-  const [projectTitle, setProjectTitle] = useState('');
-  const [domain, setDomain] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-
-  // Coupon & Fee State
-  const [couponCode, setCouponCode] = useState('');
-  const [isCouponApplied, setIsCouponApplied] = useState(false);
-  const [couponMessage, setCouponMessage] = useState('');
-
-  // UI State
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successModal, setSuccessModal] = useState<{
-    show: boolean;
-    teamName: string;
-    paidAmount: number;
-    refId: string;
-  }>({
-    show: false,
-    teamName: '',
-    paidAmount: 0,
-    refId: '',
+  const [formData, setFormData] = useState({
+    team_name: '',
+    category: initialCategory,
+    coupon_code: '',
   });
 
-  const basePricePerMember = 299;
-  const discountPerMember = isCouponApplied ? 100 : 0;
-  const totalFee = memberCount * (basePricePerMember - discountPerMember);
+  const [members, setMembers] = useState([
+    { student_name: '', email: '', phone: '', department: '', year_of_study: '', is_leader: true },
+    { student_name: '', email: '', phone: '', department: '', year_of_study: '', is_leader: false },
+  ]);
 
-  const handleApplyCoupon = () => {
-    if (!couponCode.trim()) {
-      setCouponMessage('Please enter a coupon code.');
-      setIsCouponApplied(false);
-      return;
+  const [pitchData, setPitchData] = useState({
+    project_title: '',
+    domain: '',
+    project_description: '',
+  });
+
+  const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successReceipt, setSuccessReceipt] = useState<any>(null);
+
+  // Fetch registered colleges from database
+  useEffect(() => {
+    fetch('/api/colleges')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.colleges)) {
+          setRegisteredColleges(data.colleges);
+          if (data.colleges.length > 0) {
+            setSelectedCollegeOption(data.colleges[0].college_name);
+            setCollegeId(data.colleges[0].id);
+          } else {
+            setSelectedCollegeOption('other');
+          }
+        }
+      })
+      .catch(() => setSelectedCollegeOption('other'));
+  }, []);
+
+  const handleCollegeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    setSelectedCollegeOption(val);
+    if (val === 'other') {
+      setCollegeId(null);
+    } else {
+      const found = registeredColleges.find((c) => c.college_name === val);
+      setCollegeId(found ? found.id : null);
     }
-    setIsCouponApplied(true);
-    setCouponMessage('🎉 Coupon Applied! ₹100 discount per participant applied.');
   };
 
-  const handleMemberChange = (index: number, field: string, value: string) => {
+  const finalCollegeName = selectedCollegeOption === 'other' ? customCollegeName : selectedCollegeOption;
+
+  // Fee calculation (₹299 per participant)
+  const baseFeePerMember = 299;
+  const subtotal = members.length * baseFeePerMember;
+  // ₹100 discount per participant when SHEPITCH100 is applied
+  const discountPerMember = isCouponApplied ? 100 : 0;
+  const discountAmount = members.length * discountPerMember;
+  const finalAmount = Math.max(0, subtotal - discountAmount);
+
+  const handleMemberChange = (index: number, field: string, value: any) => {
     const updated = [...members];
-    updated[index] = { ...updated[index], [field]: value };
+    (updated[index] as any)[field] = value;
     setMembers(updated);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const addMember = () => {
+    if (members.length >= 4) {
+      alert('Maximum 4 members allowed per team.');
+      return;
+    }
+    setMembers([
+      ...members,
+      { student_name: '', email: '', phone: '', department: '', year_of_study: '', is_leader: false },
+    ]);
+  };
+
+  const removeMember = (index: number) => {
+    if (members.length <= 2) {
+      alert('Minimum 2 members required per team.');
+      return;
+    }
+    const updated = members.filter((_, i) => i !== index);
+    // Ensure first member remains leader
+    if (updated.length > 0) {
+      updated[0].is_leader = true;
+    }
+    setMembers(updated);
+  };
+
+  const applyCoupon = () => {
+    setCouponError('');
+    setCouponSuccess('');
+    const code = formData.coupon_code.trim().toUpperCase();
+    if (!code) return;
+
+    if (code === 'SHEPITCH100') {
+      setIsCouponApplied(true);
+      setCouponSuccess(`Coupon SHEPITCH100 Applied! ₹100 off per participant (Total ₹${members.length * 100} discount).`);
+    } else {
+      setIsCouponApplied(false);
+      setCouponError('Invalid coupon code. Only SHEPITCH100 is valid.');
+    }
+  };
+
+  // Razorpay Checkout & Registration Submission
+  const handleRegisterAndPay = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setErrorMsg('');
 
-    if (!teamName || !leaderName || !leaderEmail || !leaderPhone || !collegeName || !department || !yearOfStudy || !city || !projectTitle || !domain || !projectDescription) {
-      setToastMessage('Please fill in all required fields.');
+    if (!finalCollegeName || finalCollegeName.trim() === '') {
+      setErrorMsg('Please select or specify your College Name.');
+      setLoading(false);
       return;
     }
 
-    if (leaderPhone.length !== 10) {
-      setToastMessage('Please enter a valid 10-digit mobile number.');
-      return;
-    }
-
-    for (let i = 0; i < memberCount - 1; i++) {
-      if (!members[i].name || !members[i].email) {
-        setToastMessage(`Please complete details for Team Member ${i + 2}.`);
-        return;
-      }
-    }
-
-    setIsSubmitting(true);
-    setToastMessage(null);
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const generatedId = 'SHE' + Math.floor(100000 + Math.random() * 900000);
-      setSuccessModal({
-        show: true,
-        teamName: teamName,
-        paidAmount: totalFee,
-        refId: generatedId,
+    try {
+      // 1. Create Razorpay Order via API
+      const res = await fetch('/api/payments/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          team_name: formData.team_name,
+          category: formData.category,
+          project_title: pitchData.project_title,
+          domain: pitchData.domain,
+          project_description: pitchData.project_description,
+          college_name: finalCollegeName,
+          college_id: collegeId,
+          leader_name: members[0].student_name,
+          leader_email: members[0].email,
+          leader_phone: members[0].phone,
+          members,
+          coupon_code: formData.coupon_code,
+          amount_in_rupees: finalAmount,
+        }),
       });
-    }, 1200);
+
+      const orderData = await res.json();
+      if (!res.ok) throw new Error(orderData.error || 'Failed to initialize payment.');
+
+      // 2. Open Razorpay Modal
+      const options = {
+        key: orderData.key,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'ShePitch 2026',
+        description: `Team Registration Fee: ${formData.team_name}`,
+        image: '/assets/logo/shepitch-logo.png',
+        order_id: orderData.order_id,
+        handler: async function (response: any) {
+          try {
+            setLoading(true);
+            // 3. Verify Payment Signature & Trigger Confirmation Email
+            const verifyRes = await fetch('/api/payments/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                team_id: orderData.team_id,
+              }),
+            });
+
+            const verifyData = await verifyRes.json();
+            if (!verifyRes.ok) throw new Error(verifyData.error || 'Payment verification failed.');
+
+            setSuccessReceipt({
+              teamName: formData.team_name,
+              leaderName: members[0].student_name,
+              leaderEmail: members[0].email,
+              paymentId: response.razorpay_payment_id,
+              amount: finalAmount,
+              category: formData.category,
+              college: finalCollegeName,
+            });
+          } catch (err: any) {
+            setErrorMsg(err.message || 'Payment verification failed.');
+          } finally {
+            setLoading(false);
+          }
+        },
+        prefill: {
+          name: members[0].student_name,
+          email: members[0].email,
+          contact: members[0].phone,
+        },
+        theme: {
+          color: '#6C3B8F',
+        },
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
+          },
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (resp: any) {
+        setErrorMsg(`Payment failed: ${resp.error.description || 'Transaction cancelled'}`);
+        setLoading(false);
+      });
+      rzp.open();
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Registration failed.');
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      {/* Toast Error Alert */}
-      {toastMessage && (
-        <div className="fixed top-24 right-4 z-50 bg-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-red-500 animate-bounce">
-          <AlertCircle className="w-5 h-5 shrink-0" />
-          <span className="font-semibold text-sm">{toastMessage}</span>
-          <button onClick={() => setToastMessage(null)} className="ml-2 hover:opacity-80">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+    <div className="space-y-10">
+      {/* Razorpay JS Script */}
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
 
-      {/* Main Registration Form Container */}
-      <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-100 shadow-xl space-y-8">
-        <form onSubmit={handleSubmit} className="space-y-8">
-          
-          {/* SECTION 1: TEAM LEAD */}
-          <div className="space-y-4 pb-6 border-b border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#6C3B8F]/10 text-[#6C3B8F] flex items-center justify-center font-bold text-sm">
-                1
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">Team Lead Information</h3>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Team Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Innovators HQ"
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Team Leader Full Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Jane Doe"
-                  value={leaderName}
-                  onChange={(e) => setLeaderName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Email Address <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  placeholder="jane@example.com"
-                  value={leaderEmail}
-                  onChange={(e) => setLeaderEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Phone Number / WhatsApp <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="tel"
-                  placeholder="10-digit mobile number"
-                  maxLength={10}
-                  value={leaderPhone}
-                  onChange={(e) => setLeaderPhone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  College / Institution <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Your College Name"
-                  value={collegeName}
-                  onChange={(e) => setCollegeName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Department / Course <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. B.Tech AI & DS"
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Year of Study <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={yearOfStudy}
-                  onChange={(e) => setYearOfStudy(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm bg-white"
-                  required
-                >
-                  <option value="" disabled>Select Year</option>
-                  <option value="1st Year">1st Year</option>
-                  <option value="2nd Year">2nd Year</option>
-                  <option value="3rd Year">3rd Year</option>
-                  <option value="4th Year">4th Year</option>
-                  <option value="Post Graduate">Post Graduate</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  City <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Chennai"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Total Team Members <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={memberCount}
-                  onChange={(e) => setMemberCount(Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm bg-white font-semibold"
-                >
-                  <option value={2}>2 Members (Leader + 1 Member)</option>
-                  <option value={3}>3 Members (Leader + 2 Members)</option>
-                  <option value={4}>4 Members (Leader + 3 Members)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* SECTION 2: ADDITIONAL MEMBERS */}
-          {memberCount > 1 && (
-            <div className="space-y-4 pb-6 border-b border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#6C3B8F]/10 text-[#6C3B8F] flex items-center justify-center font-bold text-sm">
-                  2
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">Additional Team Members</h3>
-              </div>
-
-              <div className="space-y-6 pt-2">
-                {Array.from({ length: memberCount - 1 }).map((_, idx) => (
-                  <div key={idx} className="p-4 rounded-2xl bg-gray-50 border border-gray-200/60 space-y-3">
-                    <h4 className="font-bold text-sm text-[#6C3B8F]">Member {idx + 2} Details</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-600 mb-1">Full Name *</label>
-                        <input
-                          type="text"
-                          placeholder="Member Name"
-                          value={members[idx].name}
-                          onChange={(e) => handleMemberChange(idx, 'name', e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#6C3B8F]"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-600 mb-1">Email *</label>
-                        <input
-                          type="email"
-                          placeholder="member@example.com"
-                          value={members[idx].email}
-                          onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#6C3B8F]"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-600 mb-1">Phone</label>
-                        <input
-                          type="tel"
-                          placeholder="Mobile Number"
-                          maxLength={10}
-                          value={members[idx].phone}
-                          onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#6C3B8F]"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* SECTION 3: PROPOSAL DETAILS */}
-          <div className="space-y-4 pb-6 border-b border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#6C3B8F]/10 text-[#6C3B8F] flex items-center justify-center font-bold text-sm">
-                3
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">Pitch Proposal Details</h3>
-            </div>
-
-            <div className="space-y-4 pt-2">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-                  Participation Category <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <label
-                    onClick={() => setCategory('Idea Pitch')}
-                    className={`cursor-pointer p-4 rounded-2xl border-2 transition-all flex flex-col justify-between ${
-                      category === 'Idea Pitch'
-                        ? 'border-[#6C3B8F] bg-[#6C3B8F]/5 shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-gray-900 text-base">Idea Pitch</span>
-                      <input
-                        type="radio"
-                        name="category"
-                        checked={category === 'Idea Pitch'}
-                        onChange={() => setCategory('Idea Pitch')}
-                        className="accent-[#6C3B8F]"
-                      />
-                    </div>
-                    <span className="text-xs text-gray-500">Early concept, pitch deck presentation only</span>
-                  </label>
-
-                  <label
-                    onClick={() => setCategory('Project Pitch')}
-                    className={`cursor-pointer p-4 rounded-2xl border-2 transition-all flex flex-col justify-between ${
-                      category === 'Project Pitch'
-                        ? 'border-[#E83E8C] bg-[#E83E8C]/5 shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-gray-900 text-base">Project Pitch</span>
-                      <input
-                        type="radio"
-                        name="category"
-                        checked={category === 'Project Pitch'}
-                        onChange={() => setCategory('Project Pitch')}
-                        className="accent-[#E83E8C]"
-                      />
-                    </div>
-                    <span className="text-xs text-gray-500">Working prototype & live demo mandatory</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                    Title of Idea / Project <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Project Title"
-                    value={projectTitle}
-                    onChange={(e) => setProjectTitle(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                    Domain <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. HealthTech, AI, FinTech"
-                    value={domain}
-                    onChange={(e) => setDomain(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Brief Description <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  rows={3}
-                  placeholder="Explain your project core innovation in 2-3 sentences..."
-                  value={projectDescription}
-                  onChange={(e) => setProjectDescription(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm"
-                  required
-                />
-              </div>
-
-              {/* Coupon Code */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  College Collaboration Coupon Code
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="ENTER COUPON"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                    className="flex-grow px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6C3B8F] text-sm uppercase"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleApplyCoupon}
-                    className="she-btn-outline text-xs px-5 py-2.5"
-                  >
-                    Apply
-                  </button>
-                </div>
-                {couponMessage && (
-                  <p className={`text-xs mt-1.5 font-semibold ${isCouponApplied ? 'text-green-600' : 'text-red-500'}`}>
-                    {couponMessage}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* SECTION 4: FEE CALCULATION & SUBMIT */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100/80 rounded-2xl p-6 border border-gray-200 space-y-4">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <h4 className="font-bold text-gray-900 text-base">Registration Calculation</h4>
-                <p className="text-xs text-gray-500">₹299 base fee per team participant</p>
-                <p className="text-xs text-gray-600 font-semibold mt-0.5">
-                  {memberCount} Members &times; ₹{basePricePerMember - discountPerMember}
-                </p>
-              </div>
-
-              <div className="text-right">
-                <span className="block text-xs font-bold text-gray-500 uppercase">Total Amount Due</span>
-                <span className="text-3xl font-extrabold she-gradient-text">₹{totalFee}</span>
-              </div>
-            </div>
-
-            {isCouponApplied && (
-              <div className="bg-green-100 border border-green-200 text-green-800 text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 font-semibold">
-                <Sparkles className="w-4 h-4 text-green-600 shrink-0" />
-                <span>Coupon Applied! ₹100 discount per member has been deducted from your total.</span>
-              </div>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="she-btn-primary w-full justify-center text-center py-4 text-base font-bold rounded-2xl shadow-xl"
-          >
-            {isSubmitting ? (
-              <span className="flex items-center gap-2">
-                Processing Registration...
-              </span>
-            ) : (
-              <span>Proceed to Complete Registration</span>
-            )}
-          </button>
-        </form>
-      </div>
-
-      {/* Success Modal */}
-      {successModal.show && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-100 text-center space-y-6">
-            <div className="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto">
+      {/* Success Modal Receipt */}
+      {successReceipt && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-8 space-y-6 shadow-2xl text-center relative animate-fade-in">
+            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-10 h-10" />
             </div>
 
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900">Registration Successful!</h3>
-              <p className="text-xs text-gray-500 mt-1">Your team has been registered for ShePitch 2026.</p>
+            <div className="space-y-2">
+              <span className="she-category-tag">Registration Complete</span>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Welcome to ShePitch 2026!</h3>
+              <p className="text-sm text-gray-600">
+                Payment verified. A formal confirmation receipt has been dispatched to <strong>{successReceipt.leaderEmail}</strong> via Nodemailer.
+              </p>
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-left space-y-2 text-sm">
+            <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 text-left text-sm space-y-2.5">
               <div className="flex justify-between">
                 <span className="text-gray-500">Team Name:</span>
-                <span className="font-bold text-gray-900">{successModal.teamName}</span>
+                <span className="font-bold text-gray-900">{successReceipt.teamName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Total Paid:</span>
-                <span className="font-bold text-green-600">₹{successModal.paidAmount}</span>
+                <span className="text-gray-500">Category Track:</span>
+                <span className="font-bold text-[#6C3B8F]">{successReceipt.category}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Reference ID:</span>
-                <span className="font-mono font-bold text-[#6C3B8F]">{successModal.refId}</span>
+                <span className="text-gray-500">College:</span>
+                <span className="font-bold text-gray-900">{successReceipt.college}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Payment ID:</span>
+                <span className="font-mono text-gray-700">{successReceipt.paymentId}</span>
+              </div>
+              <div className="flex justify-between border-t border-gray-200 pt-3 font-bold text-base">
+                <span>Amount Paid:</span>
+                <span className="text-green-600">₹{successReceipt.amount}</span>
               </div>
             </div>
 
             <button
-              onClick={() => window.location.reload()}
-              className="she-btn-primary w-full justify-center text-center py-3"
+              onClick={() => (window.location.href = '/')}
+              className="she-btn-primary w-full justify-center text-sm py-4 uppercase tracking-wider font-extrabold"
             >
-              Return & Close
+              Return to Homepage
             </button>
           </div>
         </div>
       )}
-    </>
+
+      {/* Main Registration Form Container */}
+      <form onSubmit={handleRegisterAndPay} className="bg-white rounded-3xl p-6 sm:p-12 border border-gray-100 shadow-xl space-y-10">
+        {errorMsg && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-4.5 rounded-2xl flex items-center gap-3">
+            <AlertCircle className="w-6 h-6 shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        {/* Section 1: Team & College Info */}
+        <div className="space-y-5">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 flex items-center gap-2.5 border-b border-gray-100 pb-4">
+            <Building2 className="w-6 h-6 text-[#6C3B8F]" /> 1. Team & Institution Details
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">Team Name *</label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. InnovateX Girls"
+                value={formData.team_name}
+                onChange={(e) => setFormData({ ...formData, team_name: e.target.value })}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">Select College / Institution *</label>
+              <select
+                value={selectedCollegeOption}
+                onChange={handleCollegeChange}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+              >
+                {registeredColleges.map((c) => (
+                  <option key={c.id} value={c.college_name}>
+                    {c.college_name} (Official Partner)
+                  </option>
+                ))}
+                <option value="other">Other College (Type manually below)</option>
+              </select>
+
+              {selectedCollegeOption === 'other' && (
+                <input
+                  type="text"
+                  required
+                  placeholder="Enter your College / University full name"
+                  value={customCollegeName}
+                  onChange={(e) => setCustomCollegeName(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] mt-3"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Section 2: Student Members (2 - 4) */}
+        <div className="space-y-5 pt-4 border-t border-gray-100">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-4 flex-wrap gap-2">
+            <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 flex items-center gap-2.5">
+              <Users className="w-6 h-6 text-[#6C3B8F]" /> 2. Team Members ({members.length} Participants)
+            </h3>
+            <button
+              type="button"
+              onClick={addMember}
+              className="she-btn-outline text-xs sm:text-sm py-2 px-4 flex items-center gap-1.5 font-bold"
+            >
+              <Plus className="w-4 h-4" /> Add Member
+            </button>
+          </div>
+
+          <div className="space-y-5">
+            {members.map((m, idx) => (
+              <div key={idx} className="p-6 rounded-2xl border border-gray-100 bg-gray-50/60 space-y-4 relative">
+                <div className="flex justify-between items-center">
+                  <span className="font-black text-sm text-[#6C3B8F] uppercase tracking-wider">
+                    {idx === 0 ? 'Member 1 (Team Leader)' : `Member ${idx + 1}`}
+                  </span>
+                  {idx > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeMember(idx)}
+                      className="text-red-500 hover:text-red-700 text-xs sm:text-sm font-bold flex items-center gap-1"
+                    >
+                      <Trash2 className="w-4 h-4" /> Remove
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Student Full Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Name"
+                      value={m.student_name}
+                      onChange={(e) => handleMemberChange(idx, 'student_name', e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Email Address *</label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="student@gmail.com"
+                      value={m.email}
+                      onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Mobile Number *</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+91 9876543210"
+                      value={m.phone}
+                      onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Department</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. B.Tech IT"
+                      value={m.department}
+                      onChange={(e) => handleMemberChange(idx, 'department', e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Year of Study</label>
+                    <select
+                      value={m.year_of_study}
+                      onChange={(e) => handleMemberChange(idx, 'year_of_study', e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    >
+                      <option value="">Select Year of Study</option>
+                      <option value="1st Year">1st Year</option>
+                      <option value="2nd Year">2nd Year</option>
+                      <option value="3rd Year">3rd Year</option>
+                      <option value="4th Year">4th Year</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Section 3: Pitch Proposal */}
+        <div className="space-y-5 pt-4 border-t border-gray-100">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 flex items-center gap-2.5">
+            <Sparkles className="w-6 h-6 text-[#6C3B8F]" /> 3. Pitch Proposal
+          </h3>
+
+          <div className="space-y-5">
+            {/* Participation Category Cards */}
+            <div>
+              <label className="block text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2.5">
+                PARTICIPATION CATEGORY *
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div
+                  onClick={() => setFormData({ ...formData, category: 'Idea Pitch' })}
+                  className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${
+                    formData.category === 'Idea Pitch'
+                      ? 'border-[#6C3B8F] bg-purple-50/70 shadow-md'
+                      : 'border-gray-200 bg-white hover:border-purple-200'
+                  }`}
+                >
+                  <span className="block font-black text-base sm:text-lg text-gray-900 text-center">Idea Pitch</span>
+                  <span className="block text-sm text-gray-500 text-center mt-1 font-medium">Early concept stage</span>
+                </div>
+
+                <div
+                  onClick={() => setFormData({ ...formData, category: 'Project Pitch' })}
+                  className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${
+                    formData.category === 'Project Pitch'
+                      ? 'border-[#6C3B8F] bg-purple-50/70 shadow-md'
+                      : 'border-gray-200 bg-white hover:border-purple-200'
+                  }`}
+                >
+                  <span className="block font-black text-base sm:text-lg text-gray-900 text-center">Project Pitch</span>
+                  <span className="block text-sm text-gray-500 text-center mt-1 font-medium">Prototype/Working Model</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Title & Domain */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">
+                  TITLE OF IDEA / PROJECT *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Project Title"
+                  value={pitchData.project_title}
+                  onChange={(e) => setPitchData({ ...pitchData, project_title: e.target.value })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">
+                  DOMAIN *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g., HealthTech, FinTech"
+                  value={pitchData.domain}
+                  onChange={(e) => setPitchData({ ...pitchData, domain: e.target.value })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                />
+              </div>
+            </div>
+
+            {/* Brief Description */}
+            <div>
+              <label className="block text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">
+                BRIEF DESCRIPTION *
+              </label>
+              <textarea
+                required
+                rows={3}
+                placeholder="Explain your project in 2–3 sentences..."
+                value={pitchData.project_description}
+                onChange={(e) => setPitchData({ ...pitchData, project_description: e.target.value })}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Section 4: Payment Summary & Checkout */}
+        <div className="space-y-5 pt-4 border-t border-gray-100">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 flex items-center gap-2.5">
+            <CreditCard className="w-6 h-6 text-[#6C3B8F]" /> 4. Payment Summary & Checkout
+          </h3>
+
+          <div className="bg-purple-50/50 p-6 sm:p-8 rounded-2xl border border-purple-100 space-y-5">
+            {/* Coupon Box */}
+            <div className="flex gap-3">
+              <input
+                type="text"
+                placeholder="Enter Coupon Code"
+                value={formData.coupon_code}
+                onChange={(e) => setFormData({ ...formData, coupon_code: e.target.value })}
+                className="bg-white border border-purple-200 rounded-xl px-4 py-3 text-sm text-gray-900 uppercase tracking-wider flex-1 focus:outline-none focus:border-[#6C3B8F]"
+              />
+              <button
+                type="button"
+                onClick={applyCoupon}
+                className="bg-[#6C3B8F] text-white text-xs sm:text-sm font-extrabold px-5 py-3 rounded-xl hover:bg-[#5a2e7a] uppercase tracking-wider transition-all"
+              >
+                Apply
+              </button>
+            </div>
+
+            {couponError && <p className="text-sm text-red-600 font-semibold">{couponError}</p>}
+            {couponSuccess && <p className="text-sm text-green-600 font-extrabold">{couponSuccess}</p>}
+
+            {/* Price Calculations */}
+            <div className="space-y-2 text-sm sm:text-base text-gray-700 border-t border-purple-100 pt-4">
+              <div className="flex justify-between">
+                <span>Fee per Participant:</span>
+                <span className="font-bold">₹{baseFeePerMember}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Total Members:</span>
+                <span className="font-bold">{members.length} Students</span>
+              </div>
+              {discountAmount > 0 && (
+                <div className="flex justify-between text-green-600 font-bold">
+                  <span>Discount Applied:</span>
+                  <span>-₹{discountAmount}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-lg sm:text-xl font-black text-gray-900 border-t border-purple-200 pt-3">
+                <span>Total Amount Payable:</span>
+                <span className="text-[#6C3B8F]">₹{finalAmount}</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full she-btn-primary justify-center py-4 sm:py-5 text-base sm:text-lg font-black uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-[#6C3B8F]/20 disabled:opacity-50"
+          >
+            {loading ? 'Opening Razorpay Secure Gateway...' : `Pay ₹${finalAmount} & Complete Registration`}
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 
@@ -547,20 +621,16 @@ export default function RegisterPage() {
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <span className="she-category-tag">Register Now</span>
         <AnimatedTitle
-          text="Join Now ShePitch Competition"
-          gradientWords={['ShePitch']}
-          className="text-4xl sm:text-5xl font-extrabold text-gray-900"
+          text="Join ShePitch 2026 National Finale"
+          gradientWords={['ShePitch', 'Finale']}
+          className="text-3xl sm:text-5xl font-extrabold text-gray-900"
         />
-        <p className="text-gray-600 text-base">
-          Your Idea. Your Voice. Your Future. Register now to secure your spot at Jeppiaar University.
+        <p className="text-gray-600 text-sm sm:text-base">
+          Fill out your team details below to secure your spot at Jeppiaar University on 19 September 2026.
         </p>
       </div>
 
-      <Suspense fallback={
-        <div className="bg-white rounded-3xl p-12 text-center text-gray-500 shadow-xl border border-gray-100">
-          Loading registration form...
-        </div>
-      }>
+      <Suspense fallback={<div className="text-center py-12 text-gray-400">Loading registration form...</div>}>
         <RegisterFormContent />
       </Suspense>
     </div>

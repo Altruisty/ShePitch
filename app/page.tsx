@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <div className="space-y-16 sm:space-y-24 pb-20 overflow-x-hidden">
       {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] flex items-center justify-center py-4 md:py-6 lg:py-8">
+      <section className="relative min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] flex items-center justify-center py-8 sm:py-12 md:py-16 lg:py-8">
         {/* Background Decorative Gradients */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-gradient-to-tr from-[#6C3B8F]/15 to-[#E83E8C]/15 blur-[100px] sm:blur-[120px] rounded-full pointer-events-none -z-10" />
 
@@ -19,52 +19,124 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
             {/* Left Hero Content Column */}
-            <div className="col-span-1 lg:col-span-7 space-y-4 sm:space-y-6 text-left">
-              <div>
-                <span className="she-category-tag text-xs sm:text-sm">
+            <div className="col-span-1 lg:col-span-7 space-y-6 sm:space-y-8 md:space-y-8 lg:space-y-5 text-left">
+              <motion.div
+                initial={{ opacity: 0, y: -15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <span className="she-category-tag text-xs sm:text-base md:text-base lg:text-sm">
                   National Women's Innovation Pitch
                 </span>
-              </div>
+              </motion.div>
 
-              {/* Title lines */}
-              <div className="space-y-1">
-                <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight text-gray-900">
-                  <span className="block">She Dreams.</span>
-                  <span className="block she-gradient-text">She Creates.</span>
-                  <span className="block">She Leads.</span>
+              {/* Title lines with 3D Letter-by-Letter Animation */}
+              <div className="space-y-1 sm:space-y-2">
+                <h1 className="text-5xl sm:text-7xl md:text-7xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] text-gray-900">
+                  {/* Line 1: She Dreams. */}
+                  <span className="block">
+                    {'She Dreams.'.split('').map((char, idx) => (
+                      <motion.span
+                        key={`line1-${idx}`}
+                        initial={{ opacity: 0, y: 35, rotateX: -90 }}
+                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: 0.3 + idx * 0.035,
+                          ease: [0.2, 0.65, 0.3, 0.9],
+                        }}
+                        className="inline-block"
+                      >
+                        {char === ' ' ? '\u00A0' : char}
+                      </motion.span>
+                    ))}
+                  </span>
+
+                  {/* Line 2: She Creates. */}
+                  <span className="block she-gradient-text">
+                    {'She Creates.'.split('').map((char, idx) => (
+                      <motion.span
+                        key={`line2-${idx}`}
+                        initial={{ opacity: 0, y: 35, rotateX: -90 }}
+                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: 0.7 + idx * 0.035,
+                          ease: [0.2, 0.65, 0.3, 0.9],
+                        }}
+                        className="inline-block"
+                      >
+                        {char === ' ' ? '\u00A0' : char}
+                      </motion.span>
+                    ))}
+                  </span>
+
+                  {/* Line 3: She Leads. */}
+                  <span className="block">
+                    {'She Leads.'.split('').map((char, idx) => (
+                      <motion.span
+                        key={`line3-${idx}`}
+                        initial={{ opacity: 0, y: 35, rotateX: -90 }}
+                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: 1.1 + idx * 0.035,
+                          ease: [0.2, 0.65, 0.3, 0.9],
+                        }}
+                        className="inline-block"
+                      >
+                        {char === ' ' ? '\u00A0' : char}
+                      </motion.span>
+                    ))}
+                  </span>
                 </h1>
               </div>
 
               {/* Subtitle */}
-              <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl font-normal leading-relaxed">
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.5 }}
+                className="text-base sm:text-xl md:text-xl lg:text-lg text-gray-600 max-w-2xl font-normal leading-relaxed"
+              >
                 A national platform created by <strong className="text-gray-900">UGHAM</strong> to empower women students to pitch innovative ideas, showcase projects, and connect with industry leaders.
-              </p>
+              </motion.p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-3 sm:gap-4 pt-1">
-                <Link href="/register" className="she-btn-primary text-xs sm:text-sm px-6 py-3">
-                  Register Now <ArrowRight className="w-4 h-4" />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.7 }}
+                className="flex flex-wrap gap-3 sm:gap-4 pt-1"
+              >
+                <Link href="/register" className="she-btn-primary text-sm sm:text-base md:text-base lg:text-sm px-7 py-3.5 sm:px-8 sm:py-4 lg:px-6 lg:py-3">
+                  Register Now <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Link>
-                <Link href="/about" className="she-btn-outline text-xs sm:text-sm px-6 py-3">
+                <Link href="/about" className="she-btn-outline text-sm sm:text-base md:text-base lg:text-sm px-7 py-3.5 sm:px-8 sm:py-4 lg:px-6 lg:py-3">
                   Learn More
                 </Link>
-              </div>
+              </motion.div>
 
               {/* Stats Badges */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-gray-100">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.9 }}
+                className="grid grid-cols-3 gap-4 sm:gap-6 pt-6 sm:pt-8 border-t border-gray-200/80"
+              >
                 <div>
-                  <span className="block text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#6C3B8F]">50+</span>
-                  <span className="text-xs sm:text-sm text-gray-500 font-medium leading-tight block">College Collaborations</span>
+                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">50+</span>
+                  <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">College Collaborations</span>
                 </div>
                 <div>
-                  <span className="block text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#6C3B8F]">1000+</span>
-                  <span className="text-xs sm:text-sm text-gray-500 font-medium leading-tight block">Women Participants</span>
+                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">1000+</span>
+                  <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">Women Participants</span>
                 </div>
                 <div>
-                  <span className="block text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#6C3B8F]">80+</span>
-                  <span className="text-xs sm:text-sm text-gray-500 font-medium leading-tight block">Industry Experts</span>
+                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">80+</span>
+                  <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">Industry Experts</span>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* Right Featured Card Column (Hidden on Mobile & Tablet, Only Shown on Desktop/Laptop lg+) */}
