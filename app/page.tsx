@@ -326,20 +326,28 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            <div className="she-partner-card py-6 sm:py-8">
-              <Image src="/assets/partners-imgs/part-4.png" alt="Ugham" width={140} height={70} className="she-partner-logo-img" />
+            <div className="she-partner-card">
+              <div className="she-partner-logo-wrapper">
+                <Image src="/assets/partners-imgs/part-4.png" alt="Ugham" width={140} height={70} className="she-partner-logo-img" />
+              </div>
               <span className="she-partner-label">Organized by</span>
             </div>
-            <div className="she-partner-card py-6 sm:py-8">
-              <Image src="/assets/partners-imgs/part-2.png" alt="Icebrkr" width={140} height={70} className="she-partner-logo-img" />
+            <div className="she-partner-card">
+              <div className="she-partner-logo-wrapper">
+                <Image src="/assets/partners-imgs/part-2.png" alt="Icebrkr" width={140} height={70} className="she-partner-logo-img" />
+              </div>
               <span className="she-partner-label">Powered by</span>
             </div>
-            <div className="she-partner-card py-6 sm:py-8">
-              <Image src="/assets/partners-imgs/part-3.png" alt="Altruisty" width={140} height={70} className="she-partner-logo-img" />
+            <div className="she-partner-card">
+              <div className="she-partner-logo-wrapper">
+                <Image src="/assets/partners-imgs/part-3.png" alt="Altruisty" width={140} height={70} className="she-partner-logo-img" />
+              </div>
               <span className="she-partner-label">Industry Partner</span>
             </div>
-            <div className="she-partner-card py-6 sm:py-8">
-              <Image src="/assets/partners-imgs/part-1.png" alt="Jeppiaar University" width={140} height={70} className="she-partner-logo-img" />
+            <div className="she-partner-card">
+              <div className="she-partner-logo-wrapper">
+                <Image src="/assets/partners-imgs/part-1.png" alt="Jeppiaar University" width={140} height={70} className="she-partner-logo-img" />
+              </div>
               <span className="she-partner-label">Venue Partner</span>
             </div>
           </div>

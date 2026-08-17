@@ -100,15 +100,17 @@ export default function PartnersPage() {
           <h3 className="text-2xl font-bold text-gray-900">Featured Headline Partners</h3>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {mainPartners.map((p, idx) => (
             <motion.div
               key={idx}
               whileHover={{ y: -6 }}
-              className="she-partner-card py-10"
+              className="she-partner-card"
             >
-              <Image src={p.img} alt={p.name} width={160} height={80} className="she-partner-logo-img" />
-              <span className="she-partner-label mt-2">{p.role}</span>
+              <div className="she-partner-logo-wrapper">
+                <Image src={p.img} alt={p.name} width={160} height={80} className="she-partner-logo-img" />
+              </div>
+              <span className="she-partner-label">{p.role}</span>
             </motion.div>
           ))}
         </div>
