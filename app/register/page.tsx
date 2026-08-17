@@ -144,6 +144,20 @@ function RegisterFormContent() {
     }
   };
 
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (typeof window !== 'undefined' && window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
   // Razorpay Checkout & Registration Submission
   const handleRegisterAndPay = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,7 +171,15 @@ function RegisterFormContent() {
     }
 
     try {
-      // 1. Create Razorpay Order via API
+      // 1. Dynamically load Razorpay SDK on-demand
+      const isRzpLoaded = await loadRazorpayScript();
+      if (!isRzpLoaded) {
+        setErrorMsg('Razorpay Payment Gateway SDK failed to load. Please check your network connection.');
+        setLoading(false);
+        return;
+      }
+
+      // 2. Create Razorpay Order via API
       const res = await fetch('/api/payments/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -181,7 +203,7 @@ function RegisterFormContent() {
       const orderData = await res.json();
       if (!res.ok) throw new Error(orderData.error || 'Failed to initialize payment.');
 
-      // 2. Open Razorpay Modal
+      // 3. Open Razorpay Modal
       const options = {
         key: orderData.key,
         amount: orderData.amount,
@@ -193,7 +215,7 @@ function RegisterFormContent() {
         handler: async function (response: any) {
           try {
             setLoading(true);
-            // 3. Verify Payment Signature & Trigger Confirmation Email
+            // Verify Payment Signature & Trigger Confirmation Email
             const verifyRes = await fetch('/api/payments/verify', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -252,9 +274,6 @@ function RegisterFormContent() {
 
   return (
     <div className="space-y-10">
-      {/* Razorpay JS Script */}
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
-
       {/* Success Modal Receipt */}
       {successReceipt && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -393,68 +412,74 @@ function RegisterFormContent() {
                     </button>
                   )}
                 </div>
+                <div className="space-y-4">
+                  {/* Row 1: Student Full Name & Email Address */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs sm:text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">Student Full Name *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Name"
+                        value={m.student_name}
+                        onChange={(e) => handleMemberChange(idx, 'student_name', e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] shadow-sm"
+                      />
+                    </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Student Full Name *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Name"
-                      value={m.student_name}
-                      onChange={(e) => handleMemberChange(idx, 'student_name', e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                    />
+                    <div>
+                      <label className="block text-xs sm:text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">Email Address *</label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="student@gmail.com"
+                        value={m.email}
+                        onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] shadow-sm"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="student@gmail.com"
-                      value={m.email}
-                      onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                    />
-                  </div>
+                  {/* Row 2: Mobile Number, Department & Year of Study */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs sm:text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">Mobile Number *</label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="9876543210"
+                        value={m.phone}
+                        onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] shadow-sm"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Mobile Number *</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+91 9876543210"
-                      value={m.phone}
-                      onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                    />
-                  </div>
+                    <div>
+                      <label className="block text-xs sm:text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">Department</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. B.Tech IT"
+                        value={m.department}
+                        onChange={(e) => handleMemberChange(idx, 'department', e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] shadow-sm"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Department</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. B.Tech IT"
-                      value={m.department}
-                      onChange={(e) => handleMemberChange(idx, 'department', e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1.5">Year of Study</label>
-                    <select
-                      value={m.year_of_study}
-                      onChange={(e) => handleMemberChange(idx, 'year_of_study', e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                    >
-                      <option value="">Select Year of Study</option>
-                      <option value="1st Year">1st Year</option>
-                      <option value="2nd Year">2nd Year</option>
-                      <option value="3rd Year">3rd Year</option>
-                      <option value="4th Year">4th Year</option>
-                    </select>
+                    <div>
+                      <label className="block text-xs sm:text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">Year of Study</label>
+                      <select
+                        value={m.year_of_study}
+                        onChange={(e) => handleMemberChange(idx, 'year_of_study', e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] shadow-sm"
+                      >
+                        <option value="">Select Year of Study</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="Post Graduate">Post Graduate</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
