@@ -36,6 +36,9 @@ export async function sendTeamConfirmationEmail(data: {
   collegeName: string;
   amountPaid: number;
   paymentId: string;
+  projectTitle?: string;
+  domain?: string;
+  projectDescription?: string;
   members: Array<{ student_name: string; email: string; phone: string; department?: string }>;
 }) {
   const subject = `🎉 ShePitch Registration Confirmed - Team ${data.teamName}`;
@@ -44,12 +47,27 @@ export async function sendTeamConfirmationEmail(data: {
     .map(
       (m, idx) =>
         `<tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 8px;">${idx + 1}. ${m.student_name}</td>
-          <td style="padding: 8px;">${m.email}</td>
-          <td style="padding: 8px;">${m.department || 'N/A'}</td>
+          <td style="padding: 10px 8px;">${idx + 1}. ${m.student_name} ${idx === 0 ? '<span style="font-size: 11px; background: #6C3B8F; color: #fff; padding: 2px 6px; border-radius: 10px; margin-left: 4px;">Leader</span>' : ''}</td>
+          <td style="padding: 10px 8px;">${m.email}</td>
+          <td style="padding: 10px 8px;">${m.department || 'N/A'}</td>
         </tr>`
     )
     .join('');
+
+  const pitchProposalSection = data.projectTitle
+    ? `
+        <div style="background: #f8f4fb; border: 1px solid #e2d4eb; padding: 16px; margin: 20px 0; border-radius: 8px;">
+          <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #6C3B8F;">💡 Submitted Pitch Proposal:</h3>
+          <p style="margin: 4px 0; font-size: 13px; color: #333;"><strong>Title:</strong> ${data.projectTitle}</p>
+          <p style="margin: 4px 0; font-size: 13px; color: #333;"><strong>Domain:</strong> ${data.domain || 'General'}</p>
+          ${
+            data.projectDescription
+              ? `<p style="margin: 6px 0 0 0; font-size: 13px; color: #555; line-height: 1.5; font-style: italic;">"${data.projectDescription}"</p>`
+              : ''
+          }
+        </div>
+      `
+    : '';
 
   const htmlContent = `
     <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #eaeaea;">
@@ -59,25 +77,27 @@ export async function sendTeamConfirmationEmail(data: {
       </div>
 
       <div style="padding: 30px 25px;">
-        <h2 style="color: #6C3B8F; margin-top: 0;">Registration Confirmed!</h2>
-        <p style="font-size: 15px; color: #444; leading-height: 1.6;">Dear <strong>${data.leaderName}</strong>,</p>
-        <p style="font-size: 15px; color: #444; line-height: 1.6;">Congratulations! Your team <strong>${data.teamName}</strong> has been successfully registered for <strong>ShePitch 2026</strong> organized by <strong>UGHAM</strong> at Jeppiaar University on <strong>19 September 2026</strong>.</p>
+        <h2 style="color: #6C3B8F; margin-top: 0;">Registration & Payment Confirmed!</h2>
+        <p style="font-size: 15px; color: #444; line-height: 1.6;">Dear <strong>${data.leaderName}</strong>,</p>
+        <p style="font-size: 15px; color: #444; line-height: 1.6;">Congratulations! Your payment has been received and team <strong>${data.teamName}</strong> is officially registered for <strong>ShePitch 2026</strong> organized by <strong>UGHAM</strong> at Jeppiaar University on <strong>19 September 2026</strong>.</p>
         
-        <div style="background: #fdf5f9; border-left: 4px solid #E83E8C; padding: 15px; margin: 20px 0; border-radius: 4px;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6C3B8F;"><strong>Payment Receipt Details:</strong></p>
-          <p style="margin: 3px 0; font-size: 13px; color: #555;">Payment ID: <strong>${data.paymentId}</strong></p>
-          <p style="margin: 3px 0; font-size: 13px; color: #555;">Amount Paid: <strong>₹${data.amountPaid}</strong></p>
-          <p style="margin: 3px 0; font-size: 13px; color: #555;">Category: <strong>${data.category}</strong></p>
-          <p style="margin: 3px 0; font-size: 13px; color: #555;">College: <strong>${data.collegeName}</strong></p>
+        <div style="background: #fdf5f9; border-left: 4px solid #E83E8C; padding: 16px; margin: 20px 0; border-radius: 4px;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #6C3B8F;"><strong>Official Receipt & Booking Summary:</strong></p>
+          <p style="margin: 4px 0; font-size: 13px; color: #555;">Payment ID: <strong style="font-family: monospace; color: #111;">${data.paymentId}</strong></p>
+          <p style="margin: 4px 0; font-size: 13px; color: #555;">Amount Paid: <strong style="color: #2e7d32;">₹${data.amountPaid}</strong></p>
+          <p style="margin: 4px 0; font-size: 13px; color: #555;">Category: <strong>${data.category}</strong></p>
+          <p style="margin: 4px 0; font-size: 13px; color: #555;">College: <strong>${data.collegeName}</strong></p>
         </div>
 
-        <h3 style="color: #333; margin-top: 25px;">Team Members</h3>
+        ${pitchProposalSection}
+
+        <h3 style="color: #333; margin-top: 25px;">Registered Team Members (${data.members.length} Students)</h3>
         <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #444;">
           <thead>
             <tr style="background: #f5f0f8; text-align: left; color: #6C3B8F;">
-              <th style="padding: 8px;">Name</th>
-              <th style="padding: 8px;">Email</th>
-              <th style="padding: 8px;">Department</th>
+              <th style="padding: 10px 8px;">Name</th>
+              <th style="padding: 10px 8px;">Email</th>
+              <th style="padding: 10px 8px;">Department</th>
             </tr>
           </thead>
           <tbody>

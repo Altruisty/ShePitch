@@ -14,9 +14,11 @@ export async function GET() {
 
     await initDatabase();
 
-    // 1. Total Teams
-    const [teamCountRows]: any = await pool.query(`SELECT COUNT(*) as count FROM she_pitch_teams`);
-    const totalTeams = teamCountRows[0].count;
+    // 1. Total Successful Teams
+    const [teamCountRows]: any = await pool.query(
+      `SELECT COUNT(*) as count FROM she_pitch_teams WHERE payment_status = 'success'`
+    );
+    const totalTeams = teamCountRows[0].count || 0;
 
     // 2. Successful Revenue
     const [revenueRows]: any = await pool.query(
@@ -24,22 +26,27 @@ export async function GET() {
     );
     const totalRevenue = revenueRows[0].total || 0;
 
-    // 3. Total Colleges
+    // 3. Total Colleges (with at least 1 confirmed team, or total colleges in database)
     const [collegeCountRows]: any = await pool.query(`SELECT COUNT(*) as count FROM she_pitch_colleges`);
-    const totalColleges = collegeCountRows[0].count;
+    const totalColleges = collegeCountRows[0].count || 0;
 
-    // 4. Total Students
-    const [studentCountRows]: any = await pool.query(`SELECT COUNT(*) as count FROM she_pitch_students`);
-    const totalStudents = studentCountRows[0].count;
+    // 4. Total Students (belonging ONLY to teams with payment_status = 'success')
+    const [studentCountRows]: any = await pool.query(
+      `SELECT COUNT(*) as count 
+       FROM she_pitch_students s 
+       JOIN she_pitch_teams t ON s.team_id = t.id 
+       WHERE t.payment_status = 'success'`
+    );
+    const totalStudents = studentCountRows[0].count || 0;
 
-    // 5. Payment Status breakdown
+    // 5. Payment Status breakdown (all statuses for log breakdown)
     const [statusRows]: any = await pool.query(
       `SELECT payment_status, COUNT(*) as count FROM she_pitch_teams GROUP BY payment_status`
     );
 
-    // 6. Category breakdown
+    // 6. Category breakdown (ONLY for confirmed success teams)
     const [categoryRows]: any = await pool.query(
-      `SELECT category, COUNT(*) as count FROM she_pitch_teams GROUP BY category`
+      `SELECT category, COUNT(*) as count FROM she_pitch_teams WHERE payment_status = 'success' GROUP BY category`
     );
 
     // 7. Recent registrations (last 5)

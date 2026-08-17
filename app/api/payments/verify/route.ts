@@ -60,6 +60,9 @@ export async function POST(req: Request) {
         collegeName: team.college_name,
         amountPaid: Number(team.amount_paid),
         paymentId: razorpay_payment_id,
+        projectTitle: team.project_title,
+        domain: team.domain,
+        projectDescription: team.project_description,
         members: memberRows || [],
       }).catch((err) => console.error('Error sending confirmation email:', err));
     }

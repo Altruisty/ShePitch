@@ -181,7 +181,9 @@ export default function CollegeDashboardPage() {
                     <div key={idx} className="p-3 rounded-xl border border-gray-100 bg-gray-50/60 flex items-center justify-between text-xs">
                       <div>
                         <span className="font-bold text-gray-900">{m.student_name}</span>
-                        {m.is_leader && <span className="ml-2 bg-purple-100 text-[#6C3B8F] px-2 py-0.5 rounded font-bold">Team Leader</span>}
+                        {Boolean(m.is_leader) ? (
+                          <span className="ml-2 bg-purple-100 text-[#6C3B8F] px-2 py-0.5 rounded font-bold">Team Leader</span>
+                        ) : null}
                         <div className="text-gray-500 mt-0.5">{m.email} &bull; {m.phone}</div>
                       </div>
                       <div className="text-right text-gray-600">

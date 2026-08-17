@@ -14,6 +14,7 @@ export async function GET() {
 
     await initDatabase();
 
+    // Query ONLY confirmed/success teams for this college
     const [rows]: any = await pool.query(
       `SELECT t.*, 
               JSON_ARRAYAGG(
@@ -29,7 +30,7 @@ export async function GET() {
               ) as members
        FROM she_pitch_teams t
        LEFT JOIN she_pitch_students s ON t.id = s.team_id
-       WHERE t.college_name = ? OR t.college_id = ?
+       WHERE (t.college_name = ? OR t.college_id = ?) AND t.payment_status = 'success'
        GROUP BY t.id
        ORDER BY t.created_at DESC`,
       [session.college_name, session.id]
