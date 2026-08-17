@@ -71,6 +71,7 @@ export default function AboutPage() {
         <AnimatedTitle
           text="Empowering Women Innovators Across India"
           gradientWords={['Women', 'Innovators']}
+          mobileBreakWords={['Empowering', 'Women', 'Innovators']}
           className="text-4xl sm:text-6xl font-extrabold text-gray-900"
         />
         <p className="text-gray-600 text-lg leading-relaxed">

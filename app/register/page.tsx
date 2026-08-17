@@ -33,7 +33,6 @@ function RegisterFormContent() {
 
   const [registeredColleges, setRegisteredColleges] = useState<any[]>([]);
   const [selectedCollegeOption, setSelectedCollegeOption] = useState('');
-  const [customCollegeName, setCustomCollegeName] = useState('');
   const [collegeId, setCollegeId] = useState<number | null>(null);
 
   const [formData, setFormData] = useState({
@@ -70,26 +69,20 @@ function RegisterFormContent() {
           if (data.colleges.length > 0) {
             setSelectedCollegeOption(data.colleges[0].college_name);
             setCollegeId(data.colleges[0].id);
-          } else {
-            setSelectedCollegeOption('other');
           }
         }
       })
-      .catch(() => setSelectedCollegeOption('other'));
+      .catch((err) => console.error('Error fetching colleges:', err));
   }, []);
 
   const handleCollegeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     setSelectedCollegeOption(val);
-    if (val === 'other') {
-      setCollegeId(null);
-    } else {
-      const found = registeredColleges.find((c) => c.college_name === val);
-      setCollegeId(found ? found.id : null);
-    }
+    const found = registeredColleges.find((c) => c.college_name === val);
+    setCollegeId(found ? found.id : null);
   };
 
-  const finalCollegeName = selectedCollegeOption === 'other' ? customCollegeName : selectedCollegeOption;
+  const finalCollegeName = selectedCollegeOption;
 
   // Fee calculation (₹299 per participant)
   const baseFeePerMember = 299;
@@ -356,26 +349,19 @@ const loadRazorpayScript = () => {
               <select
                 value={selectedCollegeOption}
                 onChange={handleCollegeChange}
+                required
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
               >
-                {registeredColleges.map((c) => (
-                  <option key={c.id} value={c.college_name}>
-                    {c.college_name} (Official Partner)
-                  </option>
-                ))}
-                <option value="other">Other College (Type manually below)</option>
+                {registeredColleges.length === 0 ? (
+                  <option value="">Loading Partner Colleges...</option>
+                ) : (
+                  registeredColleges.map((c) => (
+                    <option key={c.id} value={c.college_name}>
+                      {c.college_name}
+                    </option>
+                  ))
+                )}
               </select>
-
-              {selectedCollegeOption === 'other' && (
-                <input
-                  type="text"
-                  required
-                  placeholder="Enter your College / University full name"
-                  value={customCollegeName}
-                  onChange={(e) => setCustomCollegeName(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] mt-3"
-                />
-              )}
             </div>
           </div>
         </div>
@@ -384,7 +370,13 @@ const loadRazorpayScript = () => {
         <div className="space-y-5 pt-4 border-t border-gray-100">
           <div className="flex items-center justify-between border-b border-gray-100 pb-4 flex-wrap gap-2">
             <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 flex items-center gap-2.5">
-              <Users className="w-6 h-6 text-[#6C3B8F]" /> 2. Team Members ({members.length} Participants)
+              <Users className="w-6 h-6 text-[#6C3B8F] shrink-0" />
+              <span>
+                <span className="block sm:inline">2. Team Members</span>{' '}
+                <span className="block sm:inline text-sm sm:text-2xl font-bold sm:font-extrabold text-gray-500 sm:text-gray-900">
+                  ({members.length} Participants)
+                </span>
+              </span>
             </h3>
             <button
               type="button"
@@ -582,18 +574,18 @@ const loadRazorpayScript = () => {
 
           <div className="bg-purple-50/50 p-6 sm:p-8 rounded-2xl border border-purple-100 space-y-5">
             {/* Coupon Box */}
-            <div className="flex gap-3">
+            <div className="flex items-center gap-2 bg-white border border-purple-200 rounded-xl p-1.5 focus-within:border-[#6C3B8F] shadow-xs">
               <input
                 type="text"
                 placeholder="Enter Coupon Code"
                 value={formData.coupon_code}
                 onChange={(e) => setFormData({ ...formData, coupon_code: e.target.value })}
-                className="bg-white border border-purple-200 rounded-xl px-4 py-3 text-sm text-gray-900 uppercase tracking-wider flex-1 focus:outline-none focus:border-[#6C3B8F]"
+                className="w-full bg-transparent px-3 py-2 text-xs sm:text-sm text-gray-900 uppercase tracking-wider focus:outline-none min-w-0"
               />
               <button
                 type="button"
                 onClick={applyCoupon}
-                className="bg-[#6C3B8F] text-white text-xs sm:text-sm font-extrabold px-5 py-3 rounded-xl hover:bg-[#5a2e7a] uppercase tracking-wider transition-all"
+                className="bg-[#6C3B8F] text-white text-xs sm:text-sm font-extrabold px-4 sm:px-6 py-2.5 rounded-lg hover:bg-[#5a2e7a] uppercase tracking-wider transition-all shrink-0"
               >
                 Apply
               </button>
