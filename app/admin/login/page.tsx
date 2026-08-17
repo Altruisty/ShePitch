@@ -99,10 +99,6 @@ export default function AdminLoginPage() {
               </button>
             </div>
           </form>
-
-          <div className="text-center text-xs text-gray-400 pt-2 border-t border-white/10">
-            Default credentials: <code className="text-white bg-white/10 px-1.5 py-0.5 rounded">admin</code> / <code className="text-white bg-white/10 px-1.5 py-0.5 rounded">Admin@123</code>
-          </div>
         </div>
       </div>
     </div>
