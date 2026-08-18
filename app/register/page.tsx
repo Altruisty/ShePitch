@@ -59,6 +59,8 @@ function RegisterFormContent() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successReceipt, setSuccessReceipt] = useState<any>(null);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
   // Fetch registered colleges from database
   useEffect(() => {
@@ -157,6 +159,12 @@ const loadRazorpayScript = () => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
+
+    if (!acceptedTerms) {
+      setErrorMsg('Please review and accept the Terms & Conditions to proceed with registration.');
+      setLoading(false);
+      return;
+    }
 
     if (!finalCollegeName || finalCollegeName.trim() === '') {
       setErrorMsg('Please select or specify your College Name.');
@@ -347,6 +355,76 @@ const loadRazorpayScript = () => {
             >
               Try Again
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Terms & Conditions Popup Modal */}
+      {isTermsModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative animate-fade-in max-h-[85vh] flex flex-col border border-purple-100">
+            <button
+              type="button"
+              onClick={() => setIsTermsModalOpen(false)}
+              className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-100 transition-all"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="border-b border-gray-100 pb-3">
+              <span className="she-category-tag text-xs">Official Declaration</span>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 mt-1">ShePitch 2026 — Terms & Conditions</h3>
+            </div>
+
+            <div className="overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-600 pr-2 leading-relaxed">
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">1. Data Authenticity & Self-Declaration</span>
+                <p>
+                  I hereby declare that all submitted information (team name, student leader & member details, college name, email addresses, phone numbers, and pitch details) is authentic, accurate, and submitted voluntarily by our team.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">2. Promotional & Event Communications</span>
+                <p>
+                  I consent to receive official event announcements, schedule reminders, registration receipts, certificates, and promotional communications via email, SMS, or phone contact from ShePitch, UGHAM, and authorized partners.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">3. Participant Conduct & Eligibility</span>
+                <p>
+                  All team members must be enrolled female students from an accredited university or college. Teams agree to abide by the official competition rules and code of conduct set by event organizers.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">4. Intellectual Property Rights</span>
+                <p>
+                  Participants retain 100% full ownership of their ideas, software, hardware prototypes, and pitch materials. ShePitch & UGHAM reserve rights to showcase non-confidential project titles and media for promotion and event highlights.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">5. Payment & Refund Policy</span>
+                <p>
+                  All payments are securely processed via Razorpay. Registration fees are non-refundable once an official team receipt is generated, except in the event of competition cancellation.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-gray-100 flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setAcceptedTerms(true);
+                  setIsTermsModalOpen(false);
+                }}
+                className="w-full she-btn-primary justify-center text-xs sm:text-sm py-3.5 font-extrabold uppercase tracking-wider"
+              >
+                I Agree & Accept Terms
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -644,6 +722,32 @@ const loadRazorpayScript = () => {
                 <span className="text-[#6C3B8F]">₹{finalAmount}</span>
               </div>
             </div>
+          </div>
+
+          {/* Terms & Conditions Checkbox */}
+          <div className="flex items-start gap-3 p-4 bg-purple-50/40 rounded-2xl border border-purple-100/80">
+            <input
+              type="checkbox"
+              id="terms_checkbox"
+              required
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+              className="mt-1 w-5 h-5 text-[#6C3B8F] border-gray-300 rounded focus:ring-[#6C3B8F] cursor-pointer accent-[#6C3B8F] shrink-0"
+            />
+            <label htmlFor="terms_checkbox" className="text-xs sm:text-sm text-gray-700 leading-relaxed cursor-pointer font-medium select-none">
+              I certify that all details submitted are accurate and I accept the{' '}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsTermsModalOpen(true);
+                }}
+                className="text-[#6C3B8F] font-extrabold underline hover:text-[#5a2e7a] inline-flex items-center gap-0.5"
+              >
+                Terms & Conditions
+              </button>
+              . *
+            </label>
           </div>
 
           <button

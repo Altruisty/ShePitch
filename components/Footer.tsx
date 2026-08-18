@@ -109,11 +109,6 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800/80 pt-6 mt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 gap-4">
           <p>© 2026 ShePitch. All Rights Reserved. Powered by Icebrkr & UGHAM.</p>
-          <p className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-gray-300">Privacy Policy</Link>
-            <span>&bull;</span>
-            <Link href="/terms" className="hover:text-gray-300">Terms of Service</Link>
-          </p>
         </div>
       </div>
     </footer>
