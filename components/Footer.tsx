@@ -33,7 +33,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              A national platform created by UGHAM empowering women students to pitch innovative ideas, showcase projects, and connect with industry leaders.
+              A national platform created by UGHAM and powered by ICEBRKR to empower women students to pitch innovative ideas, showcase projects, and connect with industry leaders.
             </p>
             <div className="flex items-center gap-2 text-[#E83E8C] font-semibold text-sm">
               <Globe className="w-4 h-4" />

@@ -61,6 +61,8 @@ function RegisterFormContent() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successReceipt, setSuccessReceipt] = useState<any>(null);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+  const [acceptedPromotional, setAcceptedPromotional] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
   // Fetch registered colleges from database
@@ -161,8 +163,8 @@ const loadRazorpayScript = () => {
     setLoading(true);
     setErrorMsg('');
 
-    if (!acceptedTerms) {
-      setErrorMsg('Please review and accept the Terms & Conditions to proceed with registration.');
+    if (!acceptedTerms || !acceptedPrivacy || !acceptedPromotional) {
+      setErrorMsg('Please review and check all required consent boxes (Privacy, Promotional Consent, and Terms & Conditions) to proceed.');
       setLoading(false);
       return;
     }
@@ -381,28 +383,32 @@ const loadRazorpayScript = () => {
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
                 <span className="font-extrabold text-gray-900 block text-sm">1. Data Authenticity & Voluntary Submission</span>
                 <p>
-                  I hereby declare that all submitted information (team name, student leader & member details, college name, email addresses, phone numbers, and pitch proposals) is authentic, accurate, and submitted voluntarily by our team.
+                  I hereby declare that all submitted information (team name, student leader & member details, college name, email addresses, phone numbers, and pitch proposals) is authentic, accurate, and submitted voluntarily by our team. Submission of false, misleading or fraudulent information may result in disqualification.
                 </p>
               </div>
 
-              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">2. Data Privacy & Encryption Security</span>
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-gray-900 block text-sm">2. Data Privacy & Encryption Security</span>
+                </div>
                 <p>
                   All participant data submitted during registration is strictly secured, protected, and handled confidentially with end-to-end data security. No personal data will be shared with unauthorized third parties.
                 </p>
               </div>
 
-              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">3. Joint Promotional Consent (UGHAM & icebrkr)</span>
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-gray-900 block text-sm">3. Joint Promotional Consent (UGHAM & icebrkr)</span>
+                </div>
                 <p>
-                  I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both <strong>UGHAM</strong> and <strong>icebrkr</strong> using the provided contact details.
+                  I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both UGHAM and icebrkr using the provided contact details.
                 </p>
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
                 <span className="font-extrabold text-gray-900 block text-sm">4. 1-Year Free icebrkr Testing Platform Access</span>
                 <p>
-                  As an exclusive participant benefit, all registered team members will receive <strong>1 Year of Free Access</strong> to icebrkr's product testing platform upon official application launch.
+                  As an exclusive participant benefit, all registered team members will receive 1 Year of Free Access to icebrkr's product testing platform upon official application launch.
                 </p>
               </div>
 
@@ -442,9 +448,30 @@ const loadRazorpayScript = () => {
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">10. Grand Finale Attendance & Final Evaluation</span>
+                <span className="font-extrabold text-gray-900 block text-sm">10. Role of icebrkr & Limitation of Liability</span>
+                <p>
+                  icebrkr is participating solely as a sponsor and ecosystem partner and is not the organiser or administrator of the event. icebrkr shall not be responsible or liable for matters relating to registration, payments, participant selection, judging, prizes, venue, scheduling, cancellation, event operations or any other decisions or activities controlled by the event organiser. To the maximum extent permitted by applicable law, icebrkr shall not be liable for any loss, damage, claim, cost or expense arising from participation in or conduct of the event, except to the extent directly caused by icebrkr’s own acts or omissions.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">11. Grand Finale Attendance & Final Evaluation</span>
                 <p>
                   Shortlisted finalists agree to present their pitch live at Jeppiaar University, Chennai on 19 September 2026. All evaluations and award decisions made by the official judging panel are final.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">12. Confidentiality / Disclosure</span>
+                <p>
+                  Participants should understand that they are responsible for deciding what confidential information they disclose during a public pitch. The organisers should not be responsible for protecting information that participants voluntarily disclose publicly.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">13. Event Modification, Rescheduling & Cancellation Rights</span>
+                <p>
+                  The organisers have the right to modify, reschedule, change the judging panel, competition format or eligibility criteria ..also cancel or postpone the event where necessary with prior information.
                 </p>
               </div>
             </div>
@@ -454,6 +481,8 @@ const loadRazorpayScript = () => {
                 type="button"
                 onClick={() => {
                   setAcceptedTerms(true);
+                  setAcceptedPrivacy(true);
+                  setAcceptedPromotional(true);
                   setIsTermsModalOpen(false);
                 }}
                 className="w-full she-btn-primary justify-center text-xs sm:text-sm py-3.5 font-extrabold uppercase tracking-wider"
@@ -760,30 +789,63 @@ const loadRazorpayScript = () => {
             </div>
           </div>
 
-          {/* Terms & Conditions Checkbox */}
-          <div className="flex items-start gap-3 p-4 bg-purple-50/40 rounded-2xl border border-purple-100/80">
-            <input
-              type="checkbox"
-              id="terms_checkbox"
-              required
-              checked={acceptedTerms}
-              onChange={(e) => setAcceptedTerms(e.target.checked)}
-              className="mt-1 w-5 h-5 text-[#6C3B8F] border-gray-300 rounded focus:ring-[#6C3B8F] cursor-pointer accent-[#6C3B8F] shrink-0"
-            />
-            <label htmlFor="terms_checkbox" className="text-xs sm:text-sm text-gray-700 leading-relaxed cursor-pointer font-medium select-none">
-              I certify that all details submitted are accurate and I accept the{' '}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsTermsModalOpen(true);
-                }}
-                className="text-[#6C3B8F] font-extrabold underline hover:text-[#5a2e7a] inline-flex items-center gap-0.5"
-              >
-                Terms & Conditions
-              </button>
-              . *
-            </label>
+          {/* Consent Checkboxes */}
+          <div className="space-y-3 pt-2">
+            {/* Checkbox 1: Data Privacy & Encryption Security (Point 2) */}
+            <div className="flex items-start gap-3 p-3.5 bg-purple-50/40 rounded-2xl border border-purple-100/80">
+              <input
+                type="checkbox"
+                id="privacy_checkbox"
+                required
+                checked={acceptedPrivacy}
+                onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+                className="mt-1 w-5 h-5 text-[#6C3B8F] border-gray-300 rounded focus:ring-[#6C3B8F] cursor-pointer accent-[#6C3B8F] shrink-0"
+              />
+              <label htmlFor="privacy_checkbox" className="text-xs sm:text-sm text-gray-700 leading-relaxed cursor-pointer font-medium select-none">
+                <strong>Data Privacy & Encryption Security:</strong> All participant data submitted during registration is strictly secured, protected, and handled confidentially with end-to-end data security. No personal data will be shared with unauthorized third parties. *
+              </label>
+            </div>
+
+            {/* Checkbox 2: Joint Promotional Consent (Point 3) */}
+            <div className="flex items-start gap-3 p-3.5 bg-purple-50/40 rounded-2xl border border-purple-100/80">
+              <input
+                type="checkbox"
+                id="promotional_checkbox"
+                required
+                checked={acceptedPromotional}
+                onChange={(e) => setAcceptedPromotional(e.target.checked)}
+                className="mt-1 w-5 h-5 text-[#6C3B8F] border-gray-300 rounded focus:ring-[#6C3B8F] cursor-pointer accent-[#6C3B8F] shrink-0"
+              />
+              <label htmlFor="promotional_checkbox" className="text-xs sm:text-sm text-gray-700 leading-relaxed cursor-pointer font-medium select-none">
+                <strong>Joint Promotional Consent (UGHAM & icebrkr):</strong> I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both <strong>UGHAM</strong> and <strong>icebrkr</strong> using the provided contact details. *
+              </label>
+            </div>
+
+            {/* Checkbox 3: General Terms & Conditions */}
+            <div className="flex items-start gap-3 p-3.5 bg-purple-50/40 rounded-2xl border border-purple-100/80">
+              <input
+                type="checkbox"
+                id="terms_checkbox"
+                required
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-1 w-5 h-5 text-[#6C3B8F] border-gray-300 rounded focus:ring-[#6C3B8F] cursor-pointer accent-[#6C3B8F] shrink-0"
+              />
+              <label htmlFor="terms_checkbox" className="text-xs sm:text-sm text-gray-700 leading-relaxed cursor-pointer font-medium select-none">
+                I certify that all details submitted are accurate and I accept all of the{' '}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsTermsModalOpen(true);
+                  }}
+                  className="text-[#6C3B8F] font-extrabold underline hover:text-[#5a2e7a] inline-flex items-center gap-0.5"
+                >
+                  Terms & Conditions
+                </button>
+                . *
+              </label>
+            </div>
           </div>
 
           <button
@@ -807,18 +869,6 @@ export default function RegisterPage() {
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <span className="she-category-tag">Register Now</span>
-          <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-3.5 py-1 rounded-full border border-purple-200/80 shadow-xs">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-purple-900">
-              POWERED BY
-            </span>
-            <Image
-              src="/assets/partners-imgs/part-2.png"
-              alt="icebrkr"
-              width={85}
-              height={26}
-              className="h-4.5 sm:h-5 w-auto object-contain"
-            />
-          </div>
         </div>
         <AnimatedTitle
           text="Join ShePitch Chennai National Finale"

@@ -83,7 +83,7 @@ export default function AboutPage() {
           className="text-4xl sm:text-6xl font-extrabold text-gray-900"
         />
         <p className="text-gray-600 text-lg leading-relaxed">
-          ShePitch is a premier women-focused innovation competition created by <strong className="text-gray-900">UGHAM</strong> to give women students a national stage to pitch ideas, demonstrate prototypes, and launch tech careers.
+          ShePitch is a premier women-focused innovation competition created by <strong className="text-gray-900">UGHAM</strong> and powered by <strong className="text-gray-900">ICEBRKR</strong> to give women students a national stage to pitch ideas, demonstrate prototypes, and launch tech careers.
         </p>
       </div>
 

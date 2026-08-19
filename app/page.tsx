@@ -29,18 +29,6 @@ export default function HomePage() {
                 <span className="she-category-tag text-xs sm:text-base md:text-base lg:text-sm">
                   National Women's Innovation Pitch
                 </span>
-                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-purple-200/80 shadow-sm">
-                  <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-purple-900">
-                    POWERED BY
-                  </span>
-                  <Image
-                    src="/assets/partners-imgs/part-2.png"
-                    alt="icebrkr"
-                    width={90}
-                    height={30}
-                    className="h-5 sm:h-6 w-auto object-contain"
-                  />
-                </div>
               </motion.div>
 
               {/* Title lines with 3D Letter-by-Letter Animation */}
@@ -112,7 +100,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 1.5 }}
                 className="text-base sm:text-xl md:text-xl lg:text-lg text-gray-600 max-w-2xl font-normal leading-relaxed"
               >
-                A national platform created by <strong className="text-gray-900">UGHAM</strong> to empower women students to pitch innovative ideas, showcase projects, and connect with industry leaders.
+                A national platform created by <strong className="text-gray-900">UGHAM</strong> and powered by  <strong className="text-gray-900">ICEBRKR</strong> to empower women students to pitch innovative ideas, showcase projects, and connect with industry leaders.
               </motion.p>
 
               {/* CTA Buttons */}
