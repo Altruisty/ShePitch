@@ -37,7 +37,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, message: 'Password updated successfully' });
   } catch (error: any) {
-    console.error('Error updating college profile:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

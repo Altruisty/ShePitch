@@ -19,7 +19,6 @@ export async function GET() {
     );
     return NextResponse.json({ success: true, logs: rows });
   } catch (error: any) {
-    console.error('Error fetching email logs:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }
@@ -81,7 +80,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: 'Invalid target type' }, { status: 400 });
   } catch (error: any) {
-    console.error('Error sending admin mail:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

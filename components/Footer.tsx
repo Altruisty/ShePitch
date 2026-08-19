@@ -12,14 +12,25 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Column 1: Brand Info */}
           <div className="space-y-4">
-            <div className="bg-white p-2.5 rounded-xl w-fit">
+            <div className="bg-white p-3 rounded-2xl w-fit flex items-center gap-3 shadow-md border border-gray-100">
               <Image
                 src="/assets/logo/icon.png"
                 alt="ShePitch Logo"
-                width={150}
-                height={50}
-                className="h-10 w-auto object-contain"
+                width={140}
+                height={45}
+                className="h-9 w-auto object-contain"
               />
+              <div className="h-6 w-px bg-gray-200" />
+              <div className="flex flex-col items-start">
+                <span className="text-[9px] font-black uppercase text-purple-900 tracking-wider">POWERED BY</span>
+                <Image
+                  src="/assets/partners-imgs/part-2.png"
+                  alt="icebrkr"
+                  width={80}
+                  height={24}
+                  className="h-4.5 w-auto object-contain"
+                />
+              </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               A national platform created by UGHAM empowering women students to pitch innovative ideas, showcase projects, and connect with industry leaders.

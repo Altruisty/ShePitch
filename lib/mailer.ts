@@ -24,7 +24,6 @@ export async function logEmail(
       [recipient, subject, emailType, status, errorMessage]
     );
   } catch (err) {
-    console.error('Failed to log email in database:', err);
   }
 }
 
@@ -127,7 +126,6 @@ export async function sendTeamConfirmationEmail(data: {
     await logEmail(data.leaderEmail, subject, 'team_confirmation', 'sent');
     return { success: true };
   } catch (error: any) {
-    console.error('Error sending team confirmation email:', error);
     await logEmail(data.leaderEmail, subject, 'team_confirmation', 'failed', error.message);
     return { success: false, error: error.message };
   }
@@ -179,7 +177,6 @@ export async function sendCollegeCredentialsEmail(data: {
     await logEmail(data.email, subject, 'college_credentials', 'sent');
     return { success: true };
   } catch (error: any) {
-    console.error('Error sending college credentials email:', error);
     await logEmail(data.email, subject, 'college_credentials', 'failed', error.message);
     return { success: false, error: error.message };
   }
@@ -196,7 +193,6 @@ export async function sendCustomEmail(data: { to: string; subject: string; htmlC
     await logEmail(data.to, data.subject, 'custom_broadcast', 'sent');
     return { success: true };
   } catch (error: any) {
-    console.error('Error sending custom email:', error);
     await logEmail(data.to, data.subject, 'custom_broadcast', 'failed', error.message);
     return { success: false, error: error.message };
   }

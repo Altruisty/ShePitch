@@ -65,7 +65,6 @@ export default function AdminTeamsPage() {
         setTeams(data.teams || []);
       }
     } catch (err) {
-      console.error('Error fetching teams:', err);
     } finally {
       setLoading(false);
     }
@@ -79,7 +78,6 @@ export default function AdminTeamsPage() {
         setColleges(data.colleges || []);
       }
     } catch (err) {
-      console.error('Error fetching colleges:', err);
     }
   };
 

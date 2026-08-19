@@ -18,7 +18,6 @@ export default function CollegeDashboardPage() {
         setData(resData);
       }
     } catch (err) {
-      console.error('Error fetching college teams:', err);
     } finally {
       setLoading(false);
     }

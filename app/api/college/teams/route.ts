@@ -43,7 +43,6 @@ export async function GET() {
       teams: rows || [],
     });
   } catch (error: any) {
-    console.error('Error fetching college teams:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

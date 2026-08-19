@@ -125,7 +125,6 @@ export async function POST(req: Request) {
       connection.release();
     }
   } catch (error: any) {
-    console.error('Error creating Razorpay order:', error);
     return NextResponse.json({ error: error.message || 'Payment initialization failed' }, { status: 500 });
   }
 }

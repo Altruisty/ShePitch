@@ -20,6 +20,7 @@ import {
   Trash2,
   X,
 } from 'lucide-react';
+import Image from 'next/image';
 import AnimatedTitle from '@/components/AnimatedTitle';
 
 declare global {
@@ -75,7 +76,7 @@ function RegisterFormContent() {
           }
         }
       })
-      .catch((err) => console.error('Error fetching colleges:', err));
+      .catch(() => {});
   }, []);
 
   const handleCollegeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -769,7 +770,21 @@ export default function RegisterPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-10">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <span className="she-category-tag">Register Now</span>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <span className="she-category-tag">Register Now</span>
+          <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-3.5 py-1 rounded-full border border-purple-200/80 shadow-xs">
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-purple-900">
+              POWERED BY
+            </span>
+            <Image
+              src="/assets/partners-imgs/part-2.png"
+              alt="icebrkr"
+              width={85}
+              height={26}
+              className="h-4.5 sm:h-5 w-auto object-contain"
+            />
+          </div>
+        </div>
         <AnimatedTitle
           text="Join ShePitch Chennai National Finale"
           gradientWords={['ShePitch', 'Finale']}

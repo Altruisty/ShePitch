@@ -33,7 +33,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     return NextResponse.json({ success: true, message: 'College updated successfully' });
   } catch (error: any) {
-    console.error('Error updating college:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }
@@ -51,7 +50,6 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
     return NextResponse.json({ success: true, message: 'College deleted successfully' });
   } catch (error: any) {
-    console.error('Error deleting college:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

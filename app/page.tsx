@@ -24,10 +24,23 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: -15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
+                className="flex items-center gap-3 flex-wrap"
               >
                 <span className="she-category-tag text-xs sm:text-base md:text-base lg:text-sm">
                   National Women's Innovation Pitch
                 </span>
+                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-purple-200/80 shadow-sm">
+                  <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-purple-900">
+                    POWERED BY
+                  </span>
+                  <Image
+                    src="/assets/partners-imgs/part-2.png"
+                    alt="icebrkr"
+                    width={90}
+                    height={30}
+                    className="h-5 sm:h-6 w-auto object-contain"
+                  />
+                </div>
               </motion.div>
 
               {/* Title lines with 3D Letter-by-Letter Animation */}
@@ -160,11 +173,23 @@ export default function HomePage() {
                 </div>
 
                 {/* Event Heading */}
-                <div>
-                  <h3 className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-900">ShePitch</h3>
-                  <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
-                    Powered by <strong className="text-gray-800">icebrkr</strong> &bull; Venue Partner: <strong className="text-gray-800">Jeppiaar University</strong>
-                  </p>
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-900">ShePitch Chennai</h3>
+                    <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
+                      Venue Partner: <strong className="text-gray-800">Jeppiaar University</strong>
+                    </p>
+                  </div>
+                  <div className="bg-purple-50/80 border border-purple-100 p-2 rounded-2xl flex flex-col items-center shrink-0">
+                    <span className="text-[9px] font-black uppercase text-purple-900 tracking-wider">POWERED BY</span>
+                    <Image
+                      src="/assets/partners-imgs/part-2.png"
+                      alt="icebrkr"
+                      width={100}
+                      height={32}
+                      className="h-6 sm:h-7 w-auto object-contain mt-0.5"
+                    />
+                  </div>
                 </div>
 
                 {/* Key Points */}

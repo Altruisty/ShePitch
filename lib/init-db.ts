@@ -122,7 +122,6 @@ export async function initDatabase() {
         `INSERT INTO she_pitch_admins (username, password_hash, name, email) VALUES (?, ?, ?, ?)`,
         ['admin', defaultHash, 'ShePitch Super Admin', 'founder@ztoitech.com']
       );
-      console.log('Seeded default Super Admin: admin / Admin@123');
     }
 
     // Seed initial default colleges if table is empty
@@ -136,10 +135,8 @@ export async function initDatabase() {
     }
 
     isInitialized = true;
-    console.log('All she_pitch_ database tables initialized successfully.');
     return { success: true };
   } catch (error: any) {
-    console.error('Error initializing database tables:', error);
     throw error;
   } finally {
     connection.release();

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Award, Users, GraduationCap, Trophy, Globe, Lightbulb, ArrowRight, ShieldCheck, Building2 } from 'lucide-react';
 import AnimatedTitle from '@/components/AnimatedTitle';
@@ -72,7 +73,9 @@ export default function AboutPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-20">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="she-category-tag">About ShePitch Chennai</span>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <span className="she-category-tag">About ShePitch Chennai</span>
+        </div>
         <AnimatedTitle
           text="Empowering Women Innovators Across India"
           gradientWords={['Women', 'Innovators']}

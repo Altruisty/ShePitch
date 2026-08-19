@@ -67,7 +67,6 @@ export async function GET() {
       },
     });
   } catch (error: any) {
-    console.error('Error fetching admin stats:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

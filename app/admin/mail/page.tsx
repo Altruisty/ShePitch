@@ -24,7 +24,6 @@ export default function AdminMailPage() {
         setLogs(data.logs || []);
       }
     } catch (err) {
-      console.error('Error fetching email logs:', err);
     } finally {
       setLoading(false);
     }

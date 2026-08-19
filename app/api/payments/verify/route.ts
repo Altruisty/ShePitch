@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         domain: team.domain,
         projectDescription: team.project_description,
         members: memberRows || [],
-      }).catch((err) => console.error('Error sending confirmation email:', err));
+      }).catch(() => {});
     }
 
     return NextResponse.json({
@@ -73,7 +73,6 @@ export async function POST(req: Request) {
       payment_id: razorpay_payment_id,
     });
   } catch (error: any) {
-    console.error('Error verifying payment:', error);
     return NextResponse.json({ error: error.message || 'Payment verification server error' }, { status: 500 });
   }
 }

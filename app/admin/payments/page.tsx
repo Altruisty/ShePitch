@@ -19,7 +19,6 @@ export default function AdminPaymentsPage() {
         setPayments(data.payments || []);
       }
     } catch (err) {
-      console.error('Error fetching payments:', err);
     } finally {
       setLoading(false);
     }

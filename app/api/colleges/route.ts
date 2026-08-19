@@ -14,7 +14,6 @@ export async function GET() {
     );
     return NextResponse.json({ success: true, colleges: rows });
   } catch (error: any) {
-    console.error('Error fetching colleges:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }
@@ -57,7 +56,7 @@ export async function POST(req: Request) {
       email,
       username,
       password,
-    }).catch((err) => console.error('Failed sending college credentials email:', err));
+    }).catch(() => {});
 
     return NextResponse.json({
       success: true,
@@ -65,7 +64,6 @@ export async function POST(req: Request) {
       college: { id: result.insertId, college_name, rep_name, username, email },
     });
   } catch (error: any) {
-    console.error('Error creating college:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

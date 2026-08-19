@@ -32,7 +32,7 @@ export default function Navbar() {
           <div className="bg-white rounded-full px-5 sm:px-8 py-2.5 sm:py-3 shadow-xl shadow-purple-950/10 border border-gray-100 flex items-center justify-between backdrop-blur-md">
             
             {/* Left: Logo */}
-            <Link href="/" className="flex items-center gap-2 shrink-0">
+            <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
               <Image
                 src="/assets/logo/icon.png"
                 alt="ShePitch Logo"

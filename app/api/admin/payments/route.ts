@@ -42,7 +42,6 @@ export async function GET(req: Request) {
     const [rows]: any = await pool.query(query, params);
     return NextResponse.json({ success: true, payments: rows });
   } catch (error: any) {
-    console.error('Error fetching payment logs:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

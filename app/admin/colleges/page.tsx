@@ -27,7 +27,6 @@ export default function AdminCollegesPage() {
         setColleges(data.colleges || []);
       }
     } catch (err) {
-      console.error('Error fetching colleges:', err);
     } finally {
       setLoading(false);
     }
