@@ -108,7 +108,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800/80 pt-6 mt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 gap-4">
-          <p>© 2026 ShePitch. All Rights Reserved. Powered by Icebrkr & UGHAM.</p>
+          <p>© ShePitch Chennai. All Rights Reserved. Powered by Icebrkr & UGHAM.</p>
         </div>
       </div>
     </footer>

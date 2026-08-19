@@ -321,7 +321,7 @@ export default function HomePage() {
               Our Esteemed <span className="she-gradient-text">Partners</span>
             </h2>
             <p className="text-gray-600 text-sm sm:text-base">
-              ShePitch is brought to life through the collaborative support of industry and academic pioneers.
+              ShePitch Chennai is brought to life through the collaborative support of industry and academic pioneers.
             </p>
           </div>
 

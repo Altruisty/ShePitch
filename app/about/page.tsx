@@ -72,7 +72,7 @@ export default function AboutPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-20">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="she-category-tag">About ShePitch</span>
+        <span className="she-category-tag">About ShePitch Chennai</span>
         <AnimatedTitle
           text="Empowering Women Innovators Across India"
           gradientWords={['Women', 'Innovators']}

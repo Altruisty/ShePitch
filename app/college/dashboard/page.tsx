@@ -50,7 +50,7 @@ export default function CollegeDashboardPage() {
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold mt-2">Institutional Registration Roster</h2>
           <p className="text-white/90 text-xs sm:text-sm mt-1">
-            Tracking all teams and women innovators registered from your college for ShePitch 2026.
+            Tracking all teams and women innovators registered from your college for ShePitch Chennai.
           </p>
         </div>
 

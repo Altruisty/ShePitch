@@ -45,7 +45,7 @@ export default function PrizesPage() {
           className="text-4xl sm:text-6xl font-extrabold text-gray-900"
         />
         <p className="text-gray-600 text-lg leading-relaxed">
-          ShePitch celebrates women visionaries with substantial cash prizes, trophies, shields, and career-launching incubation support.
+          ShePitch Chennai celebrates women visionaries with substantial cash prizes, trophies, shields, and career-launching incubation support.
         </p>
       </div>
 

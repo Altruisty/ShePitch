@@ -11,7 +11,7 @@ export default function AdminMailPage() {
   const [form, setForm] = useState({
     target_type: 'single', // 'single', 'all_leaders'
     target_email: '',
-    subject: 'ShePitch 2026 Important Announcement',
+    subject: 'ShePitch Chennai Important Announcement',
     message_body: '',
   });
 
@@ -47,7 +47,7 @@ export default function AdminMailPage() {
       if (!res.ok) throw new Error(data.error || 'Failed to send mail');
 
       alert(data.message || 'Email dispatched successfully');
-      setForm({ target_type: 'single', target_email: '', subject: 'ShePitch 2026 Announcement', message_body: '' });
+      setForm({ target_type: 'single', target_email: '', subject: 'ShePitch Chennai Announcement', message_body: '' });
       fetchLogs();
     } catch (err: any) {
       alert(err.message);

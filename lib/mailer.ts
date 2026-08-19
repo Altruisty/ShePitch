@@ -2,12 +2,12 @@ import nodemailer from 'nodemailer';
 import pool from './db';
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: Number(process.env.SMTP_PORT) || 587,
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
   secure: false, // true for 465, false for 587
   auth: {
-    user: process.env.SMTP_USER || 'founder@ztoitech.com',
-    pass: process.env.SMTP_PASS || 'jieatqkraqhuzrum',
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
@@ -72,14 +72,14 @@ export async function sendTeamConfirmationEmail(data: {
   const htmlContent = `
     <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #eaeaea;">
       <div style="background: linear-gradient(135deg, #6C3B8F, #E83E8C); padding: 30px 20px; text-align: center; color: #ffffff;">
-        <h1 style="margin: 0; font-size: 28px; font-weight: 800;">ShePitch 2026</h1>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800;">ShePitch Chennai</h1>
         <p style="margin: 5px 0 0 0; font-size: 15px; opacity: 0.9;">National Women's Innovation Pitch Competition</p>
       </div>
 
       <div style="padding: 30px 25px;">
         <h2 style="color: #6C3B8F; margin-top: 0;">Registration & Payment Confirmed!</h2>
         <p style="font-size: 15px; color: #444; line-height: 1.6;">Dear <strong>${data.leaderName}</strong>,</p>
-        <p style="font-size: 15px; color: #444; line-height: 1.6;">Congratulations! Your payment has been received and team <strong>${data.teamName}</strong> is officially registered for <strong>ShePitch 2026</strong> organized by <strong>UGHAM</strong> at Jeppiaar University on <strong>19 September 2026</strong>.</p>
+        <p style="font-size: 15px; color: #444; line-height: 1.6;">Congratulations! Your payment has been received and team <strong>${data.teamName}</strong> is officially registered for <strong>ShePitch Chennai</strong> organized by <strong>UGHAM</strong> at Jeppiaar University on <strong>19 September 2026</strong>.</p>
         
         <div style="background: #fdf5f9; border-left: 4px solid #E83E8C; padding: 16px; margin: 20px 0; border-radius: 4px;">
           <p style="margin: 0 0 8px 0; font-size: 14px; color: #6C3B8F;"><strong>Official Receipt & Booking Summary:</strong></p>
@@ -112,7 +112,7 @@ export async function sendTeamConfirmationEmail(data: {
       </div>
 
       <div style="background: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-        &copy; 2026 ShePitch &bull; UGHAM &bull; Powered by icebrkr
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr
       </div>
     </div>
   `;
@@ -145,13 +145,13 @@ export async function sendCollegeCredentialsEmail(data: {
   const htmlContent = `
     <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #eaeaea;">
       <div style="background: linear-gradient(135deg, #6C3B8F, #E83E8C); padding: 30px 20px; text-align: center; color: #ffffff;">
-        <h1 style="margin: 0; font-size: 28px; font-weight: 800;">ShePitch 2026</h1>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800;">ShePitch Chennai</h1>
         <p style="margin: 5px 0 0 0; font-size: 15px; opacity: 0.9;">College Representative Portal Access</p>
       </div>
 
       <div style="padding: 30px 25px;">
         <h2 style="color: #6C3B8F; margin-top: 0;">Welcome, ${data.repName}!</h2>
-        <p style="font-size: 15px; color: #444; line-height: 1.6;">Your institution <strong>${data.collegeName}</strong> has been registered as an official partner for <strong>ShePitch 2026</strong>.</p>
+        <p style="font-size: 15px; color: #444; line-height: 1.6;">Your institution <strong>${data.collegeName}</strong> has been registered as an official partner for <strong>ShePitch Chennai</strong>.</p>
         
         <div style="background: #f5f0f8; border: 1px solid #6C3B8F/20; padding: 20px; margin: 20px 0; border-radius: 8px;">
           <h3 style="margin-top: 0; color: #6C3B8F;">Your Login Credentials:</h3>
@@ -164,7 +164,7 @@ export async function sendCollegeCredentialsEmail(data: {
       </div>
 
       <div style="background: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-        &copy; 2026 ShePitch &bull; UGHAM &bull; Powered by icebrkr
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr
       </div>
     </div>
   `;

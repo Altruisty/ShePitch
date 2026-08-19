@@ -90,7 +90,7 @@ export default function PartnersPage() {
           className="text-4xl sm:text-6xl font-extrabold text-gray-900"
         />
         <p className="text-gray-600 text-lg leading-relaxed">
-          ShePitch is made possible through the support of our esteemed organizers, industry collaborators, and venue partners.
+          ShePitch Chennai is made possible through the support of our esteemed organizers, industry collaborators, and venue partners.
         </p>
       </div>
 

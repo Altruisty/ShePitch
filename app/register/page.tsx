@@ -210,7 +210,7 @@ const loadRazorpayScript = () => {
         key: orderData.key,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: 'ShePitch 2026',
+        name: 'ShePitch Chennai',
         description: `Team Registration Fee: ${formData.team_name}`,
         image: '/assets/logo/shepitch-logo.png',
         order_id: orderData.order_id,
@@ -286,7 +286,7 @@ const loadRazorpayScript = () => {
 
             <div className="space-y-2">
               <span className="she-category-tag">Registration Complete</span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Welcome to ShePitch 2026!</h3>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Welcome to ShePitch Chennai!</h3>
               <p className="text-sm text-gray-600">
                 Payment verified. A formal confirmation receipt has been dispatched to <strong>{successReceipt.leaderEmail}</strong> via Nodemailer.
               </p>
@@ -373,7 +373,7 @@ const loadRazorpayScript = () => {
 
             <div className="border-b border-gray-100 pb-3">
               <span className="she-category-tag text-xs">Official Declaration</span>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 mt-1">ShePitch 2026 — Terms & Conditions</h3>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 mt-1">ShePitch Chennai — Terms & Conditions</h3>
             </div>
 
             <div className="overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-600 pr-2 leading-relaxed">
@@ -771,7 +771,7 @@ export default function RegisterPage() {
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <span className="she-category-tag">Register Now</span>
         <AnimatedTitle
-          text="Join ShePitch 2026 National Finale"
+          text="Join ShePitch Chennai National Finale"
           gradientWords={['ShePitch', 'Finale']}
           className="text-3xl sm:text-5xl font-extrabold text-gray-900"
         />

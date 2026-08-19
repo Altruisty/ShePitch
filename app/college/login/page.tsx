@@ -47,7 +47,7 @@ export default function CollegeLoginPage() {
             <Building2 className="w-9 h-9 text-[#E83E8C]" />
           </div>
           <h1 className="text-3xl font-extrabold text-white tracking-tight">College Partner Portal</h1>
-          <p className="text-gray-400 text-sm">ShePitch 2026 Institutional Representative Login</p>
+          <p className="text-gray-400 text-sm">ShePitch Chennai Institutional Representative Login</p>
         </div>
 
         <div className="bg-white/10 backdrop-blur-xl border border-white/15 p-8 rounded-3xl shadow-2xl space-y-6">
