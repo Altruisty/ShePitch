@@ -379,37 +379,72 @@ const loadRazorpayScript = () => {
 
             <div className="overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-600 pr-2 leading-relaxed">
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">1. Data Authenticity & Self-Declaration</span>
+                <span className="font-extrabold text-gray-900 block text-sm">1. Data Authenticity & Voluntary Submission</span>
                 <p>
-                  I hereby declare that all submitted information (team name, student leader & member details, college name, email addresses, phone numbers, and pitch details) is authentic, accurate, and submitted voluntarily by our team.
+                  I hereby declare that all submitted information (team name, student leader & member details, college name, email addresses, phone numbers, and pitch proposals) is authentic, accurate, and submitted voluntarily by our team.
                 </p>
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">2. Promotional & Event Communications</span>
+                <span className="font-extrabold text-gray-900 block text-sm">2. Data Privacy & Encryption Security</span>
                 <p>
-                  I consent to receive official event announcements, schedule reminders, registration receipts, certificates, and promotional communications via email, SMS, or phone contact from ShePitch, UGHAM, and authorized partners.
+                  All participant data submitted during registration is strictly secured, protected, and handled confidentially with end-to-end data security. No personal data will be shared with unauthorized third parties.
                 </p>
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">3. Participant Conduct & Eligibility</span>
+                <span className="font-extrabold text-gray-900 block text-sm">3. Joint Promotional Consent (UGHAM & icebrkr)</span>
                 <p>
-                  All team members must be enrolled female students from an accredited university or college. Teams agree to abide by the official competition rules and code of conduct set by event organizers.
+                  I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both <strong>UGHAM</strong> and <strong>icebrkr</strong> using the provided contact details.
                 </p>
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">4. Intellectual Property Rights</span>
+                <span className="font-extrabold text-gray-900 block text-sm">4. 1-Year Free icebrkr Testing Platform Access</span>
                 <p>
-                  Participants retain 100% full ownership of their ideas, software, hardware prototypes, and pitch materials. ShePitch & UGHAM reserve rights to showcase non-confidential project titles and media for promotion and event highlights.
+                  As an exclusive participant benefit, all registered team members will receive <strong>1 Year of Free Access</strong> to icebrkr's product testing platform upon official application launch.
                 </p>
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">5. Payment & Refund Policy</span>
+                <span className="font-extrabold text-gray-900 block text-sm">5. Student Eligibility & Team Composition</span>
                 <p>
-                  All payments are securely processed via Razorpay. Registration fees are non-refundable once an official team receipt is generated, except in the event of competition cancellation.
+                  All team members must be enrolled female students from an accredited university or college. Teams must consist of 2 to 4 members with 1 designated student team leader.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">6. Intellectual Property Rights</span>
+                <p>
+                  Participants retain 100% full ownership of their ideas, pitch decks, software code, hardware models, and project materials submitted during the competition.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">7. Media & Event Showcase Rights</span>
+                <p>
+                  ShePitch, UGHAM, and icebrkr reserve the right to publish non-confidential project titles, team photographs, and event highlights for national media releases and publicity.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">8. Code of Conduct & Academic Integrity</span>
+                <p>
+                  Teams agree to maintain original work, fair play, and professional conduct. Plagiarism or fraudulent claims will result in immediate disqualification without refund.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">9. Secure Payment Processing & Non-Refundable Fee</span>
+                <p>
+                  All transactions are securely processed via Razorpay gateway. Registration fees are non-refundable once an official team receipt is issued, except in case of event cancellation.
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
+                <span className="font-extrabold text-gray-900 block text-sm">10. Grand Finale Attendance & Final Evaluation</span>
+                <p>
+                  Shortlisted finalists agree to present their pitch live at Jeppiaar University, Chennai on 19 September 2026. All evaluations and award decisions made by the official judging panel are final.
                 </p>
               </div>
             </div>

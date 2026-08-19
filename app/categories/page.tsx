@@ -15,6 +15,7 @@ export default function CategoriesPage() {
         <AnimatedTitle
           text="Competition Categories & Tracks"
           gradientWords={['Categories', 'Tracks']}
+          mobileBreakWords={['Categories']}
           className="text-4xl sm:text-6xl font-extrabold text-gray-900"
         />
         <p className="text-gray-600 text-lg leading-relaxed">
