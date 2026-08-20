@@ -279,7 +279,7 @@ export async function sendCollegeCredentialsEmail(data: {
 
   try {
     await transporter.sendMail({
-      from: `"ShePitch Admin" <${process.env.SMTP_USER || 'founder@ztoitech.com'}>`,
+      from: `"ShePitch Admin" <${process.env.SMTP_USER}>`,
       to: data.email,
       subject: subject,
       html: htmlContent,
