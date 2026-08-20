@@ -214,7 +214,7 @@ const loadRazorpayScript = () => {
         amount: orderData.amount,
         currency: orderData.currency,
         name: 'ShePitch Chennai',
-        description: `SHEPITCH Chennai Audition Registration`,
+        description: `SHEPITCH Chennai Edition Registration`,
         image: '/assets/logo/shepitch-logo.png',
         order_id: orderData.order_id,
         handler: async function (response: any) {
