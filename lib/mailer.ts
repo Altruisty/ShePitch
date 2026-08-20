@@ -120,7 +120,7 @@ export async function sendTeamConfirmationEmail(data: {
 
   try {
     await transporter.sendMail({
-      from: `"ShePitch Team" <${process.env.SMTP_USER || 'founder@ztoitech.com'}>`,
+      from: `"ShePitch Team" <${process.env.SMTP_USER}>`,
       to: data.leaderEmail,
       subject: subject,
       html: htmlContent,
@@ -167,7 +167,7 @@ export async function sendCollegeCredentialsEmail(data: {
     hasPoster2 = true;
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const appUrl = 'https://www.shepitch.com';
 
   const htmlContent = `
     <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(108,59,143,0.12); border: 1px solid #eaeaea;">
