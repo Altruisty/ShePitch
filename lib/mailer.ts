@@ -188,7 +188,7 @@ export async function sendCollegeCredentialsEmail(data: {
         <!-- 1. Login Credentials Card -->
         <div style="background: #f8f4fb; border-left: 5px solid #6C3B8F; padding: 22px; margin: 24px 0; border-radius: 10px; border-top: 1px solid #efe5f5; border-right: 1px solid #efe5f5; border-bottom: 1px solid #efe5f5;">
           <h3 style="margin-top: 0; color: #6C3B8F; font-size: 17px;">🔐 College Representative Portal Credentials:</h3>
-          <p style="margin: 8px 0; font-size: 14px; color: #333333;"><strong>Portal Login URL:</strong> <a href="${appUrl}/college/login" style="color: #6C3B8F; font-weight: 700; text-decoration: underline;">${appUrl}/college/login</a></p>
+          <p style="margin: 8px 0; font-size: 14px; color: #333333;"><strong>Portal Login URL:</strong> <a href="https://www.shepitch.com/college/login" style="color: #6C3B8F; font-weight: 700; text-decoration: underline;">${appUrl}/college/login</a></p>
           <p style="margin: 8px 0; font-size: 14px; color: #333333;"><strong>Username:</strong> <span style="background: #ffffff; padding: 3px 10px; border-radius: 6px; font-weight: 800; color: #E83E8C; border: 1px solid #e0cbe9;">${data.username}</span></p>
           <p style="margin: 8px 0; font-size: 14px; color: #333333;"><strong>Password:</strong> <span style="background: #ffffff; padding: 3px 10px; border-radius: 6px; font-weight: 800; color: #E83E8C; border: 1px solid #e0cbe9;">${data.password}</span></p>
           <p style="margin: 12px 0 0 0; font-size: 12px; color: #666666; font-style: italic;">* Use your portal dashboard to monitor student team registrations from ${data.collegeName} in real-time.</p>

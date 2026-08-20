@@ -873,6 +873,7 @@ export default function RegisterPage() {
         <AnimatedTitle
           text="Join ShePitch Chennai National Finale"
           gradientWords={['ShePitch', 'Finale']}
+          mobileBreakWords={['ShePitch', 'Chennai', 'Finale']}
           className="text-3xl sm:text-5xl font-extrabold text-gray-900"
         />
         <p className="text-gray-600 text-sm sm:text-base">

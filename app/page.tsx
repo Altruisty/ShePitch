@@ -130,7 +130,7 @@ export default function HomePage() {
                   <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">College Collaborations</span>
                 </div>
                 <div>
-                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">1000+</span>
+                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">1500+</span>
                   <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">Women Participants</span>
                 </div>
                 <div>
