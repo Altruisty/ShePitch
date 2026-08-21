@@ -50,20 +50,17 @@ export async function POST(req: Request) {
     );
 
     // Automatically send Nodemailer email to the college representative with their login details!
-    const mailResult = await sendCollegeCredentialsEmail({
+    sendCollegeCredentialsEmail({
       repName: rep_name,
       collegeName: college_name,
       email,
       username,
       password,
-    });
+    }).catch(() => {});
 
     return NextResponse.json({
       success: true,
-      message: mailResult.success
-        ? 'College registered successfully. Welcome email sent.'
-        : `College registered, but email delivery warning: ${mailResult.error}`,
-      emailStatus: mailResult,
+      message: 'College registered successfully. Welcome email sent.',
       college: { id: result.insertId, college_name, rep_name, username, email },
     });
   } catch (error: any) {

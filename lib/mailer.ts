@@ -4,8 +4,8 @@ import path from 'path';
 import fs from 'fs';
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: Number(process.env.SMTP_PORT) || 587,
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
   secure: false, // true for 465, false for 587
   auth: {
     user: process.env.SMTP_USER,
@@ -42,41 +42,9 @@ export async function sendTeamConfirmationEmail(data: {
   projectDescription?: string;
   members: Array<{ student_name: string; email: string; phone: string; department?: string }>;
 }) {
-  const subject = `ShePitch Chennai - Registration Confirmed for Team ${data.teamName}`;
+  const subject = `🎉 ShePitch Registration Confirmed - Team ${data.teamName}`;
 
-  const membersText = data.members
-    .map((m, idx) => `${idx + 1}. ${m.student_name} (${m.email}) - Dept: ${m.department || 'N/A'}`)
-    .join('\n');
-
-  const textContent = `
-Dear ${data.leaderName},
-
-Congratulations! Your payment has been received and team "${data.teamName}" is officially registered for ShePitch Chennai organized by UGHAM at Jeppiaar University on 19 September 2026.
-
-OFFICIAL RECEIPT & BOOKING SUMMARY:
-- Payment ID: ${data.paymentId}
-- Amount Paid: Rs. ${data.amountPaid}
-- Category: ${data.category}
-- College: ${data.collegeName}
-
-${data.projectTitle ? `PITCH PROPOSAL:
-- Title: ${data.projectTitle}
-- Domain: ${data.domain || 'General'}
-` : ''}
-
-REGISTERED TEAM MEMBERS:
-${membersText}
-
-EVENT DETAILS:
-- Grand Finale Date: 19 September 2026
-- Venue: Jeppiaar University, Chennai
-- Website: https://shepitch.com
-
-Regards,
-ShePitch Chennai Team | UGHAM | Powered by icebrkr
-  `.trim();
-
-  const membersListHtml = data.members
+  const membersList = data.members
     .map(
       (m, idx) =>
         `<tr style="border-bottom: 1px solid #eee;">
@@ -90,7 +58,7 @@ ShePitch Chennai Team | UGHAM | Powered by icebrkr
   const pitchProposalSection = data.projectTitle
     ? `
         <div style="background: #f8f4fb; border: 1px solid #e2d4eb; padding: 16px; margin: 20px 0; border-radius: 8px;">
-          <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #6C3B8F;">Submitted Pitch Proposal:</h3>
+          <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #6C3B8F;">💡 Submitted Pitch Proposal:</h3>
           <p style="margin: 4px 0; font-size: 13px; color: #333;"><strong>Title:</strong> ${data.projectTitle}</p>
           <p style="margin: 4px 0; font-size: 13px; color: #333;"><strong>Domain:</strong> ${data.domain || 'General'}</p>
           ${
@@ -103,28 +71,28 @@ ShePitch Chennai Team | UGHAM | Powered by icebrkr
     : '';
 
   const htmlContent = `
-    <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
-      <div style="background: #6C3B8F; padding: 25px 20px; text-align: center; color: #ffffff;">
-        <h1 style="margin: 0; font-size: 26px; font-weight: bold;">ShePitch Chennai</h1>
-        <p style="margin: 5px 0 0 0; font-size: 14px;">National Women's Innovation Pitch Competition</p>
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #eaeaea;">
+      <div style="background: linear-gradient(135deg, #6C3B8F, #E83E8C); padding: 30px 20px; text-align: center; color: #ffffff;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: 800;">ShePitch Chennai</h1>
+        <p style="margin: 5px 0 0 0; font-size: 15px; opacity: 0.9;">National Women's Innovation Pitch Competition</p>
       </div>
 
-      <div style="padding: 25px 20px; color: #333333; line-height: 1.5;">
-        <h2 style="color: #6C3B8F; margin-top: 0; font-size: 20px;">Registration & Payment Confirmed!</h2>
-        <p>Dear <strong>${data.leaderName}</strong>,</p>
-        <p>Congratulations! Your payment has been received and team <strong>${data.teamName}</strong> is officially registered for <strong>ShePitch Chennai</strong> organized by <strong>UGHAM</strong> at Jeppiaar University on <strong>19 September 2026</strong>.</p>
+      <div style="padding: 30px 25px;">
+        <h2 style="color: #6C3B8F; margin-top: 0;">Registration & Payment Confirmed!</h2>
+        <p style="font-size: 15px; color: #444; line-height: 1.6;">Dear <strong>${data.leaderName}</strong>,</p>
+        <p style="font-size: 15px; color: #444; line-height: 1.6;">Congratulations! Your payment has been received and team <strong>${data.teamName}</strong> is officially registered for <strong>ShePitch Chennai</strong> organized by <strong>UGHAM</strong> at Jeppiaar University on <strong>19 September 2026</strong>.</p>
         
-        <div style="background: #fdf5f9; border-left: 4px solid #E83E8C; padding: 15px; margin: 20px 0; border-radius: 4px;">
+        <div style="background: #fdf5f9; border-left: 4px solid #E83E8C; padding: 16px; margin: 20px 0; border-radius: 4px;">
           <p style="margin: 0 0 8px 0; font-size: 14px; color: #6C3B8F;"><strong>Official Receipt & Booking Summary:</strong></p>
           <p style="margin: 4px 0; font-size: 13px; color: #555;">Payment ID: <strong style="font-family: monospace; color: #111;">${data.paymentId}</strong></p>
-          <p style="margin: 4px 0; font-size: 13px; color: #555;">Amount Paid: <strong style="color: #2e7d32;">Rs. ${data.amountPaid}</strong></p>
+          <p style="margin: 4px 0; font-size: 13px; color: #555;">Amount Paid: <strong style="color: #2e7d32;">₹${data.amountPaid}</strong></p>
           <p style="margin: 4px 0; font-size: 13px; color: #555;">Category: <strong>${data.category}</strong></p>
           <p style="margin: 4px 0; font-size: 13px; color: #555;">College: <strong>${data.collegeName}</strong></p>
         </div>
 
         ${pitchProposalSection}
 
-        <h3 style="color: #333; margin-top: 20px; font-size: 16px;">Registered Team Members (${data.members.length} Students)</h3>
+        <h3 style="color: #333; margin-top: 25px;">Registered Team Members (${data.members.length} Students)</h3>
         <table style="width: 100%; border-collapse: collapse; font-size: 13px; color: #444;">
           <thead>
             <tr style="background: #f5f0f8; text-align: left; color: #6C3B8F;">
@@ -134,30 +102,27 @@ ShePitch Chennai Team | UGHAM | Powered by icebrkr
             </tr>
           </thead>
           <tbody>
-            ${membersListHtml}
+            ${membersList}
           </tbody>
         </table>
 
-        <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 13px; color: #666;">
-          <p style="margin-bottom: 4px;">Grand Finale Date: <strong>19 September 2026</strong></p>
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; font-size: 13px; color: #777;">
+          <p style="margin-bottom: 5px;">Grand Finale Date: <strong>19 September 2026</strong></p>
           <p style="margin-top: 0;">Venue: <strong>Jeppiaar University, Chennai</strong></p>
         </div>
       </div>
 
-      <div style="background: #f5f5f5; padding: 15px; text-align: center; font-size: 12px; color: #777;">
-        ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr
+      <div style="background: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr
       </div>
     </div>
   `;
 
-  const senderEmail = process.env.SMTP_USER || 'info@ugham.com';
-
   try {
     await transporter.sendMail({
-      from: `"ShePitch Team" <${senderEmail}>`,
+      from: `"ShePitch Team" <${process.env.SMTP_USER}>`,
       to: data.leaderEmail,
       subject: subject,
-      text: textContent,
       html: htmlContent,
     });
     await logEmail(data.leaderEmail, subject, 'team_confirmation', 'sent');
@@ -175,101 +140,169 @@ export async function sendCollegeCredentialsEmail(data: {
   username: string;
   password: string;
 }) {
-  const subject = `ShePitch Chennai - Official Institutional Collaboration & Representative Portal Access for ${data.collegeName}`;
+  const subject = `🏛️ ShePitch Chennai — Official Institutional Collaboration & Credentials for ${data.collegeName}`;
 
-  const appUrl = 'https://shepitch.com';
   const poster1Path = path.join(process.cwd(), 'public/assets/posters/poster-collaboration.jpg');
   const poster2Path = path.join(process.cwd(), 'public/assets/posters/poster-event.jpg');
 
   const attachments: any[] = [];
+  let hasPoster1 = false;
+  let hasPoster2 = false;
 
   if (fs.existsSync(poster1Path)) {
     attachments.push({
       filename: 'ShePitch-College-Collaboration-Invitation.jpg',
       path: poster1Path,
+      cid: 'poster_collaboration',
     });
+    hasPoster1 = true;
   }
 
   if (fs.existsSync(poster2Path)) {
     attachments.push({
       filename: 'ShePitch-Event-Poster.jpg',
       path: poster2Path,
+      cid: 'poster_event',
     });
+    hasPoster2 = true;
   }
 
-  // Pure Plain Text Email
-  const textContent = `
-Respected ${data.repName},
+  const appUrl = 'https://www.shepitch.com';
 
-We are honored to invite ${data.collegeName} as an official Collaborating Institution for ShePitch Chennai — a premier national competition empowering women student innovators to pitch ideas, demonstrate prototypes, and launch tech careers.
+  const htmlContent = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(108,59,143,0.12); border: 1px solid #eaeaea;">
+      
+      <!-- Header Banner -->
+      <div style="background: linear-gradient(135deg, #6C3B8F 0%, #a823f5 50%, #E83E8C 100%); padding: 35px 25px; text-align: center; color: #ffffff;">
+        <span style="background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; uppercase; display: inline-block; margin-bottom: 8px;">OFFICIAL COLLABORATION INVITATION</span>
+        <h1 style="margin: 0; font-size: 32px; font-weight: 900; letter-spacing: -0.5px;">ShePitch Chennai</h1>
+        <p style="margin: 6px 0 0 0; font-size: 15px; opacity: 0.95; font-weight: 500;">UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University</p>
+      </div>
 
-1. YOUR COLLEGE REPRESENTATIVE PORTAL CREDENTIALS:
-- Portal Login URL: ${appUrl}/college/login
-- Username: ${data.username}
-- Password: ${data.password}
+      <div style="padding: 30px 25px; color: #333333; line-height: 1.6;">
+        <h2 style="color: #6C3B8F; margin-top: 0; font-size: 22px; font-weight: 800;">Respected ${data.repName},</h2>
+        <p style="font-size: 15px; color: #444444; margin-bottom: 20px;">
+          We are honored to invite <strong>${data.collegeName}</strong> as an official Collaborating Institution for <strong>ShePitch Chennai</strong> — a premier national competition empowering women student innovators to pitch ideas, demonstrate prototypes, and launch tech careers.
+        </p>
+        
+        <!-- 1. Login Credentials Card -->
+        <div style="background: #f8f4fb; border-left: 5px solid #6C3B8F; padding: 22px; margin: 24px 0; border-radius: 10px; border-top: 1px solid #efe5f5; border-right: 1px solid #efe5f5; border-bottom: 1px solid #efe5f5;">
+          <h3 style="margin-top: 0; color: #6C3B8F; font-size: 17px;">🔐 College Representative Portal Credentials:</h3>
+          <p style="margin: 8px 0; font-size: 14px; color: #333333;"><strong>Portal Login URL:</strong> <a href="https://www.shepitch.com/college/login" style="color: #6C3B8F; font-weight: 700; text-decoration: underline;">${appUrl}/college/login</a></p>
+          <p style="margin: 8px 0; font-size: 14px; color: #333333;"><strong>Username:</strong> <span style="background: #ffffff; padding: 3px 10px; border-radius: 6px; font-weight: 800; color: #E83E8C; border: 1px solid #e0cbe9;">${data.username}</span></p>
+          <p style="margin: 8px 0; font-size: 14px; color: #333333;"><strong>Password:</strong> <span style="background: #ffffff; padding: 3px 10px; border-radius: 6px; font-weight: 800; color: #E83E8C; border: 1px solid #e0cbe9;">${data.password}</span></p>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666666; font-style: italic;">* Use your portal dashboard to monitor student team registrations from ${data.collegeName} in real-time.</p>
+        </div>
 
-* Log in to your representative portal dashboard to view and monitor student team registrations from ${data.collegeName} in real-time.
+        <!-- 2. Exclusive Coupon Code Card -->
+        <div style="background: linear-gradient(135deg, #fff5f9 0%, #fdf0f7 100%); border: 2px dashed #E83E8C; padding: 22px; margin: 24px 0; border-radius: 12px; text-align: center;">
+          <span style="background: #E83E8C; color: #ffffff; padding: 3px 12px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase;">EXCLUSIVE PARTNER DISCOUNT CODE</span>
+          <h3 style="margin: 10px 0 4px 0; color: #6C3B8F; font-size: 18px;">Discount Coupon for ${data.collegeName} Students</h3>
+          
+          <div style="background: #ffffff; display: inline-block; padding: 10px 25px; margin: 12px 0; border-radius: 8px; border: 1px solid #f3c2dc; box-shadow: 0 4px 10px rgba(232,62,140,0.15);">
+            <span style="font-size: 24px; font-weight: 900; color: #E83E8C; letter-spacing: 2px; font-family: monospace;">SHEPITCH100</span>
+          </div>
 
-2. EXCLUSIVE STUDENT DISCOUNT COUPON CODE:
-- Coupon Code: SHEPITCH100
-Share coupon code SHEPITCH100 with your female students during registration at ${appUrl}/register to give them an instant Rs. 100 DISCOUNT PER PARTICIPANT (Registration fee reduced from Rs. 299 to Rs. 199 per member).
+          <p style="margin: 6px 0 0 0; font-size: 14px; color: #444444; font-weight: 600;">
+            Share coupon code <span style="color: #E83E8C; font-weight: 800;">SHEPITCH100</span> with your female students during registration to give them an instant <strong>₹100 DISCOUNT PER PARTICIPANT</strong> (Fee reduced from ₹299 to ₹199 per member)!
+          </p>
+        </div>
 
-3. INSTITUTIONAL COLLABORATION HIGHLIGHTS & GUIDELINES:
-- Grand Prize Pool: Rs. 1,00,000 Cash Awards + Trophies
-- Shield of Recognition: Custom Shield presented on stage to ${data.collegeName}
-- Team Nomination: Nominate between 10 to 20 Student Teams (2 to 4 female members per team)
-- Institutional Representation: Minimum 1 representative (HOD, Placement Director, Dean, Principal, or Chairman) to join us during the Grand Finale
-- Career Benefits: Internship Opportunities for top teams + 50+ Industry Mentors
-- icebrkr Sponsor Benefit: 1 Year of Free Access to icebrkr product testing platform for all registered students
-- Grand Finale Date & Venue: 19 September 2026 at Jeppiaar University, Chennai
+        <!-- 3. Event Highlights & Institutional Benefits -->
+        <h3 style="color: #333333; margin-top: 28px; font-size: 18px; border-bottom: 2px solid #6C3B8F; padding-bottom: 6px; display: inline-block;">
+          ✨ Institutional Collaboration Highlights & Guidelines:
+        </h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; color: #444444;">
+          <tr>
+            <td style="padding: 10px; background: #fdfafc; border-bottom: 1px solid #f0e6f5;">🏆 <strong>Grand Prize Pool:</strong> ₹1,00,000 Cash Awards + Trophies</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; background: #ffffff; border-bottom: 1px solid #f0e6f5;">🏅 <strong>Shield of Recognition:</strong> Custom Shield presented on stage to ${data.collegeName}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; background: #fdfafc; border-bottom: 1px solid #f0e6f5;">👥 <strong>Team Nomination:</strong> Nominate between 10 to 20 Student Teams (2–4 female members per team)</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; background: #ffffff; border-bottom: 1px solid #f0e6f5;">👔 <strong>Institutional Representation:</strong> Minimum 1 representative (HOD, Placement Director, Dean, Principal, or Chairman) to join us during the Grand Finale</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; background: #fdfafc; border-bottom: 1px solid #f0e6f5;">💼 <strong>Career Benefits:</strong> Internship Opportunities for top teams + 50+ Industry Mentors</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; background: #ffffff; border-bottom: 1px solid #f0e6f5;">🚀 <strong>icebrkr Sponsor Benefit:</strong> 1 Year of Free Access to icebrkr testing platform for all registered students</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; background: #fdfafc; border-bottom: 1px solid #f0e6f5;">📅 <strong>Grand Finale Date & Venue:</strong> 19 September 2026 at Jeppiaar University, Chennai</td>
+          </tr>
+        </table>
 
-4. ATTACHMENTS:
-Please find attached the 2 official posters:
-- ShePitch-College-Collaboration-Invitation.jpg
-- ShePitch-Event-Poster.jpg
+        <!-- 4. Embedded Posters -->
+        ${
+          hasPoster1 || hasPoster2
+            ? `
+          <div style="margin-top: 30px; text-align: center;">
+            <h3 style="color: #6C3B8F; font-size: 18px; margin-bottom: 15px;">📜 Official Collaboration & Event Posters:</h3>
+            ${
+              hasPoster1
+                ? `<div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e5e5e5;">
+                    <img src="cid:poster_collaboration" alt="College Collaboration Invitation" style="width: 100%; max-width: 630px; height: auto; display: block; margin: 0 auto;" />
+                  </div>`
+                : ''
+            }
+            ${
+              hasPoster2
+                ? `<div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e5e5e5;">
+                    <img src="cid:poster_event" alt="ShePitch Event Poster" style="width: 100%; max-width: 630px; height: auto; display: block; margin: 0 auto;" />
+                  </div>`
+                : ''
+            }
+          </div>
+        `
+            : ''
+        }
 
-FOR QUERIES & SUPPORT CONTACT US:
-Phone: 8667839838
-Email: info@ugham.com
-Website: https://shepitch.com
+        <!-- 5. Contact & Links -->
+        <div style="margin-top: 30px; padding: 20px; background: #f5f5f7; border-radius: 12px; text-align: center; font-size: 13px; color: #555555;">
+          <p style="margin: 0 0 6px 0; font-weight: 700; color: #333333;">For Queries & Support Contact Us:</p>
+          <p style="margin: 4px 0;">📞 Phone: <strong>8667839838</strong> | ✉️ Email: <strong>info@ugham.com</strong></p>
+          <p style="margin: 4px 0;">🌐 Website: <a href="https://shepitch.com" style="color: #6C3B8F; font-weight: 700;">shepitch.com</a></p>
+        </div>
 
-Regards,
-ShePitch Chennai Organizing Committee
-UGHAM | Powered by icebrkr | Venue: Jeppiaar University
-  `.trim();
+      </div>
 
-  const senderEmail = process.env.SMTP_USER || 'info@ugham.com';
+      <div style="background: #f0e6f5; padding: 18px; text-align: center; font-size: 12px; color: #6C3B8F; font-weight: 600;">
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University
+      </div>
+    </div>
+  `;
 
   try {
-    const info = await transporter.sendMail({
-      from: `"ShePitch Admin" <${senderEmail}>`,
+    await transporter.sendMail({
+      from: `"ShePitch Admin" <${process.env.SMTP_USER}>`,
       to: data.email,
       subject: subject,
-      text: textContent,
+      html: htmlContent,
       attachments: attachments,
     });
     await logEmail(data.email, subject, 'college_credentials', 'sent');
-    return { success: true, messageId: info.messageId };
+    return { success: true };
   } catch (error: any) {
     await logEmail(data.email, subject, 'college_credentials', 'failed', error.message);
     return { success: false, error: error.message };
   }
 }
 
-export async function sendCustomEmail(data: { to: string; subject: string; htmlContent: string; textContent?: string }) {
-  const senderEmail = process.env.SMTP_USER || 'info@ugham.com';
-  const textFallback = data.textContent || data.htmlContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-
+export async function sendCustomEmail(data: { to: string; subject: string; htmlContent: string }) {
   try {
-    const info = await transporter.sendMail({
-      from: `"ShePitch Support" <${senderEmail}>`,
+    await transporter.sendMail({
+      from: `"ShePitch Support" <${process.env.SMTP_USER || 'founder@ztoitech.com'}>`,
       to: data.to,
       subject: data.subject,
-      text: textFallback,
       html: data.htmlContent,
     });
     await logEmail(data.to, data.subject, 'custom_broadcast', 'sent');
-    return { success: true, messageId: info.messageId };
+    return { success: true };
   } catch (error: any) {
     await logEmail(data.to, data.subject, 'custom_broadcast', 'failed', error.message);
     return { success: false, error: error.message };
