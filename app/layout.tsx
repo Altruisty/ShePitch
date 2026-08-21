@@ -4,13 +4,27 @@ import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 
 export const metadata: Metadata = {
   title: "ShePitch - National Women's Innovation Pitch Competition",
+
   description:
-    'ShePitch is a national platform created by UGHAM empowering women students to pitch ideas, showcase projects, and connect with industry experts.',
+    "ShePitch is created by UGHAM and powered by ICEBRKR to empower women students to pitch ideas, showcase innovation, and connect with industry experts.",
+
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
-  manifest: '/site.webmanifest',
+
+  manifest: "/site.webmanifest",
+
+  openGraph: {
+    title: "ShePitch - National Women's Innovation Pitch Competition",
+
+    description:
+      "ShePitch is created by UGHAM and powered by ICEBRKR to empower women students to pitch ideas, showcase innovation, and connect with industry experts.",
+
+    url: "https://www.shepitch.com/",
+    siteName: "ShePitch",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
