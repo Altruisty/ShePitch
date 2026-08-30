@@ -21,7 +21,7 @@ export default function TimelinePage() {
       step: 'STEP 02',
       title: 'Registration Deadline',
       subtitle: 'Final submissions close',
-      date: '30 Aug 2026',
+      date: '08 Sept 2026',
       badge: '11:59 PM IST',
       color: 'from-amber-500 to-orange-500',
       desc: 'All team details, deck submissions, and registration fees must be completed prior to this cutoff time.',

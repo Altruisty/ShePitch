@@ -398,17 +398,17 @@ const loadRazorpayScript = () => {
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-extrabold text-gray-900 block text-sm">3. Joint Promotional Consent (UGHAM & icebrkr)</span>
+                  <span className="font-extrabold text-gray-900 block text-sm">3. Joint Promotional Consent (UGHAM & ICEBRKR)</span>
                 </div>
                 <p>
-                  I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both UGHAM and icebrkr using the provided contact details.
+                  I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both UGHAM and ICEBRKR using the provided contact details.
                 </p>
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">4. 1-Year Free icebrkr Testing Platform Access</span>
+                <span className="font-extrabold text-gray-900 block text-sm">4. 1-Year Free ICEBRKR Testing Platform Access</span>
                 <p>
-                  As an exclusive participant benefit, all registered team members will receive 1 Year of Free Access to icebrkr's product testing platform upon official application launch.
+                  As an exclusive participant benefit, all registered team members will receive 1 Year of Free Access to ICEBRKR's product testing platform upon official application launch.
                 </p>
               </div>
 
@@ -429,7 +429,7 @@ const loadRazorpayScript = () => {
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
                 <span className="font-extrabold text-gray-900 block text-sm">7. Media & Event Showcase Rights</span>
                 <p>
-                  ShePitch, UGHAM, and icebrkr reserve the right to publish non-confidential project titles, team photographs, and event highlights for national media releases and publicity.
+                  ShePitch, UGHAM, and ICEBRKR reserve the right to publish non-confidential project titles, team photographs, and event highlights for national media releases and publicity.
                 </p>
               </div>
 
@@ -448,9 +448,9 @@ const loadRazorpayScript = () => {
               </div>
 
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
-                <span className="font-extrabold text-gray-900 block text-sm">10. Role of icebrkr & Limitation of Liability</span>
+                <span className="font-extrabold text-gray-900 block text-sm">10. Role of ICEBRKR & Limitation of Liability</span>
                 <p>
-                  icebrkr is participating solely as a sponsor and ecosystem partner and is not the organiser or administrator of the event. icebrkr shall not be responsible or liable for matters relating to registration, payments, participant selection, judging, prizes, venue, scheduling, cancellation, event operations or any other decisions or activities controlled by the event organiser. To the maximum extent permitted by applicable law, icebrkr shall not be liable for any loss, damage, claim, cost or expense arising from participation in or conduct of the event, except to the extent directly caused by icebrkr’s own acts or omissions.
+                  ICEBRKR is participating solely as a sponsor and ecosystem partner and is not the organiser or administrator of the event. ICEBRKR shall not be responsible or liable for matters relating to registration, payments, participant selection, judging, prizes, venue, scheduling, cancellation, event operations or any other decisions or activities controlled by the event organiser. To the maximum extent permitted by applicable law, ICEBRKR shall not be liable for any loss, damage, claim, cost or expense arising from participation in or conduct of the event, except to the extent directly caused by ICEBRKR’s own acts or omissions.
                 </p>
               </div>
 
@@ -817,7 +817,7 @@ const loadRazorpayScript = () => {
                 className="mt-1 w-5 h-5 text-[#6C3B8F] border-gray-300 rounded focus:ring-[#6C3B8F] cursor-pointer accent-[#6C3B8F] shrink-0"
               />
               <label htmlFor="promotional_checkbox" className="text-xs sm:text-sm text-gray-700 leading-relaxed cursor-pointer font-medium select-none">
-                <strong>Joint Promotional Consent (UGHAM & icebrkr):</strong> I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both <strong>UGHAM</strong> and <strong>icebrkr</strong> using the provided contact details. *
+                <strong>Joint Promotional Consent (UGHAM & ICEBRKR):</strong> I consent to receive official event updates, competition announcements, schedule alerts, and promotional communications via email, SMS, or phone from both <strong>UGHAM</strong> and <strong>ICEBRKR</strong> using the provided contact details. *
               </label>
             </div>
 
