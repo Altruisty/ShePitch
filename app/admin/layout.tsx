@@ -101,9 +101,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Desktop & Mobile Sidebar */}
       <aside
-        className={`fixed md:sticky top-0 left-0 bottom-0 z-50 w-64 bg-[#1a0b28] text-white flex flex-col justify-between transition-transform duration-300 ${
+        className={`fixed md:sticky top-0 left-0 z-50 w-64 bg-[#1a0b28] text-white flex flex-col justify-between transition-transform duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        } h-screen shrink-0`}
+        } h-screen shrink-0 overflow-y-auto border-r border-white/10`}
       >
         <div>
           {/* Header Branding */}
