@@ -18,6 +18,7 @@ export default function Navbar() {
   const navItems = [
     { label: 'HOME', href: '/' },
     { label: 'ABOUT', href: '/about' },
+    { label: 'CONFERENCE', href: '/conference' },
     { label: 'CATEGORIES', href: '/categories' },
     { label: 'TIMELINE', href: '/timeline' },
     { label: 'PRIZES', href: '/prizes' },

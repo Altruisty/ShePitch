@@ -308,3 +308,90 @@ export async function sendCustomEmail(data: { to: string; subject: string; htmlC
     return { success: false, error: error.message };
   }
 }
+
+export async function sendConferenceConfirmationEmail(data: {
+  fullName: string;
+  email: string;
+  phone: string;
+  collegeName: string;
+  department: string;
+  yearOfStudy: string;
+}) {
+  const subject = `🎉 ShePitch Conference Chennai Edition — Registration Confirmed for ${data.fullName}`;
+
+  const htmlContent = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 650px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(108,59,143,0.12); border: 1px solid #eaeaea;">
+      
+      <!-- Header Banner -->
+      <div style="background: linear-gradient(135deg, #6C3B8F 0%, #a823f5 50%, #E83E8C 100%); padding: 35px 25px; text-align: center; color: #ffffff;">
+        <span style="background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; uppercase; display: inline-block; margin-bottom: 8px;">FREE CONFERENCE REGISTRATION CONFIRMED</span>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.5px;">ShePitch Conference Chennai Edition</h1>
+        <p style="margin: 6px 0 0 0; font-size: 14px; opacity: 0.95; font-weight: 500;">UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University, Chennai</p>
+      </div>
+
+      <div style="padding: 30px 25px; color: #333333; line-height: 1.6;">
+        <h2 style="color: #6C3B8F; margin-top: 0; font-size: 22px; font-weight: 800;">Welcome, ${data.fullName}!</h2>
+        <p style="font-size: 15px; color: #444444; margin-bottom: 20px;">
+          Your free registration for <strong>ShePitch Conference Chennai Edition</strong> has been successfully confirmed. We look forward to hosting you at this grand gathering of visionaries, industry leaders, and women innovators.
+        </p>
+
+        <!-- Attendee Details Card -->
+        <div style="background: #fdf5f9; border-left: 5px solid #E83E8C; padding: 20px; margin: 22px 0; border-radius: 10px; border-top: 1px solid #f9e2ee; border-right: 1px solid #f9e2ee; border-bottom: 1px solid #f9e2ee;">
+          <h3 style="margin-top: 0; color: #6C3B8F; font-size: 16px;">🎟️ Registration & Delegate Details:</h3>
+          <p style="margin: 6px 0; font-size: 14px; color: #333;"><strong>Full Name:</strong> ${data.fullName}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: #333;"><strong>Registered Email:</strong> ${data.email}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: #333;"><strong>Contact Phone:</strong> ${data.phone}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: #333;"><strong>Institution / College:</strong> ${data.collegeName}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: #333;"><strong>Department:</strong> ${data.department}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: #333;"><strong>Year of Study:</strong> ${data.yearOfStudy}</p>
+          <p style="margin: 6px 0; font-size: 14px; color: #2e7d32; font-weight: 700;"><strong>Pass Type:</strong> Free Delegate Pass</p>
+        </div>
+
+        <!-- Event Details Card -->
+        <div style="background: #f8f4fb; border: 1px solid #e0d0eb; padding: 18px; margin: 20px 0; border-radius: 10px; text-align: center;">
+          <h4 style="margin: 0 0 6px 0; color: #6C3B8F; font-size: 16px;">📅 Event Schedule & Venue:</h4>
+          <p style="margin: 4px 0; font-size: 14px; color: #111;"><strong>Date:</strong> 19 September 2026</p>
+          <p style="margin: 4px 0; font-size: 14px; color: #111;"><strong>Venue:</strong> Jeppiaar University, Chennai</p>
+          <p style="margin: 6px 0 0 0; font-size: 12px; color: #666; font-style: italic;">* Please bring a copy of this email confirmation or present your college ID at the registration desk.</p>
+        </div>
+
+        <!-- Benefits -->
+        <h3 style="color: #333333; margin-top: 24px; font-size: 16px; border-bottom: 2px solid #6C3B8F; padding-bottom: 6px; display: inline-block;">
+          ✨ Highlights of the Conference:
+        </h3>
+        <ul style="padding-left: 20px; font-size: 14px; color: #444444; line-height: 1.8; margin-top: 10px;">
+          <li>Keynote sessions & panel discussions with 80+ industry leaders & women founders.</li>
+          <li>Exhibition & tech innovation showcases from top student teams nationwide.</li>
+          <li>Exclusive networking opportunities & career placement insights.</li>
+          <li>1 Year of Free Access to icebrkr's product testing platform.</li>
+        </ul>
+
+        <!-- Contact Support -->
+        <div style="margin-top: 28px; padding: 16px; background: #f5f5f7; border-radius: 10px; text-align: center; font-size: 13px; color: #555555;">
+          <p style="margin: 0 0 4px 0; font-weight: 700; color: #333333;">Questions or Attendance Inquiries?</p>
+          <p style="margin: 2px 0;">📞 Phone: <strong>8667839838</strong> | ✉️ Email: <strong>info@ugham.com</strong></p>
+          <p style="margin: 2px 0;">🌐 Website: <a href="https://shepitch.com" style="color: #6C3B8F; font-weight: 700;">shepitch.com</a></p>
+        </div>
+
+      </div>
+
+      <div style="background: #f0e6f5; padding: 16px; text-align: center; font-size: 12px; color: #6C3B8F; font-weight: 600;">
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University
+      </div>
+    </div>
+  `;
+
+  try {
+    await transporter.sendMail({
+      from: `"ShePitch Support" <${process.env.SMTP_USER || 'founder@ztoitech.com'}>`,
+      to: data.email,
+      subject: subject,
+      html: htmlContent,
+    });
+    await logEmail(data.email, subject, 'conference_confirmation', 'sent');
+    return { success: true };
+  } catch (error: any) {
+    await logEmail(data.email, subject, 'conference_confirmation', 'failed', error.message);
+    return { success: false, error: error.message };
+  }
+}

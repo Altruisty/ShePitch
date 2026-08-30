@@ -114,6 +114,23 @@ export async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `);
 
+    // 7. she_pitch_conference_registrations
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS she_pitch_conference_registrations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        full_name VARCHAR(150) NOT NULL,
+        email VARCHAR(150) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        college_id INT NULL,
+        college_name VARCHAR(255) NOT NULL,
+        department VARCHAR(150) NOT NULL,
+        year_of_study VARCHAR(50) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_email (email),
+        INDEX idx_college (college_id)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `);
+
     // Seed Default Super Admin if no admin exists
     const [rows]: any = await connection.query(`SELECT COUNT(*) as count FROM she_pitch_admins`);
     if (rows[0].count === 0) {
