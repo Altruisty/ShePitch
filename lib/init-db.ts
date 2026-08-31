@@ -131,6 +131,23 @@ export async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `);
 
+    // 8. she_pitch_financial_transactions
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS she_pitch_financial_transactions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        type ENUM('sponsorship', 'cash_in', 'cash_out') NOT NULL,
+        category VARCHAR(150) NOT NULL,
+        amount DECIMAL(10,2) NOT NULL,
+        transaction_date DATE NOT NULL,
+        notes TEXT DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_type (type),
+        INDEX idx_category (category),
+        INDEX idx_date (transaction_date)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `);
+
     // Seed Default Super Admin if no admin exists
     const [rows]: any = await connection.query(`SELECT COUNT(*) as count FROM she_pitch_admins`);
     if (rows[0].count === 0) {

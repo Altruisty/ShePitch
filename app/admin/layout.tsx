@@ -16,6 +16,7 @@ import {
   Sparkles,
   ChevronRight,
   UserCheck,
+  Receipt,
 } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -74,6 +75,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { label: 'Teams & Students', href: '/admin/teams', icon: Users },
     { label: 'Conference Regs', href: '/admin/conference', icon: UserCheck },
+    { label: 'Expense Tracker', href: '/admin/financials', icon: Receipt },
     { label: 'College Partners', href: '/admin/colleges', icon: Building2 },
     { label: 'Payment Logs', href: '/admin/payments', icon: CreditCard },
     { label: 'Mail Dispatch', href: '/admin/mail', icon: Mail },
