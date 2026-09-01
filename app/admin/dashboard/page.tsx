@@ -16,12 +16,22 @@ import {
   PlusCircle,
   Mail,
   UserCheck,
+  X,
+  Search,
+  Download,
+  GraduationCap,
+  ListFilter,
+  BarChart2,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // College Report Popup Modal State
+  const [isCollegeModalOpen, setIsCollegeModalOpen] = useState(false);
+  const [collegeSearch, setCollegeSearch] = useState('');
 
   const fetchStats = async () => {
     setLoading(true);
@@ -41,6 +51,34 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     fetchStats();
   }, []);
+
+  const exportCollegeReportCSV = () => {
+    if (!stats?.collegeStats || stats.collegeStats.length === 0) return;
+
+    const headers = ['#', 'College / Institution Name', 'Total Teams Registered', 'Total Students Registered'];
+    const rows = stats.collegeStats.map((c: any, index: number) => [
+      index + 1,
+      `"${(c.college_name || '').replace(/"/g, '""')}"`,
+      c.total_teams,
+      c.total_students,
+    ]);
+
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      [headers.join(','), ...rows.map((e: any) => e.join(','))].join('\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `ShePitch_Colleges_Ascending_Report_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const filteredColleges = (stats?.collegeStats || []).filter((c: any) =>
+    (c.college_name || '').toLowerCase().includes(collegeSearch.toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -107,17 +145,22 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Card 3: Registered Colleges */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+        {/* Card 3: Registered Colleges (Clickable to open Ascending Popup Report) */}
+        <div
+          onClick={() => setIsCollegeModalOpen(true)}
+          className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4 cursor-pointer hover:border-pink-300 hover:shadow-md transition-all group"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">College Partners</span>
-            <div className="w-10 h-10 rounded-2xl bg-pink-50 text-[#E83E8C] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-2xl bg-pink-50 text-[#E83E8C] flex items-center justify-center group-hover:scale-110 transition-transform">
               <Building2 className="w-5 h-5" />
             </div>
           </div>
           <div>
             <span className="text-3xl font-extrabold text-gray-900">{stats?.totalColleges || 0}</span>
-            <span className="block text-xs text-gray-500 font-medium mt-1">Institutions Collaborated</span>
+            <span className="block text-xs text-[#E83E8C] font-bold mt-1 flex items-center gap-1 group-hover:underline">
+              <span>View Ascending Report</span> &rarr;
+            </span>
           </div>
         </div>
 
@@ -143,10 +186,16 @@ export default function AdminDashboardPage() {
       {/* Quick Action Bar */}
       <div className="flex flex-wrap gap-4 items-center justify-between bg-white p-5 rounded-3xl border border-gray-100 shadow-sm">
         <div>
-          <h3 className="font-extrabold text-base text-gray-900">Quick Operations</h3>
-          <p className="text-xs text-gray-500">Manage registrations, colleges, and notifications</p>
+          <h3 className="font-extrabold text-base text-gray-900">Quick Operations & Reports</h3>
+          <p className="text-xs text-gray-500">Manage registrations, colleges, reports, and notifications</p>
         </div>
         <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setIsCollegeModalOpen(true)}
+            className="bg-purple-100 text-[#6C3B8F] hover:bg-purple-200 font-extrabold text-xs py-2.5 px-4 rounded-full flex items-center gap-2 transition-all"
+          >
+            <BarChart2 className="w-4 h-4" /> College Participation Report (A-Z)
+          </button>
           <Link href="/admin/teams" className="she-btn-primary text-xs py-2.5 px-4 flex items-center gap-2">
             <PlusCircle className="w-4 h-4" /> Manage Teams
           </Link>
@@ -216,6 +265,111 @@ export default function AdminDashboardPage() {
           </table>
         </div>
       </div>
+
+      {/* POPUP MODAL: COLLEGE PARTICIPATION REPORT (ASCENDING ORDER BY COLLEGE NAME) */}
+      {isCollegeModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[85vh] flex flex-col border border-purple-100">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+              <div>
+                <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+                  ASCENDING ORDER (A-Z)
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-gray-900 mt-1">
+                  College Participation Report
+                </h3>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Breakdown of total registered teams and participating students per institution
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsCollegeModalOpen(false)}
+                className="text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Toolbar (Search & CSV Export) */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="relative w-full sm:w-72">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search college name..."
+                  value={collegeSearch}
+                  onChange={(e) => setCollegeSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#6C3B8F]"
+                />
+              </div>
+
+              <button
+                onClick={exportCollegeReportCSV}
+                className="w-full sm:w-auto bg-[#6C3B8F] hover:bg-[#5a2e7a] text-white py-2 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-4 h-4" /> Export CSV Report
+              </button>
+            </div>
+
+            {/* Modal Table Body */}
+            <div className="overflow-y-auto flex-1 border border-gray-100 rounded-2xl">
+              {filteredColleges.length === 0 ? (
+                <div className="p-10 text-center text-gray-400 space-y-2">
+                  <Building2 className="w-10 h-10 mx-auto text-gray-300" />
+                  <p className="text-sm font-bold text-gray-600">No college data available.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left text-xs sm:text-sm text-gray-700">
+                  <thead className="bg-gray-50 border-b border-gray-200 text-gray-900 font-extrabold uppercase text-[11px] tracking-wider sticky top-0 z-10">
+                    <tr>
+                      <th className="py-3.5 px-4 w-12 text-center">#</th>
+                      <th className="py-3.5 px-4">College / Institution Name</th>
+                      <th className="py-3.5 px-4 text-center">Total Teams Registered</th>
+                      <th className="py-3.5 px-4 text-center">Total Students</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 font-medium">
+                    {filteredColleges.map((c: any, index: number) => (
+                      <tr key={index} className="hover:bg-purple-50/40 transition-all">
+                        <td className="py-3.5 px-4 text-center font-bold text-gray-400">
+                          {index + 1}
+                        </td>
+                        <td className="py-3.5 px-4 font-extrabold text-gray-900">
+                          {c.college_name}
+                        </td>
+                        <td className="py-3.5 px-4 text-center">
+                          <span className="inline-block bg-purple-100 text-[#6C3B8F] font-black px-3 py-1 rounded-full text-xs">
+                            {c.total_teams} {c.total_teams === 1 ? 'Team' : 'Teams'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-center font-black text-gray-900">
+                          <span className="inline-block bg-pink-100 text-[#E83E8C] font-black px-3 py-1 rounded-full text-xs">
+                            {c.total_students} {c.total_students === 1 ? 'Student' : 'Students'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
+              <span>Total Colleges Listed: {filteredColleges.length}</span>
+              <button
+                onClick={() => setIsCollegeModalOpen(false)}
+                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl"
+              >
+                Close Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
