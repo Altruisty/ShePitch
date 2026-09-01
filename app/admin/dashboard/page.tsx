@@ -323,13 +323,6 @@ export default function AdminDashboardPage() {
                   className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#6C3B8F]"
                 />
               </div>
-
-              <button
-                onClick={exportCollegeReportCSV}
-                className="w-full sm:w-auto bg-[#6C3B8F] hover:bg-[#5a2e7a] text-white py-2 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5"
-              >
-                <Download className="w-4 h-4" /> Export CSV Report
-              </button>
             </div>
 
             {/* Modal Table Body */}
