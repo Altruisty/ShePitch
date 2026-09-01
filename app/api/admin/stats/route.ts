@@ -54,20 +54,23 @@ export async function GET() {
       `SELECT id, team_name, category, college_name, leader_name, amount_paid, payment_status, created_at FROM she_pitch_teams ORDER BY created_at DESC LIMIT 5`
     );
 
-    // 8. College Participation Breakdown (Sorted from Most Teams Registered to Less + Unduplicated Revenue)
+    // 8. College Participation Breakdown (Confirmed Successful Paid Teams & Students Only)
     const [collegeStats]: any = await pool.query(
       `SELECT 
          t.college_name,
          COUNT(t.id) AS total_teams,
-         COALESCE(SUM(CASE WHEN t.payment_status = 'success' THEN t.amount_paid ELSE 0 END), 0) AS total_revenue,
+         COALESCE(SUM(t.amount_paid), 0) AS total_revenue,
          (
            SELECT COUNT(*) 
            FROM she_pitch_students s 
            JOIN she_pitch_teams t2 ON s.team_id = t2.id 
-           WHERE t2.college_name = t.college_name
+           WHERE LOWER(t2.college_name) = LOWER(t.college_name)
+             AND t2.payment_status = 'success'
          ) AS total_students
        FROM she_pitch_teams t
-       WHERE t.college_name IS NOT NULL AND t.college_name != ''
+       WHERE t.college_name IS NOT NULL 
+         AND t.college_name != ''
+         AND t.payment_status = 'success'
        GROUP BY t.college_name
        ORDER BY total_teams DESC, total_revenue DESC, t.college_name ASC`
     );

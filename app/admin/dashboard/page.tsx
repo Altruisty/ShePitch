@@ -286,19 +286,19 @@ export default function AdminDashboardPage() {
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
                     MOST TEAMS FIRST (DESCENDING)
                   </span>
                   <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
-                    REVENUE BREAKDOWN
+                    CONFIRMED PAID TEAMS & STUDENTS ONLY
                   </span>
                 </div>
                 <h3 className="text-xl sm:text-2xl font-black text-gray-900 mt-1">
                   College Participation & Revenue Report
                 </h3>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Breakdown of total registered teams, participating students, and revenue generated per institution
+                  Breakdown of confirmed paid teams, participating students, and revenue generated per institution
                 </p>
               </div>
 
