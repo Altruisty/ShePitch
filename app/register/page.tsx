@@ -457,7 +457,7 @@ const loadRazorpayScript = () => {
               <div className="p-3.5 bg-purple-50/60 rounded-2xl border border-purple-100/70 space-y-1">
                 <span className="font-extrabold text-gray-900 block text-sm">11. Grand Finale Attendance & Final Evaluation</span>
                 <p>
-                  Shortlisted finalists agree to present their pitch live at Jeppiaar University, Chennai on 19 September 2026. All evaluations and award decisions made by the official judging panel are final.
+                  Shortlisted finalists agree to present their pitch live at Jeppiaar University, Chennai on 08 September 2026. All evaluations and award decisions made by the official judging panel are final.
                 </p>
               </div>
 
