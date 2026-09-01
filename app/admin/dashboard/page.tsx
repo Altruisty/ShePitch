@@ -22,6 +22,7 @@ import {
   GraduationCap,
   ListFilter,
   BarChart2,
+  DollarSign,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -55,12 +56,19 @@ export default function AdminDashboardPage() {
   const exportCollegeReportCSV = () => {
     if (!stats?.collegeStats || stats.collegeStats.length === 0) return;
 
-    const headers = ['#', 'College / Institution Name', 'Total Teams Registered', 'Total Students Registered'];
+    const headers = [
+      '#',
+      'College / Institution Name',
+      'Total Teams Registered',
+      'Total Students Registered',
+      'Amount Received (INR)',
+    ];
     const rows = stats.collegeStats.map((c: any, index: number) => [
       index + 1,
       `"${(c.college_name || '').replace(/"/g, '""')}"`,
       c.total_teams,
       c.total_students,
+      c.total_revenue || 0,
     ]);
 
     const csvContent =
@@ -70,7 +78,7 @@ export default function AdminDashboardPage() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `ShePitch_Colleges_Ascending_Report_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `ShePitch_Colleges_Revenue_Report_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -78,6 +86,11 @@ export default function AdminDashboardPage() {
 
   const filteredColleges = (stats?.collegeStats || []).filter((c: any) =>
     (c.college_name || '').toLowerCase().includes(collegeSearch.toLowerCase())
+  );
+
+  const totalReportRevenue = filteredColleges.reduce(
+    (sum: number, c: any) => sum + Number(c.total_revenue || 0),
+    0
   );
 
   if (loading) {
@@ -145,7 +158,7 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Card 3: Registered Colleges (Clickable to open Ascending Popup Report) */}
+        {/* Card 3: Registered Colleges (Clickable to open College Report) */}
         <div
           onClick={() => setIsCollegeModalOpen(true)}
           className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4 cursor-pointer hover:border-pink-300 hover:shadow-md transition-all group"
@@ -159,7 +172,7 @@ export default function AdminDashboardPage() {
           <div>
             <span className="text-3xl font-extrabold text-gray-900">{stats?.totalColleges || 0}</span>
             <span className="block text-xs text-[#E83E8C] font-bold mt-1 flex items-center gap-1 group-hover:underline">
-              <span>View Ascending Report</span> &rarr;
+              <span>View College Revenue Report</span> &rarr;
             </span>
           </div>
         </div>
@@ -194,7 +207,7 @@ export default function AdminDashboardPage() {
             onClick={() => setIsCollegeModalOpen(true)}
             className="bg-purple-100 text-[#6C3B8F] hover:bg-purple-200 font-extrabold text-xs py-2.5 px-4 rounded-full flex items-center gap-2 transition-all"
           >
-            <BarChart2 className="w-4 h-4" /> College Participation Report (A-Z)
+            <BarChart2 className="w-4 h-4" /> College Participation & Revenue Report
           </button>
           <Link href="/admin/teams" className="she-btn-primary text-xs py-2.5 px-4 flex items-center gap-2">
             <PlusCircle className="w-4 h-4" /> Manage Teams
@@ -266,21 +279,26 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* POPUP MODAL: COLLEGE PARTICIPATION REPORT (ASCENDING ORDER BY COLLEGE NAME) */}
+      {/* POPUP MODAL: COLLEGE PARTICIPATION & REVENUE REPORT */}
       {isCollegeModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[85vh] flex flex-col border border-purple-100">
+          <div className="bg-white rounded-3xl max-w-4xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[85vh] flex flex-col border border-purple-100">
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
-                <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
-                  ASCENDING ORDER (A-Z)
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+                    MOST TEAMS FIRST (DESCENDING)
+                  </span>
+                  <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+                    REVENUE BREAKDOWN
+                  </span>
+                </div>
                 <h3 className="text-xl sm:text-2xl font-black text-gray-900 mt-1">
-                  College Participation Report
+                  College Participation & Revenue Report
                 </h3>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Breakdown of total registered teams and participating students per institution
+                  Breakdown of total registered teams, participating students, and revenue generated per institution
                 </p>
               </div>
 
@@ -305,6 +323,13 @@ export default function AdminDashboardPage() {
                   className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#6C3B8F]"
                 />
               </div>
+
+              <button
+                onClick={exportCollegeReportCSV}
+                className="w-full sm:w-auto bg-[#6C3B8F] hover:bg-[#5a2e7a] text-white py-2 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-4 h-4" /> Export CSV Report
+              </button>
             </div>
 
             {/* Modal Table Body */}
@@ -320,8 +345,9 @@ export default function AdminDashboardPage() {
                     <tr>
                       <th className="py-3.5 px-4 w-12 text-center">#</th>
                       <th className="py-3.5 px-4">College / Institution Name</th>
-                      <th className="py-3.5 px-4 text-center">Total Teams Registered</th>
+                      <th className="py-3.5 px-4 text-center">Total Teams</th>
                       <th className="py-3.5 px-4 text-center">Total Students</th>
+                      <th className="py-3.5 px-4 text-right">Amount Received (₹)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 font-medium">
@@ -338,9 +364,14 @@ export default function AdminDashboardPage() {
                             {c.total_teams} {c.total_teams === 1 ? 'Team' : 'Teams'}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4 text-center font-black text-gray-900">
+                        <td className="py-3.5 px-4 text-center">
                           <span className="inline-block bg-pink-100 text-[#E83E8C] font-black px-3 py-1 rounded-full text-xs">
                             {c.total_students} {c.total_students === 1 ? 'Student' : 'Students'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-right font-black">
+                          <span className="inline-block bg-emerald-100 text-emerald-800 font-black px-3 py-1 rounded-full text-xs">
+                            ₹{Number(c.total_revenue || 0).toLocaleString('en-IN')}
                           </span>
                         </td>
                       </tr>
@@ -351,8 +382,11 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
-              <span>Total Colleges Listed: {filteredColleges.length}</span>
+            <div className="pt-2 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-600 font-semibold">
+              <div className="flex items-center gap-4">
+                <span>Colleges Listed: <strong>{filteredColleges.length}</strong></span>
+                <span>Combined Revenue: <strong className="text-emerald-700">₹{totalReportRevenue.toLocaleString('en-IN')}</strong></span>
+              </div>
               <button
                 onClick={() => setIsCollegeModalOpen(false)}
                 className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl"
