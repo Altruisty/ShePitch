@@ -1,5 +1,5 @@
 {
-  "name": "ShePitch",
+  "name": "ShePitch - Women's Hackathon & Innovation Pitch",
   "short_name": "ShePitch",
   "icons": [
     {
@@ -17,5 +17,6 @@
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "/"
 }
