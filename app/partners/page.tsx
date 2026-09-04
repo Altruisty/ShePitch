@@ -65,12 +65,6 @@ export default function PartnersPage() {
                   className="object-contain max-h-24 group-hover:scale-105 transition-transform"
                 />
               </div>
-              <div>
-                <h3 className="text-2xl font-black text-gray-900">UGHAM</h3>
-                <span className="text-xs font-extrabold text-[#6C3B8F] uppercase tracking-widest block mt-1">
-                  Organizer & Founding Host
-                </span>
-              </div>
             </motion.div>
           </div>
         </div>
@@ -132,18 +126,19 @@ export default function PartnersPage() {
             <span>COMMUNITY PARTNER</span>
           </div>
 
-          <div className="max-w-md mx-auto">
+          <div className="max-w-lg sm:max-w-xl mx-auto">
             <motion.div
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="bg-white rounded-3xl p-8 border-2 border-rose-200 shadow-xl hover:shadow-2xl transition-all space-y-4 flex flex-col items-center justify-center group"
+              whileHover={{ y: -6, scale: 1.03 }}
+              className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-rose-200 shadow-xl hover:shadow-2xl transition-all space-y-4 flex flex-col items-center justify-center group"
             >
-              <div className="w-full h-36 relative flex items-center justify-center p-4 bg-rose-50/30 rounded-2xl">
+              <div className="w-full h-52 sm:h-64 relative flex items-center justify-center p-2 bg-rose-50/40 rounded-2xl">
                 <Image
                   src="/assets/partners-imgs/shebuilds-chennai.png"
                   alt="She Builds Chennai Logo"
-                  width={200}
-                  height={120}
-                  className="object-contain max-h-28 group-hover:scale-105 transition-transform"
+                  width={380}
+                  height={240}
+                  className="object-contain max-h-48 sm:max-h-60 group-hover:scale-105 transition-transform"
+                  priority
                 />
               </div>
             </motion.div>
@@ -175,9 +170,6 @@ export default function PartnersPage() {
                   className="object-contain max-h-20 group-hover:scale-105 transition-transform"
                 />
               </div>
-              <div>
-                <h4 className="text-lg font-black text-gray-900">DateBites</h4>
-              </div>
             </motion.div>
 
             {/* Industry Partner: Altruisty */}
@@ -197,9 +189,6 @@ export default function PartnersPage() {
                   className="object-contain max-h-20 group-hover:scale-105 transition-transform"
                 />
               </div>
-              <div>
-                <h4 className="text-lg font-black text-gray-900">Altruisty</h4>
-              </div>
             </motion.div>
 
             {/* Venue Partner: Jeppiaar University */}
@@ -218,9 +207,6 @@ export default function PartnersPage() {
                   height={90}
                   className="object-contain max-h-20 group-hover:scale-105 transition-transform"
                 />
-              </div>
-              <div>
-                <h4 className="text-lg font-black text-gray-900">Jeppiaar University</h4>
               </div>
             </motion.div>
           </div>
@@ -246,11 +232,6 @@ export default function PartnersPage() {
                   height={160}
                   className="object-contain max-h-28 rounded-full group-hover:scale-105 transition-transform shadow-md"
                 />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-emerald-800 uppercase tracking-wider mt-1">
-                  TN College Chronicle &bull; Events & Opportunities
-                </p>
               </div>
             </motion.div>
           </div>
