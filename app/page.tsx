@@ -130,11 +130,11 @@ export default function HomePage() {
                   <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">College Collaborations</span>
                 </div>
                 <div>
-                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">1500+</span>
+                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">1000+</span>
                   <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">Women Participants</span>
                 </div>
                 <div>
-                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">80+</span>
+                  <span className="block text-3xl sm:text-4xl md:text-4xl lg:text-3xl font-extrabold text-[#6C3B8F]">40+</span>
                   <span className="text-xs sm:text-base md:text-base lg:text-sm text-gray-500 font-medium leading-tight block mt-1">Industry Experts</span>
                 </div>
               </motion.div>
@@ -325,44 +325,212 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CORE PARTNERS PREVIEW ===== */}
-      <section className="bg-gray-50/70 py-12 sm:py-16 border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4 mb-8 sm:mb-12">
-            <span className="she-category-tag">Powered By</span>
+      {/* ===== CORE PARTNERS & ECOSYSTEM PREVIEW ===== */}
+      <section className="bg-gray-50/70 py-14 sm:py-20 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
+            <span className="she-category-tag bg-purple-100 text-[#6C3B8F] border-purple-200">Our Ecosystem</span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900">
               Our Esteemed <span className="she-gradient-text">Partners</span>
             </h2>
             <p className="text-gray-600 text-sm sm:text-base">
-              ShePitch Chennai is brought to life through the collaborative support of industry and academic pioneers.
+              ShePitch Chennai is brought to life through the collaborative support of visionary organizers, ecosystem leaders, and academic pioneers.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            <div className="she-partner-card">
-              <div className="she-partner-logo-wrapper">
-                <Image src="/assets/partners-imgs/part-4.png" alt="Ugham" width={140} height={70} className="she-partner-logo-img" />
-              </div>
-              <span className="she-partner-label">Organized by</span>
+          {/* Tier 1: Primary / Headline Partners (Bigger Cards: Ugham, Icebrkr, TNRISE, She Builds) */}
+          <div className="space-y-3">
+            <div className="text-center">
+              <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#6C3B8F] bg-purple-50 px-3.5 py-1 rounded-full border border-purple-100">
+                Organizing & Key Ecosystem Partners
+              </span>
             </div>
-            <div className="she-partner-card">
-              <div className="she-partner-logo-wrapper">
-                <Image src="/assets/partners-imgs/part-2.png" alt="Icebrkr" width={140} height={70} className="she-partner-logo-img" />
-              </div>
-              <span className="she-partner-label">Powered by</span>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+              {/* 1. Ugham */}
+              <motion.div
+                whileHover={{ y: -6 }}
+                className="bg-white rounded-3xl p-5 sm:p-7 border-2 border-purple-200/90 shadow-md hover:shadow-xl hover:border-[#6C3B8F] transition-all flex flex-col items-center justify-between min-h-[190px] sm:min-h-[230px] group"
+              >
+                <div className="h-24 sm:h-28 w-full flex items-center justify-center p-2 bg-purple-50/40 rounded-2xl">
+                  <Image
+                    src="/assets/partners-imgs/part-4.png"
+                    alt="Ugham"
+                    width={180}
+                    height={90}
+                    className="max-h-16 sm:max-h-20 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <div className="text-center pt-2">
+                  <span className="text-xs sm:text-sm font-black text-gray-900 block">UGHAM</span>
+                  <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#6C3B8F] bg-purple-100/80 px-2.5 py-0.5 rounded-full mt-1">
+                    Organized by
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* 2. Icebrkr */}
+              <motion.div
+                whileHover={{ y: -6 }}
+                className="bg-white rounded-3xl p-5 sm:p-7 border-2 border-pink-200/90 shadow-md hover:shadow-xl hover:border-[#E83E8C] transition-all flex flex-col items-center justify-between min-h-[190px] sm:min-h-[230px] group"
+              >
+                <div className="h-24 sm:h-28 w-full flex items-center justify-center p-2 bg-pink-50/40 rounded-2xl">
+                  <Image
+                    src="/assets/partners-imgs/part-2.png"
+                    alt="icebrkr"
+                    width={180}
+                    height={90}
+                    className="max-h-16 sm:max-h-20 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <div className="text-center pt-2">
+                  <span className="text-xs sm:text-sm font-black text-gray-900 block">icebrkr</span>
+                  <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#E83E8C] bg-pink-100/80 px-2.5 py-0.5 rounded-full mt-1">
+                    Powered by
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* 3. TNRISE */}
+              <motion.div
+                whileHover={{ y: -6 }}
+                className="bg-white rounded-3xl p-5 sm:p-7 border-2 border-indigo-200/90 shadow-md hover:shadow-xl hover:border-indigo-600 transition-all flex flex-col items-center justify-between min-h-[190px] sm:min-h-[230px] group"
+              >
+                <div className="h-24 sm:h-28 w-full flex items-center justify-center p-2 bg-indigo-50/30 rounded-2xl">
+                  <Image
+                    src="/assets/partners-imgs/tnrise-women.png"
+                    alt="TNRISE"
+                    width={190}
+                    height={95}
+                    className="max-h-16 sm:max-h-20 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <div className="text-center pt-2">
+                  <span className="text-xs sm:text-sm font-black text-gray-900 block">TNRISE</span>
+                  <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 bg-indigo-100/80 px-2.5 py-0.5 rounded-full mt-1">
+                    Ecosystem Partner
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* 4. She Builds */}
+              <motion.div
+                whileHover={{ y: -6 }}
+                className="bg-white rounded-3xl p-5 sm:p-7 border-2 border-rose-200/90 shadow-md hover:shadow-xl hover:border-rose-600 transition-all flex flex-col items-center justify-between min-h-[190px] sm:min-h-[230px] group"
+              >
+                <div className="h-24 sm:h-28 w-full flex items-center justify-center p-2 bg-rose-50/30 rounded-2xl">
+                  <Image
+                    src="/assets/partners-imgs/shebuilds-chennai.png"
+                    alt="She Builds Chennai"
+                    width={180}
+                    height={100}
+                    className="max-h-20 sm:max-h-24 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <div className="text-center pt-2">
+                  <span className="text-xs sm:text-sm font-black text-gray-900 block">She Builds</span>
+                  <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-rose-800 bg-rose-100/80 px-2.5 py-0.5 rounded-full mt-1">
+                    Community Partner
+                  </span>
+                </div>
+              </motion.div>
             </div>
-            <div className="she-partner-card">
-              <div className="she-partner-logo-wrapper">
-                <Image src="/assets/partners-imgs/part-3.png" alt="Altruisty" width={140} height={70} className="she-partner-logo-img" />
-              </div>
-              <span className="she-partner-label">Industry Partner</span>
+          </div>
+
+          {/* Tier 2: Collaborating, Industry & Venue Partners (More compact cards) */}
+          <div className="space-y-3 pt-2">
+            <div className="text-center">
+              <span className="text-[11px] font-extrabold uppercase tracking-widest text-gray-500 bg-white px-3.5 py-1 rounded-full border border-gray-200">
+                Collaborating & Venue Partners
+              </span>
             </div>
-            <div className="she-partner-card">
-              <div className="she-partner-logo-wrapper">
-                <Image src="/assets/partners-imgs/part-1.png" alt="Jeppiaar University" width={140} height={70} className="she-partner-logo-img" />
-              </div>
-              <span className="she-partner-label">Venue Partner</span>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
+              {/* 5. DateBites */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-amber-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+              >
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-amber-50/40 rounded-xl">
+                  <Image
+                    src="/assets/partners-imgs/datebites-farmley.png"
+                    alt="DateBites"
+                    width={140}
+                    height={70}
+                    className="max-h-12 sm:max-h-14 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-100/70 px-2 py-0.5 rounded-full text-center mt-2">
+                  Refreshment Partner
+                </span>
+              </motion.div>
+
+              {/* 6. Altruisty */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-blue-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+              >
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-blue-50/40 rounded-xl">
+                  <Image
+                    src="/assets/partners-imgs/part-3.png"
+                    alt="Altruisty"
+                    width={140}
+                    height={70}
+                    className="max-h-12 sm:max-h-14 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-900 bg-blue-100/70 px-2 py-0.5 rounded-full text-center mt-2">
+                  Industry Partner
+                </span>
+              </motion.div>
+
+              {/* 7. Jeppiaar University */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-purple-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+              >
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-purple-50/40 rounded-xl">
+                  <Image
+                    src="/assets/partners-imgs/part-1.png"
+                    alt="Jeppiaar University"
+                    width={140}
+                    height={70}
+                    className="max-h-12 sm:max-h-14 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#6C3B8F] bg-purple-100/70 px-2 py-0.5 rounded-full text-center mt-2">
+                  Venue Partner
+                </span>
+              </motion.div>
+
+              {/* 8. ICC / TN College Chronicle */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+              >
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                  <Image
+                    src="/assets/partners-imgs/icc-tn-chronicle.jpg"
+                    alt="ICC / TN College Chronicle"
+                    width={100}
+                    height={100}
+                    className="max-h-12 sm:max-h-14 w-auto object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
+                  Event Partner
+                </span>
+              </motion.div>
             </div>
+          </div>
+
+          {/* View All Partners Link */}
+          <div className="text-center pt-2">
+            <Link
+              href="/partners"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#6C3B8F] hover:text-[#E83E8C] transition-colors group"
+            >
+              <span>Explore Complete Partner Ecosystem & Opportunities</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </div>
       </section>
