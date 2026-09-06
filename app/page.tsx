@@ -292,7 +292,7 @@ export default function HomePage() {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                   </span>
                   <span className="text-xs sm:text-sm font-extrabold tracking-wide">
-                    {availability.ideaTeamsLeft} Teams Left
+                    {availability.ideaTeamsLeft} Slots Left
                   </span>
                 </div>
               </div>
@@ -351,7 +351,7 @@ export default function HomePage() {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                   </span>
                   <span className="text-xs sm:text-sm font-extrabold tracking-wide">
-                    {availability.projectTeamsLeft} Teams Left
+                    {availability.projectTeamsLeft} Slots Left
                   </span>
                 </div>
               </div>
