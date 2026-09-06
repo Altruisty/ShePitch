@@ -8,6 +8,28 @@ import { ArrowRight, Trophy, Lightbulb, Users, Calendar, Award, Sparkles, CheckC
 import AnimatedTitle from '@/components/AnimatedTitle';
 
 export default function HomePage() {
+  const [availability, setAvailability] = React.useState({
+    ideaTeamsLeft: 16,
+    projectTeamsLeft: 16,
+    ideaOpen: true,
+    projectOpen: true,
+  });
+
+  React.useEffect(() => {
+    fetch('/api/categories/availability')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success) {
+          setAvailability({
+            ideaTeamsLeft: typeof data.ideaTeamsLeft === 'number' ? data.ideaTeamsLeft : 16,
+            projectTeamsLeft: typeof data.projectTeamsLeft === 'number' ? data.projectTeamsLeft : 16,
+            ideaOpen: data.ideaOpen ?? true,
+            projectOpen: data.projectOpen ?? true,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
   return (
     <div className="space-y-16 sm:space-y-24 pb-20 overflow-x-hidden">
       {/* ===== HERO SECTION ===== */}
@@ -247,13 +269,25 @@ export default function HomePage() {
             className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-xl space-y-6 flex flex-col justify-between"
           >
             <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="she-svg-icon-wrapper shrink-0">
-                  <Lightbulb className="w-6 h-6 text-[#6C3B8F]" />
+              <div className="flex items-start sm:items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+                <div className="flex items-center gap-4">
+                  <div className="she-svg-icon-wrapper shrink-0">
+                    <Lightbulb className="w-6 h-6 text-[#6C3B8F]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Idea Pitch</h3>
+                    <span className="text-xs text-[#6C3B8F] font-bold uppercase tracking-wider">Concept Stage</span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Idea Pitch</h3>
-                  <span className="text-xs text-[#6C3B8F] font-bold uppercase tracking-wider">Concept Stage</span>
+
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-600 shadow-sm shrink-0">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                  </span>
+                  <span className="text-xs sm:text-sm font-extrabold tracking-wide">
+                    {availability.ideaTeamsLeft} Teams Left
+                  </span>
                 </div>
               </div>
 
@@ -277,9 +311,15 @@ export default function HomePage() {
               </ul>
             </div>
 
-            <Link href="/register?category=Idea Pitch" className="she-btn-outline w-full justify-center text-center">
-              Register for Idea Pitch
-            </Link>
+            {availability.ideaOpen ? (
+              <Link href="/register?category=Idea Pitch" className="she-btn-outline w-full justify-center text-center">
+                Register for Idea Pitch
+              </Link>
+            ) : (
+              <button disabled className="she-btn-outline w-full justify-center text-center opacity-60 cursor-not-allowed bg-gray-100 text-gray-500 border-gray-300">
+                Registration Closed
+              </button>
+            )}
           </motion.div>
 
           {/* Card 2: Project Pitch */}
@@ -288,13 +328,25 @@ export default function HomePage() {
             className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-xl space-y-6 flex flex-col justify-between"
           >
             <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="she-svg-icon-wrapper accent shrink-0">
-                  <Sparkles className="w-6 h-6 text-[#E83E8C]" />
+              <div className="flex items-start sm:items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+                <div className="flex items-center gap-4">
+                  <div className="she-svg-icon-wrapper accent shrink-0">
+                    <Sparkles className="w-6 h-6 text-[#E83E8C]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Project Pitch</h3>
+                    <span className="text-xs text-[#E83E8C] font-bold uppercase tracking-wider">Prototype / MVP Stage</span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Project Pitch</h3>
-                  <span className="text-xs text-[#E83E8C] font-bold uppercase tracking-wider">Prototype / MVP Stage</span>
+
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-600 shadow-sm shrink-0">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                  </span>
+                  <span className="text-xs sm:text-sm font-extrabold tracking-wide">
+                    {availability.projectTeamsLeft} Teams Left
+                  </span>
                 </div>
               </div>
 
@@ -318,9 +370,15 @@ export default function HomePage() {
               </ul>
             </div>
 
-            <Link href="/register?category=Project Pitch" className="she-btn-primary w-full justify-center text-center">
-              Register for Project Pitch
-            </Link>
+            {availability.projectOpen ? (
+              <Link href="/register?category=Project Pitch" className="she-btn-primary w-full justify-center text-center">
+                Register for Project Pitch
+              </Link>
+            ) : (
+              <button disabled className="she-btn-primary w-full justify-center text-center opacity-60 cursor-not-allowed bg-gray-400">
+                Registration Closed
+              </button>
+            )}
           </motion.div>
         </div>
       </section>

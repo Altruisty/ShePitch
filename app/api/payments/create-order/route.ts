@@ -46,6 +46,26 @@ export async function POST(req: Request) {
       );
     }
 
+    // Capacity verification: Max 70 teams for Idea Pitch, Max 50 teams for Project Pitch
+    const MAX_TRACK_LIMITS: Record<string, number> = {
+      'Idea Pitch': 70,
+      'Project Pitch': 50,
+    };
+
+    if (MAX_TRACK_LIMITS[category]) {
+      const [catCountRows]: any = await pool.query(
+        `SELECT COUNT(*) as count FROM she_pitch_teams WHERE category = ? AND payment_status = 'success'`,
+        [category]
+      );
+      const currentConfirmed = catCountRows[0]?.count || 0;
+      if (currentConfirmed >= MAX_TRACK_LIMITS[category]) {
+        return NextResponse.json(
+          { error: `Registrations for ${category} have reached full capacity and are now closed.` },
+          { status: 400 }
+        );
+      }
+    }
+
     const amountInPaisa = Math.round(Number(amount_in_rupees || 299 * members.length) * 100);
 
     // Create Razorpay Order

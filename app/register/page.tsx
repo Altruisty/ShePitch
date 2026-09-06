@@ -43,6 +43,29 @@ function RegisterFormContent() {
     coupon_code: '',
   });
 
+  const [availability, setAvailability] = useState({
+    ideaTeamsLeft: 16,
+    projectTeamsLeft: 16,
+    ideaOpen: true,
+    projectOpen: true,
+  });
+
+  useEffect(() => {
+    fetch('/api/categories/availability')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success) {
+          setAvailability({
+            ideaTeamsLeft: typeof data.ideaTeamsLeft === 'number' ? data.ideaTeamsLeft : 16,
+            projectTeamsLeft: typeof data.projectTeamsLeft === 'number' ? data.projectTeamsLeft : 16,
+            ideaOpen: data.ideaOpen ?? true,
+            projectOpen: data.projectOpen ?? true,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const [members, setMembers] = useState([
     { student_name: '', email: '', phone: '', department: '', year_of_study: '', is_leader: true },
     { student_name: '', email: '', phone: '', department: '', year_of_study: '', is_leader: false },
@@ -663,27 +686,49 @@ const loadRazorpayScript = () => {
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div
-                  onClick={() => setFormData({ ...formData, category: 'Idea Pitch' })}
-                  className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${
-                    formData.category === 'Idea Pitch'
-                      ? 'border-[#6C3B8F] bg-purple-50/70 shadow-md'
-                      : 'border-gray-200 bg-white hover:border-purple-200'
+                  onClick={() => availability.ideaOpen && setFormData({ ...formData, category: 'Idea Pitch' })}
+                  className={`p-6 rounded-2xl border-2 transition-all relative ${
+                    !availability.ideaOpen
+                      ? 'border-gray-200 bg-gray-100 opacity-60 cursor-not-allowed'
+                      : formData.category === 'Idea Pitch'
+                      ? 'border-[#6C3B8F] bg-purple-50/70 shadow-md cursor-pointer'
+                      : 'border-gray-200 bg-white hover:border-purple-200 cursor-pointer'
                   }`}
                 >
-                  <span className="block font-black text-base sm:text-lg text-gray-900 text-center">Idea Pitch</span>
-                  <span className="block text-sm text-gray-500 text-center mt-1 font-medium">Early concept stage</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="block font-black text-base sm:text-lg text-gray-900">Idea Pitch</span>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-xs font-extrabold shadow-sm">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                      </span>
+                      {availability.ideaTeamsLeft} Left
+                    </span>
+                  </div>
+                  <span className="block text-sm text-gray-500 mt-1 font-medium">Early concept stage</span>
                 </div>
 
                 <div
-                  onClick={() => setFormData({ ...formData, category: 'Project Pitch' })}
-                  className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${
-                    formData.category === 'Project Pitch'
-                      ? 'border-[#6C3B8F] bg-purple-50/70 shadow-md'
-                      : 'border-gray-200 bg-white hover:border-purple-200'
+                  onClick={() => availability.projectOpen && setFormData({ ...formData, category: 'Project Pitch' })}
+                  className={`p-6 rounded-2xl border-2 transition-all relative ${
+                    !availability.projectOpen
+                      ? 'border-gray-200 bg-gray-100 opacity-60 cursor-not-allowed'
+                      : formData.category === 'Project Pitch'
+                      ? 'border-[#6C3B8F] bg-purple-50/70 shadow-md cursor-pointer'
+                      : 'border-gray-200 bg-white hover:border-purple-200 cursor-pointer'
                   }`}
                 >
-                  <span className="block font-black text-base sm:text-lg text-gray-900 text-center">Project Pitch</span>
-                  <span className="block text-sm text-gray-500 text-center mt-1 font-medium">Prototype/Working Model</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="block font-black text-base sm:text-lg text-gray-900">Project Pitch</span>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-xs font-extrabold shadow-sm">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                      </span>
+                      {availability.projectTeamsLeft} Left
+                    </span>
+                  </div>
+                  <span className="block text-sm text-gray-500 mt-1 font-medium">Prototype/Working Model</span>
                 </div>
               </div>
             </div>

@@ -7,6 +7,29 @@ import { Lightbulb, Laptop, FileText, CheckCircle2, AlertCircle, ArrowRight, Shi
 import AnimatedTitle from '@/components/AnimatedTitle';
 
 export default function CategoriesPage() {
+  const [availability, setAvailability] = React.useState({
+    ideaTeamsLeft: 16,
+    projectTeamsLeft: 16,
+    ideaOpen: true,
+    projectOpen: true,
+  });
+
+  React.useEffect(() => {
+    fetch('/api/categories/availability')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success) {
+          setAvailability({
+            ideaTeamsLeft: typeof data.ideaTeamsLeft === 'number' ? data.ideaTeamsLeft : 16,
+            projectTeamsLeft: typeof data.projectTeamsLeft === 'number' ? data.projectTeamsLeft : 16,
+            ideaOpen: data.ideaOpen ?? true,
+            projectOpen: data.projectOpen ?? true,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16">
       {/* Header */}
@@ -36,15 +59,27 @@ export default function CategoriesPage() {
           <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-bl-full pointer-events-none" />
 
           <div className="space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-[#6C3B8F]/10 text-[#6C3B8F] flex items-center justify-center shrink-0">
-                <Lightbulb className="w-8 h-8" />
+            <div className="flex items-start sm:items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-[#6C3B8F]/10 text-[#6C3B8F] flex items-center justify-center shrink-0">
+                  <Lightbulb className="w-8 h-8" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#6C3B8F] bg-[#6C3B8F]/10 px-3 py-1 rounded-full">
+                    Track 01
+                  </span>
+                  <h3 className="text-3xl font-extrabold text-gray-900 mt-1">Idea Pitch</h3>
+                </div>
               </div>
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#6C3B8F] bg-[#6C3B8F]/10 px-3 py-1 rounded-full">
-                  Track 01
+
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 shadow-sm shrink-0">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                 </span>
-                <h3 className="text-3xl font-extrabold text-gray-900 mt-1">Idea Pitch</h3>
+                <span className="text-xs sm:text-sm font-extrabold tracking-wide">
+                  {availability.ideaTeamsLeft} Teams Left
+                </span>
               </div>
             </div>
 
@@ -80,9 +115,15 @@ export default function CategoriesPage() {
               <span className="text-gray-500 font-medium">Stage:</span>
               <span className="font-bold text-gray-900">Concept & Market Validation</span>
             </div>
-            <Link href="/register?category=Idea Pitch" className="she-btn-outline w-full justify-center text-center py-3">
-              Register For Idea Pitch <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
+            {availability.ideaOpen ? (
+              <Link href="/register?category=Idea Pitch" className="she-btn-outline w-full justify-center text-center py-3">
+                Register For Idea Pitch <ArrowRight className="w-4 h-4 ml-1" />
+              </Link>
+            ) : (
+              <button disabled className="she-btn-outline w-full justify-center text-center py-3 opacity-60 cursor-not-allowed bg-gray-100 text-gray-500 border-gray-300">
+                Registration Closed
+              </button>
+            )}
           </div>
         </motion.div>
 
@@ -96,15 +137,27 @@ export default function CategoriesPage() {
           <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 rounded-bl-full pointer-events-none" />
 
           <div className="space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-[#E83E8C]/10 text-[#E83E8C] flex items-center justify-center shrink-0">
-                <Laptop className="w-8 h-8" />
+            <div className="flex items-start sm:items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-[#E83E8C]/10 text-[#E83E8C] flex items-center justify-center shrink-0">
+                  <Laptop className="w-8 h-8" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#E83E8C] bg-[#E83E8C]/10 px-3 py-1 rounded-full">
+                    Track 02
+                  </span>
+                  <h3 className="text-3xl font-extrabold text-gray-900 mt-1">Project Pitch</h3>
+                </div>
               </div>
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#E83E8C] bg-[#E83E8C]/10 px-3 py-1 rounded-full">
-                  Track 02
+
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 shadow-sm shrink-0">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                 </span>
-                <h3 className="text-3xl font-extrabold text-gray-900 mt-1">Project Pitch</h3>
+                <span className="text-xs sm:text-sm font-extrabold tracking-wide">
+                  {availability.projectTeamsLeft} Teams Left
+                </span>
               </div>
             </div>
 
@@ -140,9 +193,15 @@ export default function CategoriesPage() {
               <span className="text-gray-500 font-medium">Stage:</span>
               <span className="font-bold text-gray-900">Prototype / Functional Model</span>
             </div>
-            <Link href="/register?category=Project Pitch" className="she-btn-primary w-full justify-center text-center py-3">
-              Register For Project Pitch <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
+            {availability.projectOpen ? (
+              <Link href="/register?category=Project Pitch" className="she-btn-primary w-full justify-center text-center py-3">
+                Register For Project Pitch <ArrowRight className="w-4 h-4 ml-1" />
+              </Link>
+            ) : (
+              <button disabled className="she-btn-primary w-full justify-center text-center py-3 opacity-60 cursor-not-allowed bg-gray-400">
+                Registration Closed
+              </button>
+            )}
           </div>
         </motion.div>
 
