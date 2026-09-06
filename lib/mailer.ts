@@ -113,7 +113,7 @@ export async function sendTeamConfirmationEmail(data: {
       </div>
 
       <div style="background: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by ICEBRKR
       </div>
     </div>
   `;
@@ -176,7 +176,7 @@ export async function sendCollegeCredentialsEmail(data: {
       <div style="background: linear-gradient(135deg, #6C3B8F 0%, #a823f5 50%, #E83E8C 100%); padding: 35px 25px; text-align: center; color: #ffffff;">
         <span style="background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; uppercase; display: inline-block; margin-bottom: 8px;">OFFICIAL COLLABORATION INVITATION</span>
         <h1 style="margin: 0; font-size: 32px; font-weight: 900; letter-spacing: -0.5px;">ShePitch Chennai</h1>
-        <p style="margin: 6px 0 0 0; font-size: 15px; opacity: 0.95; font-weight: 500;">UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University</p>
+        <p style="margin: 6px 0 0 0; font-size: 15px; opacity: 0.95; font-weight: 500;">UGHAM &bull; Powered by ICEBRKR &bull; Venue: Jeppiaar University</p>
       </div>
 
       <div style="padding: 30px 25px; color: #333333; line-height: 1.6;">
@@ -230,7 +230,7 @@ export async function sendCollegeCredentialsEmail(data: {
             <td style="padding: 10px; background: #fdfafc; border-bottom: 1px solid #f0e6f5;">💼 <strong>Career Benefits:</strong> Internship Opportunities for top teams + 50+ Industry Mentors</td>
           </tr>
           <tr>
-            <td style="padding: 10px; background: #ffffff; border-bottom: 1px solid #f0e6f5;">🚀 <strong>icebrkr Sponsor Benefit:</strong> 1 Year of Free Access to icebrkr testing platform for all registered students</td>
+            <td style="padding: 10px; background: #ffffff; border-bottom: 1px solid #f0e6f5;">🚀 <strong>ICEBRKR Sponsor Benefit:</strong> 1 Year of Free Access to ICEBRKR testing platform for all registered students</td>
           </tr>
           <tr>
             <td style="padding: 10px; background: #fdfafc; border-bottom: 1px solid #f0e6f5;">📅 <strong>Grand Finale Date & Venue:</strong> 19 September 2026 at Jeppiaar University, Chennai</td>
@@ -272,7 +272,7 @@ export async function sendCollegeCredentialsEmail(data: {
       </div>
 
       <div style="background: #f0e6f5; padding: 18px; text-align: center; font-size: 12px; color: #6C3B8F; font-weight: 600;">
-        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by ICEBRKR &bull; Venue: Jeppiaar University
       </div>
     </div>
   `;
@@ -326,7 +326,7 @@ export async function sendConferenceConfirmationEmail(data: {
       <div style="background: linear-gradient(135deg, #6C3B8F 0%, #a823f5 50%, #E83E8C 100%); padding: 35px 25px; text-align: center; color: #ffffff;">
         <span style="background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; uppercase; display: inline-block; margin-bottom: 8px;">FREE CONFERENCE REGISTRATION CONFIRMED</span>
         <h1 style="margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.5px;">ShePitch Conference Chennai Edition</h1>
-        <p style="margin: 6px 0 0 0; font-size: 14px; opacity: 0.95; font-weight: 500;">UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University, Chennai</p>
+        <p style="margin: 6px 0 0 0; font-size: 14px; opacity: 0.95; font-weight: 500;">UGHAM &bull; Powered by ICEBRKR &bull; Venue: Jeppiaar University, Chennai</p>
       </div>
 
       <div style="padding: 30px 25px; color: #333333; line-height: 1.6;">
@@ -363,7 +363,7 @@ export async function sendConferenceConfirmationEmail(data: {
           <li>Keynote sessions & panel discussions with 80+ industry leaders & women founders.</li>
           <li>Exhibition & tech innovation showcases from top student teams nationwide.</li>
           <li>Exclusive networking opportunities & career placement insights.</li>
-          <li>1 Year of Free Access to icebrkr's product testing platform.</li>
+          <li>1 Year of Free Access to ICEBRKR's product testing platform.</li>
         </ul>
 
         <!-- Contact Support -->
@@ -376,7 +376,7 @@ export async function sendConferenceConfirmationEmail(data: {
       </div>
 
       <div style="background: #f0e6f5; padding: 16px; text-align: center; font-size: 12px; color: #6C3B8F; font-weight: 600;">
-        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by icebrkr &bull; Venue: Jeppiaar University
+        &copy; ShePitch Chennai &bull; UGHAM &bull; Powered by ICEBRKR &bull; Venue: Jeppiaar University
       </div>
     </div>
   `;

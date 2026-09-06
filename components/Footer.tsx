@@ -25,7 +25,7 @@ export default function Footer() {
                 <span className="text-[9px] font-black uppercase text-purple-900 tracking-wider">POWERED BY</span>
                 <Image
                   src="/assets/partners-imgs/part-2.png"
-                  alt="icebrkr"
+                  alt="ICEBRKR"
                   width={80}
                   height={24}
                   className="h-4.5 w-auto object-contain"
@@ -119,7 +119,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800/80 pt-6 mt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 gap-4">
-          <p>© ShePitch Chennai. All Rights Reserved. Powered by Icebrkr & UGHAM.</p>
+          <p>© ShePitch Chennai. All Rights Reserved. Powered by ICEBRKR & UGHAM.</p>
         </div>
       </div>
     </footer>

@@ -172,7 +172,7 @@ export default function HomePage() {
                     <span className="text-[9px] font-black uppercase text-purple-900 tracking-wider">POWERED BY</span>
                     <Image
                       src="/assets/partners-imgs/part-2.png"
-                      alt="icebrkr"
+                      alt="ICEBRKR"
                       width={100}
                       height={32}
                       className="h-6 sm:h-7 w-auto object-contain mt-0.5"
@@ -338,7 +338,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Tier 1: Primary / Headline Partners (Bigger Cards: Ugham, Icebrkr, TNRISE, She Builds) */}
+          {/* Tier 1: Primary / Headline Partners (Bigger Cards: Ugham, ICEBRKR, TNRISE, She Builds) */}
           <div className="space-y-3">
             <div className="text-center">
               <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#6C3B8F] bg-purple-50 px-3.5 py-1 rounded-full border border-purple-100">
@@ -368,7 +368,7 @@ export default function HomePage() {
                 </div>
               </motion.div>
 
-              {/* 2. Icebrkr */}
+              {/* 2. ICEBRKR */}
               <motion.div
                 whileHover={{ y: -6 }}
                 className="bg-white rounded-3xl p-5 sm:p-7 border-2 border-pink-200/90 shadow-md hover:shadow-xl hover:border-[#E83E8C] transition-all flex flex-col items-center justify-between min-h-[190px] sm:min-h-[230px] group"
@@ -376,14 +376,14 @@ export default function HomePage() {
                 <div className="h-24 sm:h-28 w-full flex items-center justify-center p-2 bg-pink-50/40 rounded-2xl">
                   <Image
                     src="/assets/partners-imgs/part-2.png"
-                    alt="icebrkr"
+                    alt="ICEBRKR"
                     width={180}
                     height={90}
                     className="max-h-16 sm:max-h-20 w-auto object-contain group-hover:scale-105 transition-transform"
                   />
                 </div>
                 <div className="text-center pt-2">
-                  <span className="text-xs sm:text-sm font-black text-gray-900 block">icebrkr</span>
+                  <span className="text-xs sm:text-sm font-black text-gray-900 block">ICEBRKR</span>
                   <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#E83E8C] bg-pink-100/80 px-2.5 py-0.5 rounded-full mt-1">
                     Powered by
                   </span>

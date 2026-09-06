@@ -84,7 +84,7 @@ export default function PartnersPage() {
               <div className="w-full h-32 relative flex items-center justify-center p-4 bg-pink-50/40 rounded-2xl">
                 <Image
                   src="/assets/partners-imgs/part-2.png"
-                  alt="icebrkr Logo"
+                  alt="ICEBRKR Logo"
                   width={220}
                   height={110}
                   className="object-contain max-h-24 group-hover:scale-105 transition-transform"
