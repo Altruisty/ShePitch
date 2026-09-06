@@ -35,6 +35,7 @@ function RegisterFormContent() {
 
   const [registeredColleges, setRegisteredColleges] = useState<any[]>([]);
   const [selectedCollegeOption, setSelectedCollegeOption] = useState('');
+  const [customCollegeName, setCustomCollegeName] = useState('');
   const [collegeId, setCollegeId] = useState<number | null>(null);
 
   const [formData, setFormData] = useState({
@@ -107,11 +108,18 @@ function RegisterFormContent() {
   const handleCollegeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     setSelectedCollegeOption(val);
-    const found = registeredColleges.find((c) => c.college_name === val);
-    setCollegeId(found ? found.id : null);
+    if (val === 'Others') {
+      setCollegeId(null);
+    } else {
+      const found = registeredColleges.find((c) => c.college_name === val);
+      setCollegeId(found ? found.id : null);
+    }
   };
 
-  const finalCollegeName = selectedCollegeOption;
+  const finalCollegeName =
+    selectedCollegeOption === 'Others'
+      ? customCollegeName.trim()
+      : selectedCollegeOption;
 
   // Fee calculation (₹299 per participant)
   const baseFeePerMember = 299;
@@ -188,6 +196,12 @@ const loadRazorpayScript = () => {
 
     if (!acceptedTerms || !acceptedPrivacy || !acceptedPromotional) {
       setErrorMsg('Please review and check all required consent boxes (Privacy, Promotional Consent, and Terms & Conditions) to proceed.');
+      setLoading(false);
+      return;
+    }
+
+    if (selectedCollegeOption === 'Others' && (!customCollegeName || customCollegeName.trim() === '')) {
+      setErrorMsg('Please type your College / Institution Name under "Others".');
       setLoading(false);
       return;
     }
@@ -546,16 +560,41 @@ const loadRazorpayScript = () => {
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
               >
                 {registeredColleges.length === 0 ? (
-                  <option value="">Loading Partner Colleges...</option>
+                  <>
+                    <option value="">Loading Partner Colleges...</option>
+                    <option value="Others">Others (Enter College Name Manually)</option>
+                  </>
                 ) : (
-                  registeredColleges.map((c) => (
-                    <option key={c.id} value={c.college_name}>
-                      {c.college_name}
-                    </option>
-                  ))
+                  <>
+                    {registeredColleges.map((c) => (
+                      <option key={c.id} value={c.college_name}>
+                        {c.college_name}
+                      </option>
+                    ))}
+                    <option value="Others">Others (Enter College Name Manually)</option>
+                  </>
                 )}
               </select>
             </div>
+
+            {selectedCollegeOption === 'Others' && (
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-extrabold text-gray-800 uppercase tracking-wider mb-2">
+                  Enter College / Institution Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. SRM Institute of Science and Technology, Chennai"
+                  value={customCollegeName}
+                  onChange={(e) => setCustomCollegeName(e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F] shadow-sm"
+                />
+                <p className="text-xs text-gray-500 mt-1.5 font-medium">
+                  Please type your full official college or university name as it should appear on your certificates and competition records.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

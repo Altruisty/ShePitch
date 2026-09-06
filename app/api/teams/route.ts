@@ -49,9 +49,9 @@ export async function GET(req: Request) {
     }
 
     if (search && search.trim() !== '') {
-      query += ` AND (t.team_name LIKE ? OR t.leader_name LIKE ? OR t.leader_email LIKE ?)`;
+      query += ` AND (t.team_name LIKE ? OR t.leader_name LIKE ? OR t.leader_email LIKE ? OR t.college_name LIKE ?)`;
       const term = `%${search.trim()}%`;
-      queryParams.push(term, term, term);
+      queryParams.push(term, term, term, term);
     }
 
     query += ` GROUP BY t.id ORDER BY t.created_at DESC`;

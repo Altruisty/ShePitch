@@ -89,6 +89,18 @@ export default function AdminTeamsPage() {
     fetchTeams();
   }, [collegeFilter, categoryFilter, statusFilter, search]);
 
+  // Merge partner colleges and any custom "Others" colleges from teams
+  const allCollegeOptions = React.useMemo(() => {
+    const set = new Set<string>();
+    colleges.forEach((c) => {
+      if (c.college_name) set.add(c.college_name.trim());
+    });
+    teams.forEach((t) => {
+      if (t.college_name) set.add(t.college_name.trim());
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [colleges, teams]);
+
   const handleDeleteTeam = async (id: number) => {
     if (!confirm('Are you sure you want to delete this team? This action cannot be undone.')) return;
     try {
@@ -173,9 +185,9 @@ export default function AdminTeamsPage() {
               className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-800 focus:outline-none focus:border-[#6C3B8F]"
             >
               <option value="all">All Colleges</option>
-              {colleges.map((c) => (
-                <option key={c.id} value={c.college_name}>
-                  {c.college_name}
+              {allCollegeOptions.map((cName) => (
+                <option key={cName} value={cName}>
+                  {cName}
                 </option>
               ))}
             </select>
