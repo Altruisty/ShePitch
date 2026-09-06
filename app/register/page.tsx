@@ -34,7 +34,7 @@ function RegisterFormContent() {
   const initialCategory = searchParams.get('category') || 'Idea Pitch';
 
   const [registeredColleges, setRegisteredColleges] = useState<any[]>([]);
-  const [selectedCollegeOption, setSelectedCollegeOption] = useState('');
+  const [selectedCollegeOption, setSelectedCollegeOption] = useState('Others');
   const [customCollegeName, setCustomCollegeName] = useState('');
   const [collegeId, setCollegeId] = useState<number | null>(null);
 
@@ -96,10 +96,6 @@ function RegisterFormContent() {
       .then((data) => {
         if (data.success && Array.isArray(data.colleges)) {
           setRegisteredColleges(data.colleges);
-          if (data.colleges.length > 0) {
-            setSelectedCollegeOption(data.colleges[0].college_name);
-            setCollegeId(data.colleges[0].id);
-          }
         }
       })
       .catch(() => {});
@@ -559,21 +555,12 @@ const loadRazorpayScript = () => {
                 required
                 className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
               >
-                {registeredColleges.length === 0 ? (
-                  <>
-                    <option value="">Loading Partner Colleges...</option>
-                    <option value="Others">Others (Enter College Name Manually)</option>
-                  </>
-                ) : (
-                  <>
-                    {registeredColleges.map((c) => (
-                      <option key={c.id} value={c.college_name}>
-                        {c.college_name}
-                      </option>
-                    ))}
-                    <option value="Others">Others (Enter College Name Manually)</option>
-                  </>
-                )}
+                <option value="Others">Others (Enter College Name Manually)</option>
+                {registeredColleges.map((c) => (
+                  <option key={c.id} value={c.college_name}>
+                    {c.college_name}
+                  </option>
+                ))}
               </select>
             </div>
 
