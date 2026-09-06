@@ -361,7 +361,6 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="text-center pt-2">
-                  <span className="text-xs sm:text-sm font-black text-gray-900 block">UGHAM</span>
                   <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#6C3B8F] bg-purple-100/80 px-2.5 py-0.5 rounded-full mt-1">
                     Organized by
                   </span>
@@ -383,7 +382,6 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="text-center pt-2">
-                  <span className="text-xs sm:text-sm font-black text-gray-900 block">ICEBRKR</span>
                   <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#E83E8C] bg-pink-100/80 px-2.5 py-0.5 rounded-full mt-1">
                     Powered by
                   </span>
@@ -405,7 +403,6 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="text-center pt-2">
-                  <span className="text-xs sm:text-sm font-black text-gray-900 block">TNRISE</span>
                   <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 bg-indigo-100/80 px-2.5 py-0.5 rounded-full mt-1">
                     Ecosystem Partner
                   </span>
@@ -427,7 +424,6 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="text-center pt-2">
-                  <span className="text-xs sm:text-sm font-black text-gray-900 block">She Builds</span>
                   <span className="inline-block text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-rose-800 bg-rose-100/80 px-2.5 py-0.5 rounded-full mt-1">
                     Community Partner
                   </span>
@@ -516,7 +512,7 @@ export default function HomePage() {
                   />
                 </div>
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
-                  Event Partner
+                  Outreach Partner
                 </span>
               </motion.div>
             </div>
@@ -528,7 +524,7 @@ export default function HomePage() {
               href="/partners"
               className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#6C3B8F] hover:text-[#E83E8C] transition-colors group"
             >
-              <span>Explore Complete Partner Ecosystem & Opportunities</span>
+              <span>Explore Complete Partner Ecosystem</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>

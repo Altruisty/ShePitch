@@ -37,7 +37,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 text-[#E83E8C] font-semibold text-sm">
               <Globe className="w-4 h-4" />
-              <span>Grand Finale: Chennai, India</span>
+              <span>Grand Finale: Jeppiar University, Chennai.</span>
             </div>
           </div>
 
