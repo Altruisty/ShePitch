@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Trophy, Lightbulb, Users, Calendar, Award, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
 import AnimatedTitle from '@/components/AnimatedTitle';
+import EventCountdown from '@/components/EventCountdown';
 
 export default function HomePage() {
   const [availability, setAvailability] = React.useState({
@@ -178,7 +179,7 @@ export default function HomePage() {
                     Grand Finale
                   </span>
                   <span className="text-[10px] sm:text-xs font-semibold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-full">
-                    19 Sept 2026
+                    19 Sept 2026 &bull; 9:00 AM
                   </span>
                 </div>
 
@@ -246,6 +247,11 @@ export default function HomePage() {
 
           </div>
         </div>
+      </section>
+
+      {/* ===== EVENT COUNTDOWN SECTION ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <EventCountdown />
       </section>
 
       {/* ===== COMPETITION CATEGORIES PREVIEW ===== */}

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, MapPin, Trophy, CheckCircle2, ArrowRight, DollarSign } from 'lucide-react';
 import AnimatedTitle from '@/components/AnimatedTitle';
+import EventCountdown from '@/components/EventCountdown';
 
 export default function TimelinePage() {
   const steps = [
@@ -31,14 +32,14 @@ export default function TimelinePage() {
       title: 'Grand Finale Event',
       subtitle: 'Live pitch & award ceremony',
       date: '19 Sept 2026',
-      badge: 'Jeppiaar University',
+      badge: '9:00 AM IST',
       color: 'from-[#f523e4] to-[#b307f1]',
-      desc: 'Offline event hosted at Jeppiaar University, Chennai featuring live pitches, founder keynotes, networking, and ₹1L cash prize awards.',
+      desc: 'Offline event hosted at Jeppiaar University, Chennai starting at 9:00 AM, featuring live pitches, founder keynotes, networking, and ₹1L cash prize awards.',
     },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-12 sm:space-y-16">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <span className="she-category-tag">Important Dates</span>
@@ -52,6 +53,9 @@ export default function TimelinePage() {
           Mark your calendar for these critical dates in the ShePitch national competition trajectory.
         </p>
       </div>
+
+      {/* Countdown Timer */}
+      <EventCountdown />
 
       {/* Timeline Steps Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
