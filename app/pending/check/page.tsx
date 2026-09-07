@@ -15,8 +15,6 @@ import {
   CreditCard,
   Building2,
   Sparkles,
-  ArrowRight,
-  ArrowLeftRight,
   Search,
   ChevronDown,
   ChevronUp,
@@ -43,33 +41,33 @@ interface ProcessedTeam {
   leaderEmail: string;
   leaderPhone: string;
   collegeName: string;
-  previousCategory: string;
-  newCategory: string;
-  isChanged: boolean;
-  paymentStatus: string;
-  paymentId?: string;
-  amountPaid: number;
+  category: string;
   projectTitle?: string;
   domain?: string;
   projectDescription?: string;
+  previousStatus: string;
+  newStatus: string;
+  paymentId: string;
+  amount: number;
   membersCount: number;
   members: TeamMember[];
   emailSent: boolean;
-  updatedAt: string;
+  fixedAt: string;
 }
 
-export default function CategoryChangeCheckPage() {
+export default function PendingCheckPage() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [results, setResults] = useState<ProcessedTeam[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedLogs, setCopiedLogs] = useState(false);
   const [resendingEmailId, setResendingEmailId] = useState<number | null>(null);
   const [emailStatusMsg, setEmailStatusMsg] = useState<{ [key: number]: { success: boolean; message: string } }>({});
-
-  // Custom search/modify controls
+  
+  // Custom manual search/fix controls
   const [showManualSearch, setShowManualSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [customCategory, setCustomCategory] = useState<'Idea Pitch' | 'Project Pitch'>('Project Pitch');
+  const [customPaymentId, setCustomPaymentId] = useState('TZ2tdG3KO0GX0D');
+  const [customAmount, setCustomAmount] = useState('796');
 
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
@@ -78,18 +76,19 @@ export default function CategoryChangeCheckPage() {
   }, [logs]);
 
   useEffect(() => {
-    runCategoryCheck();
+    runVerification();
   }, []);
 
-  const runCategoryCheck = async (isCustom = false) => {
+  const runVerification = async (isCustom = false) => {
     setIsLoading(true);
     setEmailStatusMsg({});
     try {
-      let url = '/api/change/check';
+      let url = '/api/pending/check';
       if (isCustom && searchQuery.trim()) {
         const params = new URLSearchParams({
           search: searchQuery.trim(),
-          category: customCategory,
+          paymentId: customPaymentId.trim(),
+          amount: customAmount.trim(),
         });
         url += `?${params.toString()}`;
       }
@@ -110,7 +109,7 @@ export default function CategoryChangeCheckPage() {
         {
           timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
           level: 'error',
-          message: `Request Error: ${err.message}`,
+          message: `Network or Server Request Failed: ${err.message}`,
         },
       ]);
     } finally {
@@ -120,7 +119,7 @@ export default function CategoryChangeCheckPage() {
 
   const handleResendMail = async (team: ProcessedTeam) => {
     setResendingEmailId(team.teamId);
-    setEmailStatusMsg((prev) => ({ ...prev, [team.teamId]: { success: false, message: 'Sending updated email...' } }));
+    setEmailStatusMsg((prev) => ({ ...prev, [team.teamId]: { success: false, message: 'Sending email...' } }));
 
     const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
     setLogs((prev) => [
@@ -128,12 +127,12 @@ export default function CategoryChangeCheckPage() {
       {
         timestamp: now,
         level: 'info',
-        message: `Triggered Updated Confirmation Mail for "${team.teamName}" with category "${team.newCategory}" to ${team.leaderEmail}...`,
+        message: `Triggered Resend Confirmation Email for "${team.teamName}" (ID #${team.teamId}) to ${team.leaderEmail}...`,
       },
     ]);
 
     try {
-      const res = await fetch('/api/change/check', {
+      const res = await fetch('/api/pending/check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -146,14 +145,14 @@ export default function CategoryChangeCheckPage() {
       if (data.success) {
         setEmailStatusMsg((prev) => ({
           ...prev,
-          [team.teamId]: { success: true, message: `Email delivered to ${team.leaderEmail}!` },
+          [team.teamId]: { success: true, message: `Email successfully sent to ${team.leaderEmail}!` },
         }));
         setLogs((prev) => [
           ...prev,
           {
             timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
             level: 'success',
-            message: `Updated confirmation email delivered successfully to ${team.leaderEmail}.`,
+            message: `Confirmation email delivered successfully to ${team.leaderEmail}.`,
           },
         ]);
       } else {
@@ -166,7 +165,7 @@ export default function CategoryChangeCheckPage() {
           {
             timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
             level: 'error',
-            message: `Failed to dispatch email: ${data.error || 'Unknown error'}`,
+            message: `Email dispatch failed: ${data.error || 'Unknown error'}`,
           },
         ]);
       }
@@ -206,52 +205,52 @@ export default function CategoryChangeCheckPage() {
       {/* Header Banner */}
       <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xl relative overflow-hidden">
         <div className="absolute -right-16 -top-16 w-60 h-60 bg-gradient-to-br from-[#E83E8C]/20 to-[#6C3B8F]/20 rounded-full blur-3xl pointer-events-none" />
-
+        
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#6C3B8F] text-xs font-bold mb-3">
-              <ArrowLeftRight className="w-4 h-4 text-[#6C3B8F]" />
-              ShePitch Category Resolver & Auditor
+              <ShieldCheck className="w-4 h-4 text-[#6C3B8F]" />
+              ShePitch Payment Auditor & Resolver
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-              Team Category Swap & Update
+              Pending Team Payment Resolution
             </h1>
             <p className="text-sm text-gray-600 mt-1 max-w-2xl">
-              Automated category updater for registered ShePitch teams. Updates track category in the database, preserves all payment and registration details, and sends updated confirmation receipts.
+              Automated fixer for teams whose payment succeeded on Razorpay but remained marked as pending in the database. Updates status to <span className="font-bold text-emerald-600">Success</span>, registers payment ID, and dispatches confirmation receipts.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => runCategoryCheck(false)}
+              onClick={() => runVerification(false)}
               disabled={isLoading}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#6C3B8F] to-[#E83E8C] hover:opacity-90 transition-all shadow-md shadow-purple-500/20 disabled:opacity-50 cursor-pointer"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-              {isLoading ? 'Processing Swap...' : 'Run Category Swap'}
+              {isLoading ? 'Running Check...' : 'Re-Run Default Check'}
             </button>
             <button
               onClick={() => setShowManualSearch(!showManualSearch)}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all border border-gray-200 cursor-pointer"
             >
               <Search className="w-4 h-4 text-gray-500" />
-              Custom Change
+              Custom Search
               {showManualSearch ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
           </div>
         </div>
 
-        {/* Custom Change Accordion */}
+        {/* Custom Search Form Dropdown */}
         {showManualSearch && (
           <div className="mt-6 pt-6 border-t border-gray-200/80">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="sm:col-span-2">
+              <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">
                   Team Name or Leader Email
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. HerKnee IQ or akshayaakiruba96@gmail.com"
+                  placeholder="e.g. Nextgen minds or divyasankar.in7@gmail.com"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full text-xs px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#6C3B8F]"
@@ -259,23 +258,34 @@ export default function CategoryChangeCheckPage() {
               </div>
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Target Category
+                  Payment ID
+                </label>
+                <input
+                  type="text"
+                  placeholder="TZ2tdG3KO0GX0D"
+                  value={customPaymentId}
+                  onChange={(e) => setCustomPaymentId(e.target.value)}
+                  className="w-full text-xs px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#6C3B8F]"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  Amount (₹)
                 </label>
                 <div className="flex gap-2">
-                  <select
-                    value={customCategory}
-                    onChange={(e: any) => setCustomCategory(e.target.value)}
+                  <input
+                    type="number"
+                    placeholder="796"
+                    value={customAmount}
+                    onChange={(e) => setCustomAmount(e.target.value)}
                     className="w-full text-xs px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#6C3B8F]"
-                  >
-                    <option value="Idea Pitch">Idea Pitch</option>
-                    <option value="Project Pitch">Project Pitch</option>
-                  </select>
+                  />
                   <button
-                    onClick={() => runCategoryCheck(true)}
+                    onClick={() => runVerification(true)}
                     disabled={isLoading || !searchQuery.trim()}
                     className="px-4 py-2.5 bg-[#6C3B8F] text-white rounded-xl text-xs font-bold whitespace-nowrap hover:bg-[#582e75] disabled:opacity-50 cursor-pointer"
                   >
-                    Apply
+                    Verify & Fix
                   </button>
                 </div>
               </div>
@@ -284,85 +294,38 @@ export default function CategoryChangeCheckPage() {
         )}
       </div>
 
-      {/* Target Category Modifications Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Team 1: HerKnee IQ */}
-        <div className="bg-gradient-to-br from-purple-50 via-white to-pink-50 p-6 rounded-3xl border border-purple-200 shadow-sm relative overflow-hidden space-y-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#6C3B8F] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#6C3B8F]" /> Target Team 1
-              </div>
-              <h3 className="text-xl font-black text-gray-900 mt-1">HerKnee IQ</h3>
-              <p className="text-xs text-gray-500">SRM Institute of Science and Technology</p>
-            </div>
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-              Paid ₹897.00
-            </span>
+      {/* Target Pending Team Notice / Overview */}
+      <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-amber-50 rounded-2xl p-5 border border-purple-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+            <Sparkles className="w-5 h-5" />
           </div>
-
-          <div className="bg-white/80 p-3.5 rounded-2xl border border-purple-100 flex items-center justify-between">
-            <div className="text-center">
-              <span className="text-[10px] font-bold text-gray-400 uppercase">From</span>
-              <div className="text-xs font-bold text-gray-500 line-through">Idea Pitch</div>
+          <div>
+            <div className="text-xs font-bold text-[#6C3B8F] uppercase tracking-wider">Target Team Configured</div>
+            <div className="text-sm font-extrabold text-gray-900">
+              Nextgen minds • KINGS ENGINEERING COLLEGE (Idea Pitch)
             </div>
-            <ArrowRight className="w-5 h-5 text-purple-600 animate-pulse" />
-            <div className="text-center">
-              <span className="text-[10px] font-bold text-[#6C3B8F] uppercase">To (New Category)</span>
-              <div className="text-xs font-extrabold text-[#6C3B8F] bg-purple-100 px-2.5 py-0.5 rounded-full border border-purple-300">
-                Project Pitch
-              </div>
+            <div className="text-xs text-gray-600">
+              Leader: <span className="font-semibold text-gray-800">T.S.Divya</span> (divyasankar.in7@gmail.com) • Payment ID: <span className="font-mono font-semibold text-purple-700">pay_TZ2tdG3KO0GX0D</span> (₹796.00)
             </div>
-          </div>
-
-          <div className="text-xs text-gray-600 space-y-1">
-            <div>Leader: <span className="font-semibold text-gray-800">Akshayaa K V</span> (akshayaakiruba96@gmail.com)</div>
-            <div className="font-mono text-[11px] text-gray-500">Razorpay ID: pay_TZA4kewwRzNsZ8</div>
           </div>
         </div>
-
-        {/* Team 2: She Builds */}
-        <div className="bg-gradient-to-br from-pink-50 via-white to-purple-50 p-6 rounded-3xl border border-pink-200 shadow-sm relative overflow-hidden space-y-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#E83E8C] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#E83E8C]" /> Target Team 2
-              </div>
-              <h3 className="text-xl font-black text-gray-900 mt-1">She Builds</h3>
-              <p className="text-xs text-gray-500">SRI VENKATESHWARA COLLEGE OF ENGINEERING</p>
-            </div>
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-              Paid ₹398.00
-            </span>
-          </div>
-
-          <div className="bg-white/80 p-3.5 rounded-2xl border border-pink-100 flex items-center justify-between">
-            <div className="text-center">
-              <span className="text-[10px] font-bold text-gray-400 uppercase">From</span>
-              <div className="text-xs font-bold text-gray-500 line-through">Project Pitch</div>
-            </div>
-            <ArrowRight className="w-5 h-5 text-pink-600 animate-pulse" />
-            <div className="text-center">
-              <span className="text-[10px] font-bold text-[#E83E8C] uppercase">To (New Category)</span>
-              <div className="text-xs font-extrabold text-[#E83E8C] bg-pink-100 px-2.5 py-0.5 rounded-full border border-pink-300">
-                Idea Pitch
-              </div>
-            </div>
-          </div>
-
-          <div className="text-xs text-gray-600 space-y-1">
-            <div>Leader: <span className="font-semibold text-gray-800">S.SWATHY</span> (swathy25tp0444@svcet.ac.in)</div>
-            <div className="font-mono text-[11px] text-gray-500">Razorpay ID: pay_TXc8rBRAUUeV6z</div>
-          </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="px-3 py-1 bg-amber-100 border border-amber-300 text-amber-800 rounded-full text-xs font-bold">
+            Pending ➔ Success
+          </span>
+          <span className="px-3 py-1 bg-purple-100 border border-purple-300 text-[#6C3B8F] rounded-full text-xs font-bold">
+            4 Members
+          </span>
         </div>
       </div>
 
-      {/* Results Section (When Live Teams are Updated) */}
+      {/* Results Section (If Team is Found & Fixed) */}
       {results.length > 0 && (
         <div className="space-y-4">
           <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-            Live Updated Teams ({results.length})
+            Verified & Updated Team ({results.length})
           </h2>
 
           <div className="grid grid-cols-1 gap-6">
@@ -371,21 +334,21 @@ export default function CategoryChangeCheckPage() {
                 key={team.teamId}
                 className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-lg relative overflow-hidden"
               >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -z-0 pointer-events-none" />
+
                 <div className="relative z-10 space-y-6">
                   {/* Top Bar */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-gray-100">
                     <div>
-                      <div className="flex items-center gap-2.5 mb-1 flex-wrap">
+                      <div className="flex items-center gap-2.5 mb-1">
                         <h3 className="text-2xl font-black text-gray-900">{team.teamName}</h3>
                         <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          Category: {team.newCategory}
+                          Payment: {(team.newStatus || 'success').toUpperCase()}
                         </span>
-                        {team.isChanged && (
-                          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">
-                            Swapped from {team.previousCategory}
-                          </span>
-                        )}
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-[#6C3B8F]">
+                          {team.category}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
                         <Building2 className="w-3.5 h-3.5 text-gray-400" />
@@ -408,7 +371,7 @@ export default function CategoryChangeCheckPage() {
                         ) : (
                           <>
                             <Mail className="w-3.5 h-3.5" />
-                            Resend Updated Mail
+                            Resend Confirmation Mail
                           </>
                         )}
                       </button>
@@ -425,64 +388,74 @@ export default function CategoryChangeCheckPage() {
                     </div>
                   </div>
 
-                  {/* Details Grid */}
+                  {/* Financial & Status Grid */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                    <div>
-                      <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">New Category</div>
-                      <div className="text-sm font-extrabold text-[#6C3B8F] mt-0.5">
-                        {team.newCategory}
-                      </div>
-                    </div>
                     <div>
                       <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Payment Status</div>
                       <div className="text-sm font-extrabold text-emerald-600 flex items-center gap-1 mt-0.5">
-                        <Check className="w-4 h-4" /> {(team.paymentStatus || 'success').toUpperCase()}
+                        <Check className="w-4 h-4" /> {(team.newStatus || 'success').toUpperCase()}
                       </div>
                     </div>
                     <div>
                       <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Amount Paid</div>
                       <div className="text-sm font-extrabold text-gray-900 mt-0.5">
-                        ₹{Number(team.amountPaid || 0).toFixed(2)}
+                        ₹{Number(team.amount || 0).toFixed(2)}
                       </div>
                     </div>
-                    <div>
-                      <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Leader Contact</div>
-                      <div className="text-xs font-semibold text-gray-800 mt-0.5 truncate" title={team.leaderEmail}>
-                        {team.leaderName}
+                    <div className="col-span-2 sm:col-span-2">
+                      <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Razorpay Payment ID</div>
+                      <div className="text-xs font-mono font-bold text-purple-700 mt-0.5 break-all">
+                        {team.paymentId}
                       </div>
                     </div>
                   </div>
+
+                  {/* Project Details (if present) */}
+                  {team.projectTitle && (
+                    <div className="p-4 bg-purple-50/50 rounded-2xl border border-purple-100 space-y-1">
+                      <div className="text-xs font-bold text-[#6C3B8F] uppercase tracking-wider">
+                        Pitch Proposal • {team.domain || 'General'}
+                      </div>
+                      <div className="text-sm font-bold text-gray-900">{team.projectTitle}</div>
+                      {team.projectDescription && (
+                        <div className="text-xs text-gray-600 line-clamp-2">{team.projectDescription}</div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Team Members Roster */}
                   <div>
                     <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                       <Users className="w-3.5 h-3.5 text-gray-400" />
-                      Team Members ({team.members?.length || 0})
+                      Team Roster ({team.members?.length || 0} Registered Members)
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {team.members && team.members.length > 0 ? (
                         team.members.map((member, idx) => (
                           <div
                             key={idx}
-                            className="p-3 bg-white border border-gray-200 rounded-xl flex flex-col justify-between text-xs space-y-1"
+                            className="p-3 bg-white border border-gray-200 rounded-xl flex items-center justify-between text-xs"
                           >
-                            <div className="font-bold text-gray-900 flex items-center justify-between">
-                              <span>{member.student_name}</span>
-                              {idx === 0 && (
-                                <span className="text-[10px] bg-purple-100 text-[#6C3B8F] font-bold px-1.5 py-0.5 rounded">
-                                  Leader
-                                </span>
+                            <div>
+                              <div className="font-bold text-gray-900 flex items-center gap-1.5">
+                                {member.student_name}
+                                {idx === 0 && (
+                                  <span className="text-[10px] bg-purple-100 text-[#6C3B8F] font-bold px-1.5 py-0.5 rounded">
+                                    Leader
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-gray-500 text-[11px]">{member.email}</div>
+                              {member.department && (
+                                <div className="text-gray-400 text-[10px]">{member.department}</div>
                               )}
-                            </div>
-                            <div className="text-gray-500 text-[11px] truncate" title={member.email}>
-                              {member.email}
                             </div>
                             <div className="font-mono text-gray-600 text-[11px]">{member.phone}</div>
                           </div>
                         ))
                       ) : (
-                        <div className="text-xs text-gray-400 italic">No member rows found.</div>
+                        <div className="text-xs text-gray-400 italic">No member rows retrieved.</div>
                       )}
                     </div>
                   </div>
@@ -529,7 +502,7 @@ export default function CategoryChangeCheckPage() {
         {/* Terminal Content */}
         <div className="p-4 sm:p-6 max-h-[420px] overflow-y-auto space-y-2 leading-relaxed select-text">
           {logs.length === 0 ? (
-            <div className="text-slate-500 italic">No execution logs captured yet. Click "Run Category Swap" above.</div>
+            <div className="text-slate-500 italic">No execution logs captured yet. Click "Re-Run Default Check" above.</div>
           ) : (
             logs.map((log, index) => {
               let levelColor = 'text-sky-400';
@@ -564,10 +537,10 @@ export default function CategoryChangeCheckPage() {
 
         {/* Terminal Footer */}
         <div className="bg-[#1e293b]/60 px-4 py-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-          <span>Targets: HerKnee IQ ➔ Project Pitch | She Builds ➔ Idea Pitch</span>
+          <span>Target Payment ID: pay_TZ2tdG3KO0GX0D</span>
           <span className="text-emerald-400 font-semibold flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            API Route: /api/change/check
+            API Route: /api/pending/check
           </span>
         </div>
       </div>
@@ -580,37 +553,36 @@ export default function CategoryChangeCheckPage() {
         </h3>
         <ol className="list-decimal list-inside text-xs text-gray-600 space-y-1.5 leading-relaxed">
           <li>
-            Commit and push these 2 new files to your GitHub repository:
+            Commit and push these files to your GitHub repository:
             <code className="mx-1 px-2 py-0.5 bg-gray-100 rounded text-purple-700 font-bold">
-              app/change/check/page.tsx
+              app/pending/check/page.tsx
             </code>
             and
             <code className="mx-1 px-2 py-0.5 bg-gray-100 rounded text-purple-700 font-bold">
-              app/api/change/check/route.ts
+              app/api/pending/check/route.ts
             </code>
           </li>
           <li>
             Deploy or pull to your production server hosting <span className="font-semibold text-gray-800">shepitch.com</span>.
           </li>
           <li>
-            Open{' '}
+            Navigate to{' '}
             <span className="font-mono font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
-              https://shepitch.com/change/check
+              https://shepitch.com/pending/check
             </span>
             .
           </li>
           <li>
-            The page will automatically connect to your production database, update{' '}
-            <span className="font-bold text-gray-800">HerKnee IQ</span> from{' '}
-            <span className="text-purple-700 font-bold">Idea Pitch</span> ➔{' '}
-            <span className="text-purple-700 font-bold">Project Pitch</span>, and update{' '}
-            <span className="font-bold text-gray-800">She Builds</span> from{' '}
-            <span className="text-pink-700 font-bold">Project Pitch</span> ➔{' '}
-            <span className="text-pink-700 font-bold">Idea Pitch</span>.
+            The page will automatically load, connect to your production MySQL database, find team{' '}
+            <span className="font-bold text-gray-800">Nextgen minds</span>, update their payment status from{' '}
+            <span className="text-amber-600 font-bold">pending</span> to{' '}
+            <span className="text-emerald-600 font-bold">success</span>, link payment ID{' '}
+            <span className="font-mono text-purple-700 font-bold">pay_TZ2tdG3KO0GX0D</span>, and send the official confirmation email to{' '}
+            <span className="font-semibold text-gray-800">divyasankar.in7@gmail.com</span>.
           </li>
           <li>
             You can verify every step live right here in the terminal logs, and click the{' '}
-            <span className="font-bold text-purple-700">"Resend Updated Mail"</span> button anytime!
+            <span className="font-bold text-purple-700">"Resend Confirmation Mail"</span> button anytime!
           </li>
         </ol>
       </div>
