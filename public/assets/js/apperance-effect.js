@@ -99,9 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
         
         let isCouponApplied = false;
         const baseFeePerMember = 299;
-        const discountPerMember = 100;
+        let discountPerMember = 100;
 
-        const validCoupons = ["SHEPITCH100"];
+        const couponDiscounts = {
+            "SHEPITCH100": 100,
+            "LOYOLA150": 150
+        };
+        const validCoupons = ["SHEPITCH100", "LOYOLA150"];
 
         // --- Toast Notification Functions ---
         function showValidationToast(message) {
@@ -220,6 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             if (validCoupons.includes(code)) {
                 isCouponApplied = true;
+                discountPerMember = couponDiscounts[code] || 100;
                 couponMessage.className = "text-success d-block mt-1 small";
                 couponMessage.textContent = "✅ Coupon code applied successfully!";
                 discountNotice.classList.remove("d-none");
@@ -234,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 50);
             } else if (code.length > 0) {
                 isCouponApplied = false;
+                discountPerMember = 0;
                 couponMessage.className = "text-danger d-block mt-1 small";
                 couponMessage.textContent = "❌ Invalid coupon code.";
                 discountNotice.classList.add("d-none");
@@ -242,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 couponInput.style.color = "#000000";
             } else {
                 isCouponApplied = false;
+                discountPerMember = 0;
                 couponMessage.textContent = "";
                 couponInput.style.borderColor = "";
                 couponInput.style.backgroundColor = "";

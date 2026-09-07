@@ -79,6 +79,7 @@ function RegisterFormContent() {
   });
 
   const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [couponError, setCouponError] = useState('');
   const [couponSuccess, setCouponSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -120,8 +121,8 @@ function RegisterFormContent() {
   // Fee calculation (₹299 per participant)
   const baseFeePerMember = 299;
   const subtotal = members.length * baseFeePerMember;
-  // ₹100 discount per participant when SHEPITCH100 is applied
-  const discountPerMember = isCouponApplied ? 100 : 0;
+  // Discount per participant based on applied coupon code (₹100 for SHEPITCH100, ₹150 for LOYOLA150)
+  const discountPerMember = appliedCoupon === 'LOYOLA150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
   const discountAmount = members.length * discountPerMember;
   const finalAmount = Math.max(0, subtotal - discountAmount);
 
@@ -163,9 +164,15 @@ function RegisterFormContent() {
 
     if (code === 'SHEPITCH100') {
       setIsCouponApplied(true);
+      setAppliedCoupon('SHEPITCH100');
       setCouponSuccess(`Coupon SHEPITCH100 Applied! ₹100 off per participant (Total ₹${members.length * 100} discount).`);
+    } else if (code === 'LOYOLA150') {
+      setIsCouponApplied(true);
+      setAppliedCoupon('LOYOLA150');
+      setCouponSuccess(`Coupon LOYOLA150 Applied! ₹150 off per participant (Total ₹${members.length * 150} discount).`);
     } else {
       setIsCouponApplied(false);
+      setAppliedCoupon(null);
       setCouponError('Invalid coupon code.');
     }
   };
@@ -233,7 +240,7 @@ const loadRazorpayScript = () => {
           leader_email: members[0].email,
           leader_phone: members[0].phone,
           members,
-          coupon_code: formData.coupon_code,
+          coupon_code: isCouponApplied ? (appliedCoupon || formData.coupon_code.trim().toUpperCase()) : null,
           amount_in_rupees: finalAmount,
         }),
       });

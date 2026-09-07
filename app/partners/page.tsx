@@ -216,7 +216,7 @@ export default function PartnersPage() {
         <div className="space-y-4 text-center">
           <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-900 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
             <Building2 className="w-3.5 h-3.5" />
-            <span>EVENT PARTNER</span>
+            <span>OUTREACH PARTNER</span>
           </div>
 
           <div className="max-w-md mx-auto">
