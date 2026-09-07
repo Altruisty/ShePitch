@@ -4,17 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, Trophy, Lightbulb, Users, Calendar, Award, Sparkles, CheckCircle2, ChevronRight, MapPin } from 'lucide-react';
-import dynamic from 'next/dynamic';
+import { ArrowRight, Trophy, Lightbulb, Users, Calendar, Award, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
 import AnimatedTitle from '@/components/AnimatedTitle';
 import EventCountdown from '@/components/EventCountdown';
 
-const ChennaiCollegeMapModal = dynamic(() => import('@/components/ChennaiCollegeMapModal'), {
-  ssr: false,
-});
-
 export default function HomePage() {
-  const [isMapModalOpen, setIsMapModalOpen] = React.useState(false);
   const [availability, setAvailability] = React.useState({
     ideaTeamsLeft: 16,
     projectTeamsLeft: 16,
@@ -145,18 +139,6 @@ export default function HomePage() {
                 <Link href="/about" className="she-btn-outline text-sm sm:text-base md:text-base lg:text-sm px-7 py-3.5 sm:px-8 sm:py-4 lg:px-6 lg:py-3">
                   Learn More
                 </Link>
-                <button
-                  type="button"
-                  onClick={() => setIsMapModalOpen(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 sm:px-7 sm:py-4 lg:px-5 lg:py-3 rounded-full text-sm sm:text-base md:text-base lg:text-sm font-bold border-2 border-purple-200 bg-white/90 hover:bg-purple-50 text-[#6C3B8F] shadow-sm hover:shadow-md transition-all duration-300 group cursor-pointer"
-                >
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                  </span>
-                  <MapPin className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform" />
-                  <span>Chennai Colleges Map</span>
-                </button>
               </motion.div>
 
               {/* Stats Badges */}
@@ -208,15 +190,6 @@ export default function HomePage() {
                     <p className="text-[11px] sm:text-xs text-gray-500 mt-0.5">
                       Venue Partner: <strong className="text-gray-800">Jeppiaar University</strong>
                     </p>
-                    <button
-                      type="button"
-                      onClick={() => setIsMapModalOpen(true)}
-                      className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-[#6C3B8F] hover:text-purple-800 bg-purple-50 hover:bg-purple-100 border border-purple-200/80 px-2.5 py-0.5 rounded-full mt-1.5 transition-all shadow-xs cursor-pointer group"
-                    >
-                      <MapPin className="w-3 h-3 text-red-500" />
-                      <span>Explore Campus Map</span>
-                      <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                    </button>
                   </div>
                   <div className="bg-purple-50/80 border border-purple-100 p-2 rounded-2xl flex flex-col items-center shrink-0">
                     <span className="text-[9px] font-black uppercase text-purple-900 tracking-wider">POWERED BY</span>
@@ -641,12 +614,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Chennai College Map Popup Modal */}
-      <ChennaiCollegeMapModal
-        isOpen={isMapModalOpen}
-        onClose={() => setIsMapModalOpen(false)}
-      />
     </div>
   );
 }
