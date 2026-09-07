@@ -130,7 +130,7 @@ export default function TimelinePage() {
 
         <div className="pt-4 text-center">
           <Link href="/register" className="she-btn-primary">
-            Register Before 14 September <ArrowRight className="w-4 h-4 ml-1" />
+            Register Before 12 September <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
       </div>
