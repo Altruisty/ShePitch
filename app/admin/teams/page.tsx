@@ -17,6 +17,10 @@ import {
   Phone,
   GraduationCap,
   X,
+  Sparkles,
+  Building2,
+  CreditCard,
+  Check,
 } from 'lucide-react';
 
 export default function AdminTeamsPage() {
@@ -33,21 +37,32 @@ export default function AdminTeamsPage() {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // Form State for Add Team
+  // Form State for Add Team (mirrors /register page logic)
   const [newTeam, setNewTeam] = useState({
     team_name: '',
     category: 'Idea Pitch',
-    college_name: '',
-    leader_name: '',
-    leader_email: '',
-    leader_phone: '',
+    project_title: '',
+    domain: 'AI and Machine Learning',
+    project_description: '',
+    coupon_code: '',
     amount_paid: 598,
     payment_status: 'success',
+    razorpay_payment_id: '',
+    send_email: true,
     members: [
-      { student_name: '', email: '', phone: '', department: 'CSE', year_of_study: '3rd Year', is_leader: true },
-      { student_name: '', email: '', phone: '', department: 'ECE', year_of_study: '3rd Year', is_leader: false },
+      { student_name: '', email: '', phone: '', department: '', year_of_study: '3rd Year', is_leader: true },
+      { student_name: '', email: '', phone: '', department: '', year_of_study: '3rd Year', is_leader: false },
     ],
   });
+
+  const [selectedCollegeOption, setSelectedCollegeOption] = useState('Others');
+  const [customCollegeName, setCustomCollegeName] = useState('');
+  const [collegeId, setCollegeId] = useState<number | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
+  const [formError, setFormError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   const fetchTeams = async () => {
     setLoading(true);
@@ -113,36 +128,177 @@ export default function AdminTeamsPage() {
     }
   };
 
-  const handleAddMemberRow = () => {
-    if (newTeam.members.length >= 4) {
-      alert('Maximum 4 members allowed per team.');
-      return;
-    }
+  const resetNewTeamForm = () => {
+    setSelectedCollegeOption('Others');
+    setCustomCollegeName('');
+    setCollegeId(null);
+    setAppliedCoupon(null);
+    setCouponError('');
+    setCouponSuccess('');
+    setFormError('');
     setNewTeam({
-      ...newTeam,
+      team_name: '',
+      category: 'Idea Pitch',
+      project_title: '',
+      domain: 'AI and Machine Learning',
+      project_description: '',
+      coupon_code: '',
+      amount_paid: 598,
+      payment_status: 'success',
+      razorpay_payment_id: '',
+      send_email: true,
       members: [
-        ...newTeam.members,
-        { student_name: '', email: '', phone: '', department: 'CSE', year_of_study: '2nd Year', is_leader: false },
+        { student_name: '', email: '', phone: '', department: '', year_of_study: '3rd Year', is_leader: true },
+        { student_name: '', email: '', phone: '', department: '', year_of_study: '3rd Year', is_leader: false },
       ],
     });
   };
 
+  const handleCollegeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    setSelectedCollegeOption(val);
+    if (val === 'Others') {
+      setCollegeId(null);
+    } else {
+      const found = colleges.find((c) => c.college_name === val);
+      setCollegeId(found ? found.id : null);
+    }
+  };
+
+  const handleMemberChange = (index: number, field: string, value: any) => {
+    const updated = [...newTeam.members];
+    (updated[index] as any)[field] = value;
+    setNewTeam({ ...newTeam, members: updated });
+  };
+
+  const handleAddMember = () => {
+    if (newTeam.members.length >= 4) {
+      alert('Maximum 4 members allowed per team.');
+      return;
+    }
+    const updated = [
+      ...newTeam.members,
+      { student_name: '', email: '', phone: '', department: '', year_of_study: '3rd Year', is_leader: false },
+    ];
+    const discRate = appliedCoupon === 'LOYOLA150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
+    const calculatedFee = Math.max(0, updated.length * 299 - updated.length * discRate);
+    setNewTeam({ ...newTeam, members: updated, amount_paid: calculatedFee });
+  };
+
+  const handleRemoveMember = (index: number) => {
+    if (newTeam.members.length <= 2) {
+      alert('Minimum 2 members required per team.');
+      return;
+    }
+    const updated = newTeam.members.filter((_, i) => i !== index);
+    if (updated.length > 0) {
+      updated[0].is_leader = true;
+    }
+    const discRate = appliedCoupon === 'LOYOLA150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
+    const calculatedFee = Math.max(0, updated.length * 299 - updated.length * discRate);
+    setNewTeam({ ...newTeam, members: updated, amount_paid: calculatedFee });
+  };
+
+  const applyCoupon = () => {
+    setCouponError('');
+    setCouponSuccess('');
+    const code = newTeam.coupon_code.trim().toUpperCase();
+    if (!code) return;
+
+    if (code === 'SHEPITCH100') {
+      setAppliedCoupon('SHEPITCH100');
+      setCouponSuccess(`Coupon SHEPITCH100 Applied! ₹100 off per participant (Total ₹${newTeam.members.length * 100} discount).`);
+      const disc = newTeam.members.length * 100;
+      const amt = Math.max(0, newTeam.members.length * 299 - disc);
+      setNewTeam((prev) => ({ ...prev, amount_paid: amt }));
+    } else if (code === 'LOYOLA150') {
+      setAppliedCoupon('LOYOLA150');
+      setCouponSuccess(`Coupon LOYOLA150 Applied! ₹150 off per participant (Total ₹${newTeam.members.length * 150} discount).`);
+      const disc = newTeam.members.length * 150;
+      const amt = Math.max(0, newTeam.members.length * 299 - disc);
+      setNewTeam((prev) => ({ ...prev, amount_paid: amt }));
+    } else {
+      setAppliedCoupon(null);
+      setCouponError('Invalid coupon code.');
+    }
+  };
+
   const handleSaveNewTeam = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
+
+    const finalCollege = selectedCollegeOption === 'Others' ? customCollegeName.trim() : selectedCollegeOption.trim();
+    if (!finalCollege) {
+      setFormError('Please select or type a College / Institution Name.');
+      return;
+    }
+
+    if (!newTeam.team_name.trim()) {
+      setFormError('Please enter a Team Name.');
+      return;
+    }
+
+    if (!newTeam.members[0].student_name.trim() || !newTeam.members[0].email.trim() || !newTeam.members[0].phone.trim()) {
+      setFormError('Please fill out the Team Leader (Member 1) details (Name, Email, Phone).');
+      return;
+    }
+
+    for (let i = 0; i < newTeam.members.length; i++) {
+      const m = newTeam.members[i];
+      if (!m.student_name.trim()) {
+        setFormError(`Please enter the full name for Member ${i + 1}.`);
+        return;
+      }
+      if (!m.email.trim()) {
+        setFormError(`Please enter the email address for Member ${i + 1}.`);
+        return;
+      }
+      if (!m.phone.trim()) {
+        setFormError(`Please enter the phone number for Member ${i + 1}.`);
+        return;
+      }
+    }
+
+    setIsSaving(true);
     try {
+      const payload = {
+        team_name: newTeam.team_name.trim(),
+        category: newTeam.category,
+        college_name: finalCollege,
+        college_id: collegeId,
+        leader_name: newTeam.members[0].student_name.trim(),
+        leader_email: newTeam.members[0].email.trim(),
+        leader_phone: newTeam.members[0].phone.trim(),
+        project_title: newTeam.project_title.trim(),
+        domain: newTeam.domain,
+        project_description: newTeam.project_description.trim(),
+        coupon_code: appliedCoupon || null,
+        amount_paid: Number(newTeam.amount_paid) || 0,
+        payment_status: newTeam.payment_status,
+        razorpay_payment_id: newTeam.razorpay_payment_id.trim() || null,
+        send_email: newTeam.send_email,
+        members: newTeam.members.map((m, idx) => ({
+          ...m,
+          is_leader: idx === 0,
+        })),
+      };
+
       const res = await fetch('/api/teams', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTeam),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to create team');
 
       setIsAddModalOpen(false);
+      resetNewTeamForm();
       fetchTeams();
     } catch (err: any) {
-      alert(err.message);
+      setFormError(err.message || 'Failed to create team');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -155,8 +311,11 @@ export default function AdminTeamsPage() {
           <p className="text-xs text-gray-500">Manage participant details, college links, and registration status</p>
         </div>
         <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="she-btn-primary text-xs py-2.5 px-4 flex items-center gap-2"
+          onClick={() => {
+            resetNewTeamForm();
+            setIsAddModalOpen(true);
+          }}
+          className="she-btn-primary text-xs py-2.5 px-4 flex items-center gap-2 cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Add Team Manually
         </button>
@@ -389,118 +548,368 @@ export default function AdminTeamsPage() {
         </div>
       )}
 
-      {/* Modal: Add Team Manually */}
+      {/* Modal: Add Team Manually (Mirrors /register page logic) */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onClick={() => setIsAddModalOpen(false)} className="absolute top-5 right-5 text-gray-400 hover:text-gray-700">
-              <X className="w-6 h-6" />
-            </button>
-
-            <h3 className="text-xl font-extrabold text-gray-900">Add Team Manually</h3>
-
-            <form onSubmit={handleSaveNewTeam} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-bold text-gray-700 mb-1">Team Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={newTeam.team_name}
-                    onChange={(e) => setNewTeam({ ...newTeam, team_name: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                  />
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[92vh] overflow-y-auto space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-purple-100 text-[#6C3B8F] flex items-center justify-center font-bold shadow-xs">
+                  <Plus className="w-5 h-5" />
                 </div>
                 <div>
-                  <label className="block font-bold text-gray-700 mb-1">Category</label>
-                  <select
-                    value={newTeam.category}
-                    onChange={(e) => setNewTeam({ ...newTeam, category: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                  >
-                    <option value="Idea Pitch">Idea Pitch</option>
-                    <option value="Project Pitch">Project Pitch</option>
-                  </select>
+                  <h3 className="text-xl font-extrabold text-gray-900">Add Team Manually</h3>
+                  <p className="text-xs text-gray-500">Register participant team, members, and pitch details directly into ShePitch</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddModalOpen(false)}
+                className="text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Error Banner */}
+            {formError && (
+              <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-xs flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                <span className="font-semibold">{formError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveNewTeam} className="space-y-6 text-xs">
+              {/* Section 1: Team & College Info */}
+              <div className="space-y-4">
+                <h4 className="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-[#6C3B8F]" />
+                  1. Team & College Information
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Team Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Miss spark"
+                      value={newTeam.team_name}
+                      onChange={(e) => setNewTeam({ ...newTeam, team_name: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Participation Category *</label>
+                    <select
+                      value={newTeam.category}
+                      onChange={(e) => setNewTeam({ ...newTeam, category: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    >
+                      <option value="Idea Pitch">Idea Pitch (Early concept)</option>
+                      <option value="Project Pitch">Project Pitch (Working prototype)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Select College / Institution *</label>
+                    <select
+                      value={selectedCollegeOption}
+                      onChange={handleCollegeChange}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    >
+                      <option value="Others">Others (Type College Manually)</option>
+                      {colleges.map((c) => (
+                        <option key={c.id} value={c.college_name}>
+                          {c.college_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {selectedCollegeOption === 'Others' && (
+                    <div>
+                      <label className="block font-bold text-gray-700 mb-1">Type College / Institution Name *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Prathyusha Engineering College"
+                        value={customCollegeName}
+                        onChange={(e) => setCustomCollegeName(e.target.value)}
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-bold text-gray-700 mb-1">College Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={newTeam.college_name}
-                    onChange={(e) => setNewTeam({ ...newTeam, college_name: e.target.value })}
-                    placeholder="e.g. Jeppiaar University"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
-                  />
+              {/* Section 2: Team Members Roster */}
+              <div className="space-y-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                    <Users className="w-4 h-4 text-[#6C3B8F]" />
+                    2. Team Members Roster ({newTeam.members.length}/4)
+                  </h4>
+                  {newTeam.members.length < 4 && (
+                    <button
+                      type="button"
+                      onClick={handleAddMember}
+                      className="text-xs font-bold text-[#6C3B8F] hover:text-[#582e75] flex items-center gap-1 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-xl border border-purple-200 transition-all cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" /> Add Member
+                    </button>
+                  )}
                 </div>
+
+                <div className="space-y-3">
+                  {newTeam.members.map((member, idx) => (
+                    <div key={idx} className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="font-extrabold text-gray-900 text-xs">
+                            Member {idx + 1}
+                          </span>
+                          {idx === 0 ? (
+                            <span className="bg-purple-100 text-[#6C3B8F] font-bold text-[10px] px-2 py-0.5 rounded-full border border-purple-200">
+                              Team Leader
+                            </span>
+                          ) : null}
+                        </div>
+
+                        {idx > 0 && newTeam.members.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveMember(idx)}
+                            className="text-gray-400 hover:text-red-600 p-1 transition-colors cursor-pointer"
+                            title="Remove Member"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block font-semibold text-gray-600 text-[11px] mb-1">Full Name *</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="Student Name"
+                            value={member.student_name}
+                            onChange={(e) => handleMemberChange(idx, 'student_name', e.target.value)}
+                            className="w-full bg-white border border-gray-200 rounded-xl p-2 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block font-semibold text-gray-600 text-[11px] mb-1">Email Address *</label>
+                          <input
+                            type="email"
+                            required
+                            placeholder="student@example.com"
+                            value={member.email}
+                            onChange={(e) => handleMemberChange(idx, 'email', e.target.value)}
+                            className="w-full bg-white border border-gray-200 rounded-xl p-2 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block font-semibold text-gray-600 text-[11px] mb-1">Phone / WhatsApp *</label>
+                          <input
+                            type="tel"
+                            required
+                            placeholder="10-digit number"
+                            value={member.phone}
+                            onChange={(e) => handleMemberChange(idx, 'phone', e.target.value)}
+                            className="w-full bg-white border border-gray-200 rounded-xl p-2 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block font-semibold text-gray-600 text-[11px] mb-1">Department / Branch</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. B.Tech, AI&DS or CSE"
+                            value={member.department}
+                            onChange={(e) => handleMemberChange(idx, 'department', e.target.value)}
+                            className="w-full bg-white border border-gray-200 rounded-xl p-2 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block font-semibold text-gray-600 text-[11px] mb-1">Year of Study</label>
+                          <select
+                            value={member.year_of_study}
+                            onChange={(e) => handleMemberChange(idx, 'year_of_study', e.target.value)}
+                            className="w-full bg-white border border-gray-200 rounded-xl p-2 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                          >
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="Post Graduate">Post Graduate</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Section 3: Pitch Proposal */}
+              <div className="space-y-4 pt-4 border-t border-gray-100">
+                <h4 className="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#6C3B8F]" />
+                  3. Pitch Proposal
+                </h4>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Title of Idea / Project</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. MISS VOICE"
+                      value={newTeam.project_title}
+                      onChange={(e) => setNewTeam({ ...newTeam, project_title: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Domain / Track</label>
+                    <select
+                      value={newTeam.domain}
+                      onChange={(e) => setNewTeam({ ...newTeam, domain: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    >
+                      <option value="AI and Machine Learning">AI and Machine Learning</option>
+                      <option value="AIML">AIML</option>
+                      <option value="Healthcare and MedTech">Healthcare and MedTech</option>
+                      <option value="CleanTech and Sustainability">CleanTech and Sustainability</option>
+                      <option value="FinTech and Banking">FinTech and Banking</option>
+                      <option value="Cybersecurity and Privacy">Cybersecurity and Privacy</option>
+                      <option value="EdTech and Smart Education">EdTech and Smart Education</option>
+                      <option value="Web3 and Blockchain">Web3 and Blockchain</option>
+                      <option value="IoT, Hardware and Robotics">IoT, Hardware and Robotics</option>
+                      <option value="Social Impact and Governance">Social Impact and Governance</option>
+                      <option value="Other / Interdisciplinary">Other / Interdisciplinary</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block font-bold text-gray-700 mb-1">Fee Amount (₹)</label>
-                  <input
-                    type="number"
-                    value={newTeam.amount_paid}
-                    onChange={(e) => setNewTeam({ ...newTeam, amount_paid: Number(e.target.value) })}
+                  <label className="block font-bold text-gray-700 mb-1">Brief Description</label>
+                  <textarea
+                    rows={3}
+                    placeholder="Short description of the pitch proposal..."
+                    value={newTeam.project_description}
+                    onChange={(e) => setNewTeam({ ...newTeam, project_description: e.target.value })}
                     className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 pt-2">
-                <div>
-                  <label className="block font-bold text-gray-700 mb-1">Leader Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={newTeam.leader_name}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      const updatedMembers = [...newTeam.members];
-                      updatedMembers[0].student_name = val;
-                      setNewTeam({ ...newTeam, leader_name: val, members: updatedMembers });
-                    }}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900"
-                  />
+              {/* Section 4: Fee, Coupon & Payment Setup */}
+              <div className="space-y-4 pt-4 border-t border-gray-100">
+                <h4 className="text-xs font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                  <CreditCard className="w-4 h-4 text-[#6C3B8F]" />
+                  4. Fee, Coupon & Payment Setup
+                </h4>
+
+                {/* Coupon Code Section */}
+                <div className="p-3.5 rounded-2xl bg-purple-50/50 border border-purple-100 space-y-2">
+                  <label className="block font-bold text-gray-700 text-xs">Coupon Code (Optional)</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="e.g. SHEPITCH100 or LOYOLA150"
+                      value={newTeam.coupon_code}
+                      onChange={(e) => setNewTeam({ ...newTeam, coupon_code: e.target.value })}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs uppercase tracking-wider text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                    <button
+                      type="button"
+                      onClick={applyCoupon}
+                      className="bg-[#6C3B8F] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#582e75] transition-all shrink-0 cursor-pointer"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {couponError && <p className="text-[11px] font-semibold text-rose-600">{couponError}</p>}
+                  {couponSuccess && <p className="text-[11px] font-bold text-emerald-600">{couponSuccess}</p>}
                 </div>
-                <div>
-                  <label className="block font-bold text-gray-700 mb-1">Leader Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={newTeam.leader_email}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      const updatedMembers = [...newTeam.members];
-                      updatedMembers[0].email = val;
-                      setNewTeam({ ...newTeam, leader_email: val, members: updatedMembers });
-                    }}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900"
-                  />
+
+                {/* Financial Details */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Fee Amount (₹) *</label>
+                    <input
+                      type="number"
+                      required
+                      value={newTeam.amount_paid}
+                      onChange={(e) => setNewTeam({ ...newTeam, amount_paid: Number(e.target.value) })}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                    <span className="text-[10px] text-gray-400 mt-0.5 block">
+                      Base: ₹299 × {newTeam.members.length} members
+                    </span>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Payment Status *</label>
+                    <select
+                      value={newTeam.payment_status}
+                      onChange={(e) => setNewTeam({ ...newTeam, payment_status: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    >
+                      <option value="success">Success (Confirmed)</option>
+                      <option value="pending">Pending</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Razorpay Payment ID</label>
+                    <input
+                      type="text"
+                      placeholder="pay_... (optional)"
+                      value={newTeam.razorpay_payment_id}
+                      onChange={(e) => setNewTeam({ ...newTeam, razorpay_payment_id: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-mono text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="block font-bold text-gray-700 mb-1">Leader Phone</label>
+
+                {/* Dispatch Email Checkbox */}
+                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl border border-gray-200">
                   <input
-                    type="text"
-                    required
-                    value={newTeam.leader_phone}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      const updatedMembers = [...newTeam.members];
-                      updatedMembers[0].phone = val;
-                      setNewTeam({ ...newTeam, leader_phone: val, members: updatedMembers });
-                    }}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs text-gray-900"
+                    type="checkbox"
+                    id="admin_send_email"
+                    checked={newTeam.send_email}
+                    onChange={(e) => setNewTeam({ ...newTeam, send_email: e.target.checked })}
+                    className="w-4 h-4 text-[#6C3B8F] border-gray-300 rounded focus:ring-[#6C3B8F] cursor-pointer accent-[#6C3B8F]"
                   />
+                  <label htmlFor="admin_send_email" className="text-xs font-semibold text-gray-700 cursor-pointer select-none">
+                    Dispatch official ShePitch confirmation email to Team Leader upon saving
+                  </label>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-gray-100 flex justify-end gap-3">
-                <button type="button" onClick={() => setIsAddModalOpen(false)} className="she-btn-outline text-xs py-2 px-4">
+              {/* Actions */}
+              <div className="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="she-btn-outline text-xs py-2 px-4 cursor-pointer"
+                >
                   Cancel
                 </button>
-                <button type="submit" className="she-btn-primary text-xs py-2 px-4">
-                  Save Team
+                <button
+                  type="submit"
+                  disabled={isSaving}
+                  className="she-btn-primary text-xs py-2 px-5 flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {isSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
+                  {isSaving ? 'Saving Team...' : 'Save Team'}
                 </button>
               </div>
             </form>

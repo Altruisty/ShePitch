@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { getAdminSession } from '@/lib/auth';
 import { initDatabase } from '@/lib/init-db';
+import { sendTeamConfirmationEmail } from '@/lib/mailer';
 
 // GET /api/teams - List Teams with filters
 export async function GET(req: Request) {
@@ -72,30 +73,72 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { team_name, category, college_name, college_id, leader_name, leader_email, leader_phone, amount_paid, payment_status, members } = body;
+    const {
+      team_name,
+      category,
+      project_title,
+      domain,
+      project_description,
+      college_name,
+      college_id,
+      leader_name,
+      leader_email,
+      leader_phone,
+      amount_paid,
+      payment_status,
+      coupon_code,
+      razorpay_payment_id,
+      send_email,
+      members,
+    } = body;
 
-    if (!team_name || !category || !college_name || !leader_name || !leader_email || !members || !Array.isArray(members)) {
-      return NextResponse.json({ error: 'Missing required team fields' }, { status: 400 });
+    if (!team_name || !category || !college_name || !leader_name || !leader_email || !members || !Array.isArray(members) || members.length < 2) {
+      return NextResponse.json({ error: 'Missing required team fields. A minimum of 2 members is required.' }, { status: 400 });
     }
+
+    // Check if team name already exists (case-insensitive)
+    const [existingTeams]: any = await pool.query(
+      `SELECT id FROM she_pitch_teams WHERE LOWER(team_name) = LOWER(?) AND payment_status != 'failed' LIMIT 1`,
+      [team_name.trim()]
+    );
+    if (existingTeams && existingTeams.length > 0) {
+      return NextResponse.json({ error: 'Team name is already taken. Please choose a different team name.' }, { status: 400 });
+    }
+
+    const effectiveStatus = payment_status || 'success';
+    const effectiveOrderId = `order_manual_${Date.now()}`;
+    const effectivePaymentId =
+      razorpay_payment_id && razorpay_payment_id.trim() !== ''
+        ? razorpay_payment_id.trim()
+        : effectiveStatus === 'success'
+        ? `pay_manual_${Date.now()}`
+        : null;
 
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
 
       const [teamRes]: any = await connection.query(
-        `INSERT INTO she_pitch_teams (team_name, category, college_id, college_name, leader_name, leader_email, leader_phone, member_count, amount_paid, payment_status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO she_pitch_teams 
+         (team_name, category, project_title, domain, project_description, college_id, college_name, leader_name, leader_email, leader_phone, member_count, coupon_code, amount_paid, payment_status, razorpay_order_id, razorpay_payment_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-          team_name,
+          team_name.trim(),
           category,
+          project_title || '',
+          domain || '',
+          project_description || '',
           college_id || null,
-          college_name,
-          leader_name,
-          leader_email,
-          leader_phone,
+          college_name.trim(),
+          leader_name.trim(),
+          leader_email.trim(),
+          leader_phone.trim(),
           members.length,
-          amount_paid || 0,
-          payment_status || 'success',
+          coupon_code || null,
+          Number(amount_paid) || 0,
+          effectiveStatus,
+          effectiveOrderId,
+          effectivePaymentId,
         ]
       );
 
@@ -105,12 +148,61 @@ export async function POST(req: Request) {
         await connection.query(
           `INSERT INTO she_pitch_students (team_id, student_name, email, phone, department, year_of_study, is_leader)
            VALUES (?, ?, ?, ?, ?, ?, ?)`,
-          [teamId, m.student_name, m.email, m.phone, m.department || '', m.year_of_study || '', m.is_leader ? 1 : 0]
+          [
+            teamId,
+            m.student_name?.trim() || '',
+            m.email?.trim() || '',
+            m.phone?.trim() || '',
+            m.department?.trim() || '',
+            m.year_of_study || '',
+            m.is_leader ? 1 : 0,
+          ]
+        );
+      }
+
+      // Record in payments table if payment is marked success
+      if (effectiveStatus === 'success') {
+        await connection.query(
+          `INSERT INTO she_pitch_payments (team_id, razorpay_order_id, razorpay_payment_id, amount, status)
+           VALUES (?, ?, ?, ?, 'success')`,
+          [teamId, effectiveOrderId, effectivePaymentId, Number(amount_paid) || 0]
         );
       }
 
       await connection.commit();
-      return NextResponse.json({ success: true, message: 'Team created successfully', team_id: teamId });
+
+      // Dispatch confirmation email if requested and status is success
+      if (send_email && effectiveStatus === 'success') {
+        try {
+          await sendTeamConfirmationEmail({
+            leaderName: leader_name.trim(),
+            leaderEmail: leader_email.trim(),
+            teamName: team_name.trim(),
+            category,
+            collegeName: college_name.trim(),
+            amountPaid: Number(amount_paid) || 0,
+            paymentId: effectivePaymentId || 'N/A',
+            projectTitle: project_title || '',
+            domain: domain || '',
+            projectDescription: project_description || '',
+            members: members.map((m: any) => ({
+              student_name: m.student_name,
+              email: m.email,
+              phone: m.phone,
+              department: m.department,
+            })),
+          });
+        } catch (mailErr: any) {
+          console.error('Email dispatch error on manual team creation:', mailErr?.message || mailErr);
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: 'Team created successfully',
+        team_id: teamId,
+        payment_id: effectivePaymentId,
+      });
     } catch (err) {
       await connection.rollback();
       throw err;
