@@ -22,41 +22,40 @@ async function handleCheck() {
     console.log(line);
   };
 
-  const TARGET_PAYMENT_ID = 'pay_TZnrkBJ9atUlYc';
-  const TARGET_LEADER_EMAIL = 'b.sanjeetha2378@gmail.com';
-  const TARGET_LEADER_PHONE = '8610978948';
-  const TARGET_LEADER_PHONE_ALT = '86109 78948';
-  const TARGET_TEAM_NAME = 'Ignite3.0';
-  const TARGET_COLLEGE = 'KINGS ENGINEERING COLLEGE';
+  const TARGET_PAYMENT_ID = 'pay_TZuA4TSm1JUfVQ';
+  const TARGET_LEADER_EMAIL = 'ns1922396@gmail.com';
+  const TARGET_LEADER_PHONE = '6385420852';
+  const TARGET_TEAM_NAME = 'SHETECHX';
+  const TARGET_COLLEGE = 'SRI SAI RANGANATHAN COLLEGE OF ENGINEERING';
   const TARGET_CATEGORY = 'Idea Pitch';
   const TARGET_AMOUNT = 597.0;
-  const TARGET_TITLE = 'NIRA';
-  const TARGET_DOMAIN = 'Public safety';
+  const TARGET_TITLE = 'AI-BASED SMART LOGISTICS AND ACCESSBILITY INTELLIGENCE PLATFORM FOR NORTH EASTERN REGION(NER))';
+  const TARGET_DOMAIN = 'Transportation and Logistics';
   const TARGET_DESCRIPTION =
-    'NIRA is an intelligent risk prediction system that analyzes real-time and historical data to identify potential risks before they become emergencies. It provides early warnings and preventive recommendations, helping people and authorities take timely action and improve public safety.';
+    'North indian region has nature diaster more than any area,so we created an app that gives alerts to the driver and give him another path now the driver is safe and the goods and location of truck is passed to the owner because of this the fear of driver and income loss id reduced even goods and products reach the area without any delays';
 
   const DEFAULT_MEMBERS = [
     {
-      student_name: 'Sanjeetha b',
-      email: 'b.sanjeetha2378@gmail.com',
-      phone: '8610978948',
-      department: 'B.E (cse)',
+      student_name: 'K.NEHA',
+      email: 'ns1922396@gmail.com',
+      phone: '6385420852',
+      department: 'B.E[CSE(CYBER SECURITY)]',
       year_of_study: '2nd Year',
       is_leader: true,
     },
     {
-      student_name: 'Vanmathi N',
-      email: 'nvanmathi2346@gmail.com',
-      phone: '6369745655',
-      department: 'B.E (cse)',
+      student_name: 'A.ASMITHA SRI',
+      email: 'asmithaa309@gmail.com',
+      phone: '8870619624',
+      department: 'BE[CSE(CYBER SECURITY)]',
       year_of_study: '2nd Year',
       is_leader: false,
     },
     {
-      student_name: 'Swetha.K',
-      email: 'swethask61@gmail.com',
-      phone: '6374986041',
-      department: 'B.E (cse)',
+      student_name: 'S.ROSHNI',
+      email: 'roshni.army.1028@gmail.com',
+      phone: '9952860263',
+      department: 'B.E[CSE(CYBER SECURITY)]',
       year_of_study: '2nd Year',
       is_leader: false,
     },
@@ -64,7 +63,7 @@ async function handleCheck() {
 
   try {
     log('======================================================');
-    log('🚀 Initializing payment check & fix for team "Ignite3.0"');
+    log('🚀 Initializing payment check & fix for team "SHETECHX"');
     log(`🎯 Target Payment ID: ${TARGET_PAYMENT_ID}`);
     log(`🎯 Target Leader Email: ${TARGET_LEADER_EMAIL}`);
     log(`🎯 Target Leader Phone: ${TARGET_LEADER_PHONE}`);
@@ -81,10 +80,9 @@ async function handleCheck() {
       `SELECT * FROM she_pitch_teams 
        WHERE leader_email = ? 
           OR leader_phone = ? 
-          OR leader_phone = ?
           OR LOWER(TRIM(team_name)) = LOWER(TRIM(?))
        ORDER BY id DESC LIMIT 1`,
-      [TARGET_LEADER_EMAIL, TARGET_LEADER_PHONE, TARGET_LEADER_PHONE_ALT, TARGET_TEAM_NAME]
+      [TARGET_LEADER_EMAIL, TARGET_LEADER_PHONE, TARGET_TEAM_NAME]
     );
 
     let teamId: number;
@@ -229,7 +227,7 @@ async function handleCheck() {
           student_name: m.student_name,
           email: m.email,
           phone: m.phone,
-          department: m.department || 'B.E (cse)',
+          department: m.department || 'B.E[CSE(CYBER SECURITY)]',
         })),
       });
       log(`🎉 Confirmation email dispatched successfully to: ${finalTeam?.leader_email || DEFAULT_MEMBERS[0].email}`);

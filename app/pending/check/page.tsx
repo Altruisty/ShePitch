@@ -114,17 +114,17 @@ export default function PendingCheckPage() {
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-bold">
-                IG
+                SH
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-bold text-white">Ignite3.0</h2>
+                  <h2 className="text-lg font-bold text-white">SHETECHX</h2>
                   <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
                     Idea Pitch
                   </span>
                 </div>
                 <p className="text-xs text-gray-400 flex items-center gap-1.5 mt-0.5">
-                  <Building className="w-3.5 h-3.5 text-purple-400" /> KINGS ENGINEERING COLLEGE
+                  <Building className="w-3.5 h-3.5 text-purple-400" /> SRI SAI RANGANATHAN COLLEGE OF ENGINEERING
                 </p>
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function PendingCheckPage() {
             <div className="text-right">
               <div className="text-xs text-gray-400">Target Payment ID</div>
               <div className="text-sm font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-2.5 py-1 rounded-lg mt-0.5 inline-block">
-                pay_TZnrkBJ9atUlYc
+                pay_TZuA4TSm1JUfVQ
               </div>
             </div>
           </div>
@@ -142,12 +142,12 @@ export default function PendingCheckPage() {
               <span className="text-gray-400 flex items-center gap-1">
                 <Users className="w-3.5 h-3.5 text-purple-400" /> Leader Contact
               </span>
-              <p className="font-semibold text-white">Sanjeetha b</p>
+              <p className="font-semibold text-white">K.NEHA</p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Mail className="w-3 h-3 text-gray-400" /> b.sanjeetha2378@gmail.com
+                <Mail className="w-3 h-3 text-gray-400" /> ns1922396@gmail.com
               </p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Phone className="w-3 h-3 text-gray-400" /> 86109 78948
+                <Phone className="w-3 h-3 text-gray-400" /> 6385420852
               </p>
             </div>
 
@@ -155,12 +155,12 @@ export default function PendingCheckPage() {
               <span className="text-gray-400 flex items-center gap-1">
                 <Users className="w-3.5 h-3.5 text-purple-400" /> Team Members (3)
               </span>
-              <p className="font-semibold text-white">Vanmathi N & Swetha.K</p>
+              <p className="font-semibold text-white">A.Asmitha Sri & S.Roshni</p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Mail className="w-3 h-3 text-gray-400" /> nvanmathi2346@gmail.com
+                <Mail className="w-3 h-3 text-gray-400" /> asmithaa309@gmail.com
               </p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Mail className="w-3 h-3 text-gray-400" /> swethask61@gmail.com
+                <Mail className="w-3 h-3 text-gray-400" /> roshni.army.1028@gmail.com
               </p>
             </div>
 
@@ -177,11 +177,11 @@ export default function PendingCheckPage() {
               <span className="text-gray-400 flex items-center gap-1">
                 <FileText className="w-3.5 h-3.5 text-purple-400" /> Pitch Proposal
               </span>
-              <p className="font-semibold text-white truncate" title="NIRA - An intelligent risk prediction system">
-                NIRA
+              <p className="font-semibold text-white truncate" title="AI-BASED SMART LOGISTICS AND ACCESSBILITY INTELLIGENCE PLATFORM FOR NORTH EASTERN REGION(NER))">
+                AI-BASED SMART LOGISTICS...
               </p>
-              <p className="text-[11px] text-pink-300">Public safety</p>
-              <p className="text-[11px] text-gray-400">B.E (cse) - 2nd Year</p>
+              <p className="text-[11px] text-pink-300">Transportation & Logistics</p>
+              <p className="text-[11px] text-gray-400">B.E [CSE (Cyber Security)] - 2nd Yr</p>
             </div>
           </div>
 
