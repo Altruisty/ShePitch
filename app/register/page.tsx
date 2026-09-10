@@ -121,8 +121,8 @@ function RegisterFormContent() {
   // Fee calculation (₹299 per participant)
   const baseFeePerMember = 299;
   const subtotal = members.length * baseFeePerMember;
-  // Discount per participant based on applied coupon code (₹100 for SHEPITCH100, ₹150 for LOYOLA150)
-  const discountPerMember = appliedCoupon === 'LOYOLA150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
+  // Discount per participant based on applied coupon code (₹100 for SHEPITCH100, ₹150 for SHEPITCH150)
+  const discountPerMember = appliedCoupon === 'SHEPITCH150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
   const discountAmount = members.length * discountPerMember;
   const finalAmount = Math.max(0, subtotal - discountAmount);
 
@@ -166,10 +166,10 @@ function RegisterFormContent() {
       setIsCouponApplied(true);
       setAppliedCoupon('SHEPITCH100');
       setCouponSuccess(`Coupon SHEPITCH100 Applied! ₹100 off per participant (Total ₹${members.length * 100} discount).`);
-    } else if (code === 'LOYOLA150') {
+    } else if (code === 'SHEPITCH150') {
       setIsCouponApplied(true);
-      setAppliedCoupon('LOYOLA150');
-      setCouponSuccess(`Coupon LOYOLA150 Applied! ₹150 off per participant (Total ₹${members.length * 150} discount).`);
+      setAppliedCoupon('SHEPITCH150');
+      setCouponSuccess(`Coupon SHEPITCH150 Applied! ₹150 off per participant (Total ₹${members.length * 150} discount).`);
     } else {
       setIsCouponApplied(false);
       setAppliedCoupon(null);

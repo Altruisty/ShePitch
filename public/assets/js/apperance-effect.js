@@ -103,9 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const couponDiscounts = {
             "SHEPITCH100": 100,
-            "LOYOLA150": 150
+            "SHEPITCH150": 150
         };
-        const validCoupons = ["SHEPITCH100", "LOYOLA150"];
+        const validCoupons = ["SHEPITCH100", "SHEPITCH150"];
 
         // --- Toast Notification Functions ---
         function showValidationToast(message) {

@@ -180,7 +180,7 @@ export default function AdminTeamsPage() {
       ...newTeam.members,
       { student_name: '', email: '', phone: '', department: '', year_of_study: '3rd Year', is_leader: false },
     ];
-    const discRate = appliedCoupon === 'LOYOLA150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
+    const discRate = appliedCoupon === 'SHEPITCH150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
     const calculatedFee = Math.max(0, updated.length * 299 - updated.length * discRate);
     setNewTeam({ ...newTeam, members: updated, amount_paid: calculatedFee });
   };
@@ -194,7 +194,7 @@ export default function AdminTeamsPage() {
     if (updated.length > 0) {
       updated[0].is_leader = true;
     }
-    const discRate = appliedCoupon === 'LOYOLA150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
+    const discRate = appliedCoupon === 'SHEPITCH150' ? 150 : appliedCoupon === 'SHEPITCH100' ? 100 : 0;
     const calculatedFee = Math.max(0, updated.length * 299 - updated.length * discRate);
     setNewTeam({ ...newTeam, members: updated, amount_paid: calculatedFee });
   };
@@ -211,9 +211,9 @@ export default function AdminTeamsPage() {
       const disc = newTeam.members.length * 100;
       const amt = Math.max(0, newTeam.members.length * 299 - disc);
       setNewTeam((prev) => ({ ...prev, amount_paid: amt }));
-    } else if (code === 'LOYOLA150') {
-      setAppliedCoupon('LOYOLA150');
-      setCouponSuccess(`Coupon LOYOLA150 Applied! ₹150 off per participant (Total ₹${newTeam.members.length * 150} discount).`);
+    } else if (code === 'SHEPITCH150') {
+      setAppliedCoupon('SHEPITCH150');
+      setCouponSuccess(`Coupon SHEPITCH150 Applied! ₹150 off per participant (Total ₹${newTeam.members.length * 150} discount).`);
       const disc = newTeam.members.length * 150;
       const amt = Math.max(0, newTeam.members.length * 299 - disc);
       setNewTeam((prev) => ({ ...prev, amount_paid: amt }));
@@ -822,7 +822,7 @@ export default function AdminTeamsPage() {
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      placeholder="e.g. SHEPITCH100 or LOYOLA150"
+                      placeholder="e.g. SHEPITCH100 or SHEPITCH150"
                       value={newTeam.coupon_code}
                       onChange={(e) => setNewTeam({ ...newTeam, coupon_code: e.target.value })}
                       className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs uppercase tracking-wider text-gray-900 focus:outline-none focus:border-[#6C3B8F]"
