@@ -22,40 +22,40 @@ async function handleCheck() {
     console.log(line);
   };
 
-  const TARGET_PAYMENT_ID = 'pay_TWjxOidlL0Sf5V';
-  const TARGET_LEADER_EMAIL = 'savithirisathiyamoorthi@gmail.com';
-  const TARGET_LEADER_PHONE = '9788951931';
-  const TARGET_TEAM_NAME = 'SheInnova';
-  const TARGET_COLLEGE = 'Erode Sengunthar Engineering College';
+  const TARGET_PAYMENT_ID = 'pay_TUsqtUwlothBvh';
+  const TARGET_LEADER_EMAIL = 'mrumezakhan@gmail.com';
+  const TARGET_LEADER_PHONE = '8754497003';
+  const TARGET_TEAM_NAME = 'OVASYS';
+  const TARGET_COLLEGE = 'STELLA MARIS COLLEGE';
   const TARGET_CATEGORY = 'Idea Pitch';
   const TARGET_AMOUNT = 398.0;
-  const TARGET_TITLE = 'Ai based rural healthcare resource optimization system';
-  const TARGET_DOMAIN = 'HealthTech';
+  const TARGET_TITLE = 'PMOSync: A Multidimensional Biomarker Panel for Holistic PMOS Assessment';
+  const TARGET_DOMAIN = 'Biotechnology • Molecular Diagnostics • Women’s Health • Mental Health';
   const TARGET_DESCRIPTION =
-    'Our project identifies rural areas where people face the greatest difficulties in accessing healthcare by analyzing factors like hospital distance, doctor availability, medicines, ambulance services, and population. AI then recommends the most suitable and cost-effective solution—such as a mobile medical van, telemedicine centre, ambulance, or additional medical staff—so that limited healthcare resources can benefit the maximum number of people.';
+    'PMOSync is a proposed biomarker-based platform designed to assess PMOS beyond reproductive health. It integrates endocrine, metabolic and inflammatory biomarkers with psychological-risk screening to provide a more holistic health profile and support early identification of areas requiring further clinical evaluation.';
 
   const DEFAULT_MEMBERS = [
     {
-      student_name: 'Priyatharsini S',
-      email: 'savithirisathiyamoorthi@gmail.com',
-      phone: '9788951931',
-      department: 'M. tech. CSE',
-      year_of_study: '3rd Year',
+      student_name: 'Rumeza khan. M',
+      email: 'mrumezakhan@gmail.com',
+      phone: '8754497003',
+      department: 'MSc. Biotechnology',
+      year_of_study: '2nd Year',
       is_leader: true,
     },
     {
-      student_name: 'Meera S',
-      email: 'meerasuresh43@gmail.com',
-      phone: '8428427460',
-      department: 'M. Tech. CSE',
-      year_of_study: '3rd Year',
+      student_name: 'Leelavathy',
+      email: 'parkleela417@gmail.com',
+      phone: '7200248697',
+      department: 'MSc. Biotechnology',
+      year_of_study: '2nd Year',
       is_leader: false,
     },
   ];
 
   try {
     log('======================================================');
-    log('🚀 Initializing payment check & fix for team "SheInnova"');
+    log('🚀 Initializing payment check & fix for team "OVASYS"');
     log(`🎯 Target Payment ID: ${TARGET_PAYMENT_ID}`);
     log(`🎯 Target Leader Email: ${TARGET_LEADER_EMAIL}`);
     log(`🎯 Target Leader Phone: ${TARGET_LEADER_PHONE}`);
@@ -219,7 +219,7 @@ async function handleCheck() {
           student_name: m.student_name,
           email: m.email,
           phone: m.phone,
-          department: m.department || 'M. tech. CSE',
+          department: m.department || 'MSc. Biotechnology',
         })),
       });
       log(`🎉 Confirmation email dispatched successfully to: ${finalTeam?.leader_email || DEFAULT_MEMBERS[0].email}`);
