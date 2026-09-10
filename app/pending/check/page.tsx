@@ -114,17 +114,17 @@ export default function PendingCheckPage() {
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-bold">
-                OV
+                IG
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-bold text-white">OVASYS</h2>
+                  <h2 className="text-lg font-bold text-white">Ignite3.0</h2>
                   <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
                     Idea Pitch
                   </span>
                 </div>
                 <p className="text-xs text-gray-400 flex items-center gap-1.5 mt-0.5">
-                  <Building className="w-3.5 h-3.5 text-purple-400" /> STELLA MARIS COLLEGE
+                  <Building className="w-3.5 h-3.5 text-purple-400" /> KINGS ENGINEERING COLLEGE
                 </p>
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function PendingCheckPage() {
             <div className="text-right">
               <div className="text-xs text-gray-400">Target Payment ID</div>
               <div className="text-sm font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-2.5 py-1 rounded-lg mt-0.5 inline-block">
-                pay_TUsqtUwlothBvh
+                pay_TZnrkBJ9atUlYc
               </div>
             </div>
           </div>
@@ -142,25 +142,25 @@ export default function PendingCheckPage() {
               <span className="text-gray-400 flex items-center gap-1">
                 <Users className="w-3.5 h-3.5 text-purple-400" /> Leader Contact
               </span>
-              <p className="font-semibold text-white">Rumeza khan. M</p>
+              <p className="font-semibold text-white">Sanjeetha b</p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Mail className="w-3 h-3 text-gray-400" /> mrumezakhan@gmail.com
+                <Mail className="w-3 h-3 text-gray-400" /> b.sanjeetha2378@gmail.com
               </p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Phone className="w-3 h-3 text-gray-400" /> 8754497003
+                <Phone className="w-3 h-3 text-gray-400" /> 86109 78948
               </p>
             </div>
 
             <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
               <span className="text-gray-400 flex items-center gap-1">
-                <Users className="w-3.5 h-3.5 text-purple-400" /> Team Member 2
+                <Users className="w-3.5 h-3.5 text-purple-400" /> Team Members (3)
               </span>
-              <p className="font-semibold text-white">Leelavathy</p>
+              <p className="font-semibold text-white">Vanmathi N & Swetha.K</p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Mail className="w-3 h-3 text-gray-400" /> parkleela417@gmail.com
+                <Mail className="w-3 h-3 text-gray-400" /> nvanmathi2346@gmail.com
               </p>
               <p className="text-gray-300 text-[11px] flex items-center gap-1">
-                <Phone className="w-3 h-3 text-gray-400" /> 7200248697
+                <Mail className="w-3 h-3 text-gray-400" /> swethask61@gmail.com
               </p>
             </div>
 
@@ -168,8 +168,8 @@ export default function PendingCheckPage() {
               <span className="text-gray-400 flex items-center gap-1">
                 <CreditCard className="w-3.5 h-3.5 text-purple-400" /> Fee Summary
               </span>
-              <p className="font-semibold text-white text-base text-emerald-400">₹398.00</p>
-              <p className="text-[11px] text-gray-400">2 Members (Idea Pitch)</p>
+              <p className="font-semibold text-white text-base text-emerald-400">₹597.00</p>
+              <p className="text-[11px] text-gray-400">3 Members (Idea Pitch)</p>
               <p className="text-[11px] text-purple-300">Status: Pending ➔ Paid</p>
             </div>
 
@@ -177,11 +177,11 @@ export default function PendingCheckPage() {
               <span className="text-gray-400 flex items-center gap-1">
                 <FileText className="w-3.5 h-3.5 text-purple-400" /> Pitch Proposal
               </span>
-              <p className="font-semibold text-white truncate" title="PMOSync: A Multidimensional Biomarker Panel for Holistic PMOS Assessment">
-                PMOSync: Biomarker Panel...
+              <p className="font-semibold text-white truncate" title="NIRA - An intelligent risk prediction system">
+                NIRA
               </p>
-              <p className="text-[11px] text-pink-300">Biotechnology</p>
-              <p className="text-[11px] text-gray-400">MSc. Biotechnology (2nd Year)</p>
+              <p className="text-[11px] text-pink-300">Public safety</p>
+              <p className="text-[11px] text-gray-400">B.E (cse) - 2nd Year</p>
             </div>
           </div>
 
