@@ -390,8 +390,8 @@ export default function HomePage() {
       </section>
 
       {/* ===== CORE PARTNERS & ECOSYSTEM PREVIEW ===== */}
-      <section className="bg-gray-50/70 py-14 sm:py-20 border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+      <section className="bg-gray-50/70 pt-12 sm:pt-16 pb-8 sm:pb-12 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
           <div className="text-center max-w-2xl mx-auto space-y-3 sm:space-y-4">
             <span className="she-category-tag bg-purple-100 text-[#6C3B8F] border-purple-200">Our Ecosystem</span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900">
@@ -574,15 +574,15 @@ export default function HomePage() {
               {/* 8. ICC / TN College Chronicle */}
               <motion.div
                 whileHover={{ y: -4 }}
-                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+                className="bg-white rounded-2xl p-3 sm:p-4 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex items-center justify-center group"
               >
-                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                <div className="h-20 sm:h-24 w-full flex items-center justify-center p-2 bg-emerald-50/40 rounded-xl">
                   <Image
                     src="/assets/partners-imgs/icc-tn-chronicle.jpg"
                     alt="ICC / TN College Chronicle"
-                    width={100}
-                    height={100}
-                    className="max-h-12 sm:max-h-14 w-auto object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform"
+                    width={120}
+                    height={120}
+                    className="max-h-16 sm:max-h-20 w-auto object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform"
                   />
                 </div>
               </motion.div>
@@ -590,15 +590,15 @@ export default function HomePage() {
               {/* 9. Tossle Moon */}
               <motion.div
                 whileHover={{ y: -4 }}
-                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+                className="bg-white rounded-2xl p-3 sm:p-4 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex items-center justify-center group"
               >
-                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                <div className="h-20 sm:h-24 w-full flex items-center justify-center p-2 bg-emerald-50/40 rounded-xl">
                   <Image
                     src="/assets/partners-imgs/tossle-moon.png"
                     alt="Tossle Moon"
-                    width={140}
-                    height={70}
-                    className="max-h-12 sm:max-h-14 w-auto object-contain group-hover:scale-105 transition-transform"
+                    width={160}
+                    height={80}
+                    className="max-h-16 sm:max-h-20 w-auto object-contain group-hover:scale-105 transition-transform"
                   />
                 </div>
               </motion.div>
@@ -606,15 +606,15 @@ export default function HomePage() {
               {/* 10. AI GEEKS */}
               <motion.div
                 whileHover={{ y: -4 }}
-                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+                className="bg-white rounded-2xl p-3 sm:p-4 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex items-center justify-center group"
               >
-                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                <div className="h-20 sm:h-24 w-full flex items-center justify-center p-2 bg-emerald-50/40 rounded-xl">
                   <Image
                     src="/assets/partners-imgs/ai-geeks.jpg"
                     alt="AI GEEKS"
-                    width={100}
-                    height={100}
-                    className="max-h-12 sm:max-h-14 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform"
+                    width={120}
+                    height={120}
+                    className="max-h-16 sm:max-h-20 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform"
                   />
                 </div>
               </motion.div>
@@ -622,15 +622,15 @@ export default function HomePage() {
               {/* 11. CampusX */}
               <motion.div
                 whileHover={{ y: -4 }}
-                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+                className="bg-white rounded-2xl p-3 sm:p-4 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex items-center justify-center group"
               >
-                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                <div className="h-20 sm:h-24 w-full flex items-center justify-center p-2 bg-emerald-50/40 rounded-xl">
                   <Image
                     src="/assets/partners-imgs/campus-x.png"
                     alt="CampusX"
-                    width={140}
-                    height={70}
-                    className="max-h-10 sm:max-h-12 w-auto object-contain group-hover:scale-105 transition-transform"
+                    width={160}
+                    height={80}
+                    className="max-h-12 sm:max-h-16 w-auto object-contain group-hover:scale-105 transition-transform"
                   />
                 </div>
               </motion.div>
