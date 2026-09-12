@@ -21,6 +21,9 @@ import {
   Building2,
   CreditCard,
   Check,
+  Download,
+  ChevronDown,
+  FileSpreadsheet,
 } from 'lucide-react';
 
 export default function AdminTeamsPage() {
@@ -31,6 +34,9 @@ export default function AdminTeamsPage() {
   const [collegeFilter, setCollegeFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('success');
+
+  // Export menu dropdown state
+  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
 
   // Selected Team for View/Edit modal
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
@@ -115,6 +121,253 @@ export default function AdminTeamsPage() {
     });
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [colleges, teams]);
+
+  // --- CSV Export Functions (Respects Active Filters) ---
+  const parseMembers = (team: any): any[] => {
+    if (!team) return [];
+    let membersList = team.members;
+    if (typeof membersList === 'string') {
+      try {
+        membersList = JSON.parse(membersList);
+      } catch {
+        membersList = [];
+      }
+    }
+    if (!Array.isArray(membersList)) {
+      membersList = [];
+    }
+    // Filter out dummy null entries created by MySQL LEFT JOIN when no student records exist
+    const validMembers = membersList.filter(
+      (m: any) => m && (m.id || m.student_name || m.email || m.phone)
+    );
+    return validMembers.sort((a: any, b: any) => (b.is_leader ? 1 : 0) - (a.is_leader ? 1 : 0));
+  };
+
+  const escapeCSV = (value: any): string => {
+    if (value === null || value === undefined) return '""';
+    const str = String(value)
+      .replace(/"/g, '""')
+      .replace(/[\r\n]+/g, ' ')
+      .trim();
+    return `"${str}"`;
+  };
+
+  // 1. Comprehensive Export (1 Row per Team with All 4 Members & Pitch Details)
+  const exportTeamsFullDetailsCSV = () => {
+    if (teams.length === 0) {
+      alert('No teams match the selected filter criteria to export.');
+      return;
+    }
+
+    const headers = [
+      'Team ID',
+      'Team Name',
+      'Category',
+      'College Name',
+      'Payment Status',
+      'Amount Paid (INR)',
+      'Discount Amount (INR)',
+      'Coupon Code',
+      'Razorpay Payment ID',
+      'Razorpay Order ID',
+      'Registration Date',
+      'Project Title',
+      'Domain',
+      'Project Description',
+      'Total Members',
+      'Leader Name',
+      'Leader Email',
+      'Leader Phone',
+      'Leader Department',
+      'Leader Year of Study',
+      'Member 2 Name',
+      'Member 2 Email',
+      'Member 2 Phone',
+      'Member 2 Department',
+      'Member 2 Year of Study',
+      'Member 3 Name',
+      'Member 3 Email',
+      'Member 3 Phone',
+      'Member 3 Department',
+      'Member 3 Year of Study',
+      'Member 4 Name',
+      'Member 4 Email',
+      'Member 4 Phone',
+      'Member 4 Department',
+      'Member 4 Year of Study',
+      'All Members Summary',
+    ];
+
+    const rows = teams.map((team) => {
+      const members = parseMembers(team);
+      const leader = members[0] || {
+        student_name: team.leader_name || '',
+        email: team.leader_email || '',
+        phone: team.leader_phone || '',
+        department: '',
+        year_of_study: '',
+      };
+      const m2 = members[1] || {};
+      const m3 = members[2] || {};
+      const m4 = members[3] || {};
+
+      const membersSummary =
+        members.length > 0
+          ? members
+              .map(
+                (m, idx) =>
+                  `${idx + 1}. ${m.student_name || 'N/A'} (${m.is_leader ? 'Leader, ' : ''}${m.email || 'N/A'}, ${m.phone || 'N/A'}, ${m.department || 'N/A'}, ${m.year_of_study || 'N/A'})`
+              )
+              .join(' | ')
+          : `${leader.student_name} (${leader.email}, ${leader.phone})`;
+
+      return [
+        team.id,
+        escapeCSV(team.team_name),
+        escapeCSV(team.category),
+        escapeCSV(team.college_name),
+        escapeCSV(team.payment_status),
+        team.amount_paid ?? 0,
+        team.discount_amount ?? 0,
+        escapeCSV(team.coupon_code || 'None'),
+        escapeCSV(team.razorpay_payment_id || 'N/A'),
+        escapeCSV(team.razorpay_order_id || 'N/A'),
+        escapeCSV(team.created_at ? new Date(team.created_at).toLocaleString('en-IN') : ''),
+        escapeCSV(team.project_title || ''),
+        escapeCSV(team.domain || ''),
+        escapeCSV(team.project_description || ''),
+        members.length || team.member_count || 1,
+        escapeCSV(leader.student_name || team.leader_name || ''),
+        escapeCSV(leader.email || team.leader_email || ''),
+        escapeCSV(leader.phone || team.leader_phone || ''),
+        escapeCSV(leader.department || ''),
+        escapeCSV(leader.year_of_study || ''),
+        escapeCSV(m2.student_name || ''),
+        escapeCSV(m2.email || ''),
+        escapeCSV(m2.phone || ''),
+        escapeCSV(m2.department || ''),
+        escapeCSV(m2.year_of_study || ''),
+        escapeCSV(m3.student_name || ''),
+        escapeCSV(m3.email || ''),
+        escapeCSV(m3.phone || ''),
+        escapeCSV(m3.department || ''),
+        escapeCSV(m3.year_of_study || ''),
+        escapeCSV(m4.student_name || ''),
+        escapeCSV(m4.email || ''),
+        escapeCSV(m4.phone || ''),
+        escapeCSV(m4.department || ''),
+        escapeCSV(m4.year_of_study || ''),
+        escapeCSV(membersSummary),
+      ].join(',');
+    });
+
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const filterTag = statusFilter !== 'all' ? `_${statusFilter}` : '';
+    const dateStr = new Date().toISOString().slice(0, 10);
+    link.download = `ShePitch_Teams_Full_Export${filterTag}_${dateStr}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // 2. Student Roster Export (1 Row per Student Member)
+  const exportStudentRosterCSV = () => {
+    if (teams.length === 0) {
+      alert('No teams match the selected filter criteria to export.');
+      return;
+    }
+
+    const headers = [
+      'Student ID',
+      'Student Name',
+      'Role in Team',
+      'Email',
+      'Phone',
+      'Department',
+      'Year of Study',
+      'Team ID',
+      'Team Name',
+      'Category',
+      'College Name',
+      'Project Title',
+      'Domain',
+      'Payment Status',
+      'Team Amount Paid (INR)',
+      'Razorpay Payment ID',
+      'Registration Date',
+    ];
+
+    const rows: string[] = [];
+
+    teams.forEach((team) => {
+      const members = parseMembers(team);
+      if (members.length === 0) {
+        rows.push(
+          [
+            'N/A',
+            escapeCSV(team.leader_name),
+            escapeCSV('Team Leader'),
+            escapeCSV(team.leader_email),
+            escapeCSV(team.leader_phone),
+            escapeCSV(''),
+            escapeCSV(''),
+            team.id,
+            escapeCSV(team.team_name),
+            escapeCSV(team.category),
+            escapeCSV(team.college_name),
+            escapeCSV(team.project_title || ''),
+            escapeCSV(team.domain || ''),
+            escapeCSV(team.payment_status),
+            team.amount_paid ?? 0,
+            escapeCSV(team.razorpay_payment_id || 'N/A'),
+            escapeCSV(team.created_at ? new Date(team.created_at).toLocaleString('en-IN') : ''),
+          ].join(',')
+        );
+      } else {
+        members.forEach((m, idx) => {
+          rows.push(
+            [
+              m.id || idx + 1,
+              escapeCSV(m.student_name),
+              escapeCSV(m.is_leader ? 'Team Leader' : `Member ${idx + 1}`),
+              escapeCSV(m.email),
+              escapeCSV(m.phone),
+              escapeCSV(m.department || ''),
+              escapeCSV(m.year_of_study || ''),
+              team.id,
+              escapeCSV(team.team_name),
+              escapeCSV(team.category),
+              escapeCSV(team.college_name),
+              escapeCSV(team.project_title || ''),
+              escapeCSV(team.domain || ''),
+              escapeCSV(team.payment_status),
+              team.amount_paid ?? 0,
+              escapeCSV(team.razorpay_payment_id || 'N/A'),
+              escapeCSV(team.created_at ? new Date(team.created_at).toLocaleString('en-IN') : ''),
+            ].join(',')
+          );
+        });
+      }
+    });
+
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const filterTag = statusFilter !== 'all' ? `_${statusFilter}` : '';
+    const dateStr = new Date().toISOString().slice(0, 10);
+    link.download = `ShePitch_Students_Roster_Export${filterTag}_${dateStr}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   const handleDeleteTeam = async (id: number) => {
     if (!confirm('Are you sure you want to delete this team? This action cannot be undone.')) return;
@@ -307,18 +560,88 @@ export default function AdminTeamsPage() {
       {/* Header & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div>
-          <h2 className="text-xl font-extrabold text-gray-900">Teams & Student Roster</h2>
-          <p className="text-xs text-gray-500">Manage participant details, college links, and registration status</p>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h2 className="text-xl font-extrabold text-gray-900">Teams & Student Roster</h2>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#6C3B8F]/10 text-[#6C3B8F] border border-[#6C3B8F]/20">
+              {loading ? '...' : `${teams.length} Teams`}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">Manage participant details, college links, and registration status</p>
         </div>
-        <button
-          onClick={() => {
-            resetNewTeamForm();
-            setIsAddModalOpen(true);
-          }}
-          className="she-btn-primary text-xs py-2.5 px-4 flex items-center gap-2 cursor-pointer"
-        >
-          <Plus className="w-4 h-4" /> Add Team Manually
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Export Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
+              disabled={loading || teams.length === 0}
+              className="px-4 py-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 text-xs font-bold flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xs cursor-pointer"
+              title="Export filtered teams and student records"
+            >
+              <Download className="w-4 h-4 text-[#6C3B8F]" />
+              <span>Export Data ({teams.length})</span>
+              <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${isExportMenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isExportMenuOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsExportMenuOpen(false)}
+                />
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-50 space-y-1">
+                  <div className="px-3 py-1.5 border-b border-gray-100 text-[11px] text-gray-400 font-semibold">
+                    Export Filtered Records ({teams.length} teams)
+                  </div>
+                  <button
+                    onClick={() => {
+                      exportTeamsFullDetailsCSV();
+                      setIsExportMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-purple-50 transition-colors flex items-start gap-2.5 group cursor-pointer"
+                  >
+                    <FileSpreadsheet className="w-4 h-4 text-[#6C3B8F] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="block text-xs font-bold text-gray-900 group-hover:text-[#6C3B8F]">
+                        Teams & Students (Full Details)
+                      </span>
+                      <span className="block text-[11px] text-gray-500 mt-0.5">
+                        1 row per team with pitch, payment & all 4 members details
+                      </span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      exportStudentRosterCSV();
+                      setIsExportMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-pink-50 transition-colors flex items-start gap-2.5 group cursor-pointer"
+                  >
+                    <Users className="w-4 h-4 text-[#E83E8C] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="block text-xs font-bold text-gray-900 group-hover:text-[#E83E8C]">
+                        Student Roster (Per Student View)
+                      </span>
+                      <span className="block text-[11px] text-gray-500 mt-0.5">
+                        Individual row per student with contact, college & team info
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          <button
+            onClick={() => {
+              resetNewTeamForm();
+              setIsAddModalOpen(true);
+            }}
+            className="she-btn-primary text-xs py-2.5 px-4 flex items-center gap-2 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" /> Add Team Manually
+          </button>
+        </div>
       </div>
 
       {/* Filter & Search Bar */}
@@ -378,6 +701,48 @@ export default function AdminTeamsPage() {
               <option value="failed">Failed</option>
             </select>
           </div>
+        </div>
+
+        {/* Filter Summary & Indicator */}
+        <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div className="flex flex-wrap items-center gap-1.5 text-gray-500">
+            <span className="font-semibold text-gray-700">Active View:</span>
+            <span className="bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded-lg font-semibold">
+              Payment: <b className="text-[#6C3B8F]">{statusFilter === 'all' ? 'All' : statusFilter.toUpperCase()}</b>
+            </span>
+            {collegeFilter !== 'all' && (
+              <span className="bg-purple-50 text-[#6C3B8F] px-2.5 py-0.5 rounded-lg font-semibold border border-purple-100">
+                College: {collegeFilter}
+              </span>
+            )}
+            {categoryFilter !== 'all' && (
+              <span className="bg-pink-50 text-[#E83E8C] px-2.5 py-0.5 rounded-lg font-semibold border border-pink-100">
+                Category: {categoryFilter}
+              </span>
+            )}
+            {search.trim() !== '' && (
+              <span className="bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-lg font-semibold border border-amber-100">
+                Search: &ldquo;{search}&rdquo;
+              </span>
+            )}
+            <span className="text-gray-400 ml-1">
+              ({teams.length} {teams.length === 1 ? 'team' : 'teams'} matching)
+            </span>
+          </div>
+
+          {(search !== '' || collegeFilter !== 'all' || categoryFilter !== 'all' || statusFilter !== 'all') && (
+            <button
+              onClick={() => {
+                setSearch('');
+                setCollegeFilter('all');
+                setCategoryFilter('all');
+                setStatusFilter('all');
+              }}
+              className="text-xs text-gray-400 hover:text-red-600 transition-colors font-medium cursor-pointer"
+            >
+              Reset Filters
+            </button>
+          )}
         </div>
       </div>
 
