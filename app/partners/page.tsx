@@ -212,27 +212,92 @@ export default function PartnersPage() {
           </div>
         </div>
 
-        {/* ROW 6: EVENT PARTNER - ICC / TN COLLEGE CHRONICLE */}
-        <div className="space-y-4 text-center">
+        {/* ROW 6: OUTREACH PARTNERS */}
+        <div className="space-y-6 text-center">
           <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-900 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
             <Building2 className="w-3.5 h-3.5" />
-            <span>OUTREACH PARTNER</span>
+            <span>OUTREACH PARTNERS</span>
           </div>
 
-          <div className="max-w-md mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {/* ICC / TN College Chronicle */}
             <motion.div
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="bg-white rounded-3xl p-8 border-2 border-emerald-200 shadow-xl hover:shadow-2xl transition-all space-y-4 flex flex-col items-center justify-center group"
+              whileHover={{ y: -6 }}
+              className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
             >
-              <div className="w-full h-36 relative flex items-center justify-center p-4 bg-emerald-50/30 rounded-2xl">
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
+                OUTREACH PARTNER
+              </span>
+              <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
                 <Image
                   src="/assets/partners-imgs/icc-tn-chronicle.jpg"
                   alt="TN College Chronicle / ICC Logo"
-                  width={160}
-                  height={160}
-                  className="object-contain max-h-28 rounded-full group-hover:scale-105 transition-transform shadow-md"
+                  width={140}
+                  height={140}
+                  className="object-contain max-h-24 rounded-full group-hover:scale-105 transition-transform shadow-sm"
                 />
               </div>
+              <span className="text-xs font-bold text-gray-800">ICC / TN College Chronicle</span>
+            </motion.div>
+
+            {/* Tossle Moon */}
+            <motion.div
+              whileHover={{ y: -6 }}
+              className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
+            >
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
+                OUTREACH PARTNER
+              </span>
+              <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
+                <Image
+                  src="/assets/partners-imgs/tossle-moon.png"
+                  alt="Tossle Moon Logo"
+                  width={160}
+                  height={90}
+                  className="object-contain max-h-24 group-hover:scale-105 transition-transform"
+                />
+              </div>
+              <span className="text-xs font-bold text-gray-800">Tossle Moon</span>
+            </motion.div>
+
+            {/* AI GEEKS */}
+            <motion.div
+              whileHover={{ y: -6 }}
+              className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
+            >
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
+                OUTREACH PARTNER
+              </span>
+              <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
+                <Image
+                  src="/assets/partners-imgs/ai-geeks.jpg"
+                  alt="AI GEEKS Logo"
+                  width={140}
+                  height={140}
+                  className="object-contain max-h-24 rounded-xl group-hover:scale-105 transition-transform"
+                />
+              </div>
+              <span className="text-xs font-bold text-gray-800">AI GEEKS</span>
+            </motion.div>
+
+            {/* CampusX */}
+            <motion.div
+              whileHover={{ y: -6 }}
+              className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
+            >
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
+                OUTREACH PARTNER
+              </span>
+              <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
+                <Image
+                  src="/assets/partners-imgs/campus-x.png"
+                  alt="CampusX Logo"
+                  width={160}
+                  height={90}
+                  className="object-contain max-h-20 group-hover:scale-105 transition-transform"
+                />
+              </div>
+              <span className="text-xs font-bold text-gray-800">CampusX</span>
             </motion.div>
           </div>
         </div>

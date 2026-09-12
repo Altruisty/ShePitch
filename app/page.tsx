@@ -496,14 +496,14 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Tier 2: Collaborating, Industry & Venue Partners (More compact cards) */}
+          {/* Tier 2: Collaborating & Venue Partners (More compact cards) */}
           <div className="space-y-3 pt-2">
             <div className="text-center">
               <span className="text-[11px] font-extrabold uppercase tracking-widest text-gray-500 bg-white px-3.5 py-1 rounded-full border border-gray-200">
                 Collaborating & Venue Partners
               </span>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 max-w-4xl mx-auto">
               {/* 5. DateBites */}
               <motion.div
                 whileHover={{ y: -4 }}
@@ -560,7 +560,17 @@ export default function HomePage() {
                   Venue Partner
                 </span>
               </motion.div>
+            </div>
+          </div>
 
+          {/* Tier 3: Outreach Partners */}
+          <div className="space-y-3 pt-2">
+            <div className="text-center">
+              <span className="text-[11px] font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
+                Outreach Partners
+              </span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
               {/* 8. ICC / TN College Chronicle */}
               <motion.div
                 whileHover={{ y: -4 }}
@@ -573,6 +583,63 @@ export default function HomePage() {
                     width={100}
                     height={100}
                     className="max-h-12 sm:max-h-14 w-auto object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
+                  Outreach Partner
+                </span>
+              </motion.div>
+
+              {/* 9. Tossle Moon */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+              >
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                  <Image
+                    src="/assets/partners-imgs/tossle-moon.png"
+                    alt="Tossle Moon"
+                    width={140}
+                    height={70}
+                    className="max-h-12 sm:max-h-14 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
+                  Outreach Partner
+                </span>
+              </motion.div>
+
+              {/* 10. AI GEEKS */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+              >
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                  <Image
+                    src="/assets/partners-imgs/ai-geeks.jpg"
+                    alt="AI GEEKS"
+                    width={100}
+                    height={100}
+                    className="max-h-12 sm:max-h-14 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
+                  Outreach Partner
+                </span>
+              </motion.div>
+
+              {/* 11. CampusX */}
+              <motion.div
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-200/80 shadow-sm hover:shadow-md transition-all flex flex-col items-center justify-between min-h-[145px] sm:min-h-[165px] group"
+              >
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center p-1 bg-emerald-50/40 rounded-xl">
+                  <Image
+                    src="/assets/partners-imgs/campus-x.png"
+                    alt="CampusX"
+                    width={140}
+                    height={70}
+                    className="max-h-10 sm:max-h-12 w-auto object-contain group-hover:scale-105 transition-transform"
                   />
                 </div>
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
