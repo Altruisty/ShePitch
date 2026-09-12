@@ -585,9 +585,6 @@ export default function HomePage() {
                     className="max-h-12 sm:max-h-14 w-auto object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform"
                   />
                 </div>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
-                  Outreach Partner
-                </span>
               </motion.div>
 
               {/* 9. Tossle Moon */}
@@ -604,9 +601,6 @@ export default function HomePage() {
                     className="max-h-12 sm:max-h-14 w-auto object-contain group-hover:scale-105 transition-transform"
                   />
                 </div>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
-                  Outreach Partner
-                </span>
               </motion.div>
 
               {/* 10. AI GEEKS */}
@@ -623,9 +617,6 @@ export default function HomePage() {
                     className="max-h-12 sm:max-h-14 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform"
                   />
                 </div>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
-                  Outreach Partner
-                </span>
               </motion.div>
 
               {/* 11. CampusX */}
@@ -642,9 +633,6 @@ export default function HomePage() {
                     className="max-h-10 sm:max-h-12 w-auto object-contain group-hover:scale-105 transition-transform"
                   />
                 </div>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 bg-emerald-100/70 px-2 py-0.5 rounded-full text-center mt-2">
-                  Outreach Partner
-                </span>
               </motion.div>
             </div>
           </div>

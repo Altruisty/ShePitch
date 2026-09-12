@@ -225,9 +225,6 @@ export default function PartnersPage() {
               whileHover={{ y: -6 }}
               className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
             >
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
-                OUTREACH PARTNER
-              </span>
               <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
                 <Image
                   src="/assets/partners-imgs/icc-tn-chronicle.jpg"
@@ -237,7 +234,6 @@ export default function PartnersPage() {
                   className="object-contain max-h-24 rounded-full group-hover:scale-105 transition-transform shadow-sm"
                 />
               </div>
-              <span className="text-xs font-bold text-gray-800">ICC / TN College Chronicle</span>
             </motion.div>
 
             {/* Tossle Moon */}
@@ -245,9 +241,6 @@ export default function PartnersPage() {
               whileHover={{ y: -6 }}
               className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
             >
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
-                OUTREACH PARTNER
-              </span>
               <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
                 <Image
                   src="/assets/partners-imgs/tossle-moon.png"
@@ -257,7 +250,6 @@ export default function PartnersPage() {
                   className="object-contain max-h-24 group-hover:scale-105 transition-transform"
                 />
               </div>
-              <span className="text-xs font-bold text-gray-800">Tossle Moon</span>
             </motion.div>
 
             {/* AI GEEKS */}
@@ -265,9 +257,6 @@ export default function PartnersPage() {
               whileHover={{ y: -6 }}
               className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
             >
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
-                OUTREACH PARTNER
-              </span>
               <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
                 <Image
                   src="/assets/partners-imgs/ai-geeks.jpg"
@@ -277,7 +266,6 @@ export default function PartnersPage() {
                   className="object-contain max-h-24 rounded-xl group-hover:scale-105 transition-transform"
                 />
               </div>
-              <span className="text-xs font-bold text-gray-800">AI GEEKS</span>
             </motion.div>
 
             {/* CampusX */}
@@ -285,9 +273,6 @@ export default function PartnersPage() {
               whileHover={{ y: -6 }}
               className="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-lg hover:shadow-xl transition-all space-y-4 flex flex-col items-center justify-between group"
             >
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">
-                OUTREACH PARTNER
-              </span>
               <div className="w-full h-32 relative flex items-center justify-center p-3 bg-emerald-50/30 rounded-2xl my-2">
                 <Image
                   src="/assets/partners-imgs/campus-x.png"
@@ -297,7 +282,6 @@ export default function PartnersPage() {
                   className="object-contain max-h-20 group-hover:scale-105 transition-transform"
                 />
               </div>
-              <span className="text-xs font-bold text-gray-800">CampusX</span>
             </motion.div>
           </div>
         </div>
