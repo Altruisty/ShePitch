@@ -11,7 +11,7 @@ import Preloader from '@/components/Preloader';
 
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || '';
-  const isPanelRoute = pathname.startsWith('/admin') || pathname.startsWith('/college');
+  const isPanelRoute = pathname.startsWith('/admin') || pathname.startsWith('/college') || pathname.startsWith('/db');
 
   if (isPanelRoute) {
     return (
