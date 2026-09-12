@@ -4,7 +4,7 @@ import { initDatabase } from '@/lib/init-db';
 
 export const dynamic = 'force-dynamic';
 
-const MAX_IDEA_PITCH = 100;
+const MAX_IDEA_PITCH = 120;
 const MAX_PROJECT_PITCH = 90;
 
 export async function GET() {

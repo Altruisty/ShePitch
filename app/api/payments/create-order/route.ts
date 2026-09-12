@@ -46,9 +46,9 @@ export async function POST(req: Request) {
       );
     }
 
-    // Capacity verification: Max 100 teams for Idea Pitch, Max 90 teams for Project Pitch
+    // Capacity verification: Max 120 teams for Idea Pitch, Max 90 teams for Project Pitch
     const MAX_TRACK_LIMITS: Record<string, number> = {
-      'Idea Pitch': 100,
+      'Idea Pitch': 120,
       'Project Pitch': 90,
     };
 
