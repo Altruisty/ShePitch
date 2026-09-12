@@ -78,8 +78,13 @@ export default function AdminCollegesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div>
-          <h2 className="text-xl font-extrabold text-gray-900">College Management</h2>
-          <p className="text-xs text-gray-500">Register institutions, manage login credentials & representative profiles</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <h2 className="text-xl font-extrabold text-gray-900">College Management</h2>
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#6C3B8F]/10 text-[#6C3B8F] border border-[#6C3B8F]/20">
+              Total Colleges: {loading ? '...' : colleges.length}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">Register institutions, manage login credentials & representative profiles</p>
         </div>
         <button
           onClick={() => {
