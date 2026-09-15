@@ -6,43 +6,35 @@ import pool from '@/lib/db';
 import { initDatabase } from '@/lib/init-db';
 import { sendTeamConfirmationEmail } from '@/lib/mailer';
 
-// Target Team Information for pay_TbTe3GhQARyMj5
+// Target Team Information for pay_TaezlVcQsEz2IO
 const TARGET_TEAM = {
-  team_name: 'ResQTech',
-  category: 'Project Pitch',
-  college_name: 'Kongu Engineering College',
-  leader_name: 'PUJAA S A',
-  leader_email: 'pujaasa.25civil@kongu.edu',
-  leader_phone: '96773 47737',
-  amount_paid: 897.0,
-  payment_id: 'pay_TbTe3GhQARyMj5',
-  project_title: 'LifeGuard – Smart Accident Detection and Emergency Response System',
-  domain: 'Healthcare / Emergency Medical Response / Road Safety',
+  team_name: 'Code hunter',
+  category: 'Idea Pitch',
+  college_name: 'Rajiv Gandhi College of engineering and technology',
+  leader_name: 'Jeevitha R',
+  leader_email: 'jeevithaars837@gmail.com',
+  leader_phone: '8072989696',
+  amount_paid: 398.0,
+  payment_id: 'pay_TaezlVcQsEz2IO',
+  project_title: 'Project Title SAFESHE AI – Predictive Personal Safety & Emergency Response system.',
+  domain: "Artificial intelligence and women 's personal safety",
   project_description:
-    'LifeGuard is a smart web-based emergency response system designed to reduce delays in medical assistance after road accidents.The system detects a possible accident using device motion data or a manual trigger, obtains the user\'s GPS location, and starts a safety confirmation countdown to prevent false alerts.If the user does not respond, the system automatically initiates emergency alerts, shares the accident location with emergency contacts, provides nearby hospital details, and sends an ambulance request.Accident events and response details are stored in MongoDB Atlas and displayed through a real-time monitoring dashboard.The prototype can later be extended into a mobile application with real smartphone sensor integration.',
+    'SAFESHE AI uses AI to detect unusual movement, route changes, and other risk signals to predict potential danger. It alerts the woman early and can notify trusted contacts with her live location if the risk becomes high.',
   members: [
     {
-      student_name: 'PUJAA S A',
-      email: 'pujaasa.25civil@kongu.edu',
-      phone: '96773 47737',
-      department: 'BE CIVIL',
-      year_of_study: '2nd Year',
+      student_name: 'Jeevitha R',
+      email: 'jeevithaars837@gmail.com',
+      phone: '8072989696',
+      department: 'B.tech CSE',
+      year_of_study: '3rd Year',
       is_leader: true,
     },
     {
-      student_name: 'JIEVA M',
-      email: 'jievam.25civil@kongu.edu',
-      phone: '9345754154',
-      department: 'BE CIVIL',
-      year_of_study: '2nd Year',
-      is_leader: false,
-    },
-    {
-      student_name: 'AARATHANA M',
-      email: 'aarathanam.25civil@kongu.edu',
-      phone: '63798 65543',
-      department: 'BE CIVIL',
-      year_of_study: '2nd Year',
+      student_name: 'Raajasree',
+      email: 'raajasreesrinivassan098@gmail.com',
+      phone: '7845656449',
+      department: 'B.Tech CSE',
+      year_of_study: '3rd Year',
       is_leader: false,
     },
   ],
@@ -115,7 +107,7 @@ async function handleVerification(req: Request) {
              leader_name = ?,
              leader_email = ?,
              leader_phone = ?,
-             member_count = 3
+             member_count = ?
          WHERE id = ?`,
         [
           TARGET_TEAM.payment_id,
@@ -128,6 +120,7 @@ async function handleVerification(req: Request) {
           TARGET_TEAM.leader_name,
           TARGET_TEAM.leader_email,
           TARGET_TEAM.leader_phone,
+          TARGET_TEAM.members.length,
           teamId,
         ]
       );
@@ -138,7 +131,7 @@ async function handleVerification(req: Request) {
       const [insertRes]: any = await pool.query(
         `INSERT INTO she_pitch_teams 
          (team_name, category, project_title, domain, project_description, college_name, leader_name, leader_email, leader_phone, member_count, amount_paid, payment_status, razorpay_order_id, razorpay_payment_id)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 3, ?, 'success', ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'success', ?, ?)`,
         [
           TARGET_TEAM.team_name,
           TARGET_TEAM.category,
@@ -149,6 +142,7 @@ async function handleVerification(req: Request) {
           TARGET_TEAM.leader_name,
           TARGET_TEAM.leader_email,
           TARGET_TEAM.leader_phone,
+          TARGET_TEAM.members.length,
           TARGET_TEAM.amount_paid,
           orderId,
           TARGET_TEAM.payment_id,
@@ -188,14 +182,14 @@ async function handleVerification(req: Request) {
       addLog('success', `Inserted new payment record in she_pitch_payments with status = 'success'.`);
     }
 
-    // Step 3: Verify and sync all 3 students in she_pitch_students
+    // Step 3: Verify and sync all members in she_pitch_students
     const [existingStudents]: any = await pool.query(
       `SELECT * FROM she_pitch_students WHERE team_id = ?`,
       [teamId]
     );
 
     if (!existingStudents || existingStudents.length === 0) {
-      addLog('info', `Inserting 3 members into she_pitch_students for team ID #${teamId}...`);
+      addLog('info', `Inserting ${TARGET_TEAM.members.length} members into she_pitch_students for team ID #${teamId}...`);
       for (const m of TARGET_TEAM.members) {
         await pool.query(
           `INSERT INTO she_pitch_students 
@@ -204,10 +198,9 @@ async function handleVerification(req: Request) {
           [teamId, m.student_name, m.email, m.phone, m.department, m.year_of_study, m.is_leader ? 1 : 0]
         );
       }
-      addLog('success', `Successfully added all 3 members (Leader: ${TARGET_TEAM.leader_name}) into she_pitch_students.`);
+      addLog('success', `Successfully added all ${TARGET_TEAM.members.length} members (Leader: ${TARGET_TEAM.leader_name}) into she_pitch_students.`);
     } else {
       addLog('info', `Found ${existingStudents.length} student records for team #${teamId}. Verifying member list...`);
-      // Update each student or ensure matching emails are properly configured
       for (const m of TARGET_TEAM.members) {
         const found = existingStudents.find(
           (s: any) => s.email?.toLowerCase().trim() === m.email.toLowerCase().trim()
@@ -228,7 +221,7 @@ async function handleVerification(req: Request) {
           );
         }
       }
-      addLog('success', `Verified and synced all 3 student members in she_pitch_students.`);
+      addLog('success', `Verified and synced all ${TARGET_TEAM.members.length} student members in she_pitch_students.`);
     }
 
     // Step 4: Send registration confirmation email

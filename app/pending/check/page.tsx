@@ -63,23 +63,22 @@ export default function PendingCheckPage() {
   }, []);
 
   const team = result?.team || {
-    team_name: 'ResQTech',
-    college_name: 'Kongu Engineering College',
-    category: 'Project Pitch',
-    leader_name: 'PUJAA S A',
-    leader_email: 'pujaasa.25civil@kongu.edu',
-    leader_phone: '96773 47737',
-    amount_paid: 897.0,
-    razorpay_payment_id: 'pay_TbTe3GhQARyMj5',
+    team_name: 'Code hunter',
+    college_name: 'Rajiv Gandhi College of engineering and technology',
+    category: 'Idea Pitch',
+    leader_name: 'Jeevitha R',
+    leader_email: 'jeevithaars837@gmail.com',
+    leader_phone: '8072989696',
+    amount_paid: 398.0,
+    razorpay_payment_id: 'pay_TaezlVcQsEz2IO',
     payment_status: 'success',
-    project_title: 'LifeGuard – Smart Accident Detection and Emergency Response System',
-    domain: 'Healthcare / Emergency Medical Response / Road Safety',
+    project_title: 'Project Title SAFESHE AI – Predictive Personal Safety & Emergency Response system.',
+    domain: "Artificial intelligence and women 's personal safety",
     project_description:
-      'LifeGuard is a smart web-based emergency response system designed to reduce delays in medical assistance after road accidents.The system detects a possible accident using device motion data or a manual trigger, obtains the user\'s GPS location, and starts a safety confirmation countdown to prevent false alerts.If the user does not respond, the system automatically initiates emergency alerts, shares the accident location with emergency contacts, provides nearby hospital details, and sends an ambulance request.Accident events and response details are stored in MongoDB Atlas and displayed through a real-time monitoring dashboard.The prototype can later be extended into a mobile application with real smartphone sensor integration.',
+      'SAFESHE AI uses AI to detect unusual movement, route changes, and other risk signals to predict potential danger. It alerts the woman early and can notify trusted contacts with her live location if the risk becomes high.',
     members: [
-      { student_name: 'PUJAA S A', email: 'pujaasa.25civil@kongu.edu', phone: '96773 47737', department: 'BE CIVIL', year_of_study: '2nd Year', is_leader: true },
-      { student_name: 'JIEVA M', email: 'jievam.25civil@kongu.edu', phone: '9345754154', department: 'BE CIVIL', year_of_study: '2nd Year', is_leader: false },
-      { student_name: 'AARATHANA M', email: 'aarathanam.25civil@kongu.edu', phone: '63798 65543', department: 'BE CIVIL', year_of_study: '2nd Year', is_leader: false },
+      { student_name: 'Jeevitha R', email: 'jeevithaars837@gmail.com', phone: '8072989696', department: 'B.tech CSE', year_of_study: '3rd Year', is_leader: true },
+      { student_name: 'Raajasree', email: 'raajasreesrinivassan098@gmail.com', phone: '7845656449', department: 'B.Tech CSE', year_of_study: '3rd Year', is_leader: false },
     ],
   };
 
@@ -102,7 +101,7 @@ export default function PendingCheckPage() {
                 </span>
               </div>
               <p className="text-[11px] text-gray-500 font-mono">
-                Target: ResQTech • pay_TbTe3GhQARyMj5
+                Target: Code hunter • pay_TaezlVcQsEz2IO
               </p>
             </div>
           </div>
@@ -137,7 +136,7 @@ export default function PendingCheckPage() {
             <div>
               <h3 className="text-sm font-bold text-purple-900">Executing Payment Fix...</h3>
               <p className="text-xs text-purple-700 mt-0.5">
-                Connecting to MySQL, updating ResQTech to &apos;success&apos; with payment ID <code className="font-mono font-bold">pay_TbTe3GhQARyMj5</code>, syncing team members, and sending confirmation email.
+                Connecting to MySQL, updating Code hunter to &apos;success&apos; with payment ID <code className="font-mono font-bold">pay_TaezlVcQsEz2IO</code>, syncing team members, and sending confirmation email.
               </p>
             </div>
           </div>
@@ -165,7 +164,7 @@ export default function PendingCheckPage() {
                 Payment Status Successfully Updated to &ldquo;Success&rdquo;!
               </h3>
               <p className="text-xs text-emerald-700 mt-0.5">
-                Team <strong>ResQTech</strong> is now registered as paid (₹897.00) with Razorpay ID <code className="font-mono font-bold">pay_TbTe3GhQARyMj5</code>.
+                Team <strong>Code hunter</strong> is now registered as paid (₹398.00) with Razorpay ID <code className="font-mono font-bold">pay_TaezlVcQsEz2IO</code>.
               </p>
             </div>
           </div>
@@ -234,7 +233,7 @@ export default function PendingCheckPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
             <div>
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-[#6C3B8F]/10 text-[#6C3B8F] uppercase tracking-wider">
-                {team.category || 'PROJECT PITCH'}
+                {team.category || 'IDEA PITCH'}
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">
                 {team.team_name}
@@ -259,7 +258,7 @@ export default function PendingCheckPage() {
                   Success
                 </span>
                 <span className="text-[11px] font-mono text-gray-600 bg-white px-2 py-0.5 rounded border border-emerald-200">
-                  {team.razorpay_payment_id || 'pay_TbTe3GhQARyMj5'}
+                  {team.razorpay_payment_id || 'pay_TaezlVcQsEz2IO'}
                 </span>
               </div>
             </div>
@@ -297,7 +296,7 @@ export default function PendingCheckPage() {
               </div>
               <div>
                 <span className="inline-block px-3 py-1 rounded-xl text-xs font-bold bg-purple-50 text-[#6C3B8F] border border-purple-100">
-                  {team.domain || 'Healthcare / Emergency Medical Response / Road Safety'}
+                  {team.domain || "Artificial intelligence and women 's personal safety"}
                 </span>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
@@ -321,10 +320,10 @@ export default function PendingCheckPage() {
           <div className="space-y-3 pt-2">
             <h4 className="text-sm font-black text-gray-900 flex items-center gap-2">
               <Users className="w-4 h-4 text-[#6C3B8F]" />
-              <span>All Team Members ({team.members?.length || 3})</span>
+              <span>All Team Members ({team.members?.length || 2})</span>
             </h4>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {(team.members || []).map((m: any, idx: number) => (
                 <div
                   key={idx}
@@ -345,7 +344,7 @@ export default function PendingCheckPage() {
                     <div className="text-[11px] text-gray-500">{m.phone}</div>
                   </div>
                   <div className="pt-2 border-t border-gray-200/60 text-[11px] font-medium text-[#6C3B8F]">
-                    {m.department || 'BE CIVIL'} • {m.year_of_study || '2nd Year'}
+                    {m.department || 'B.tech CSE'} • {m.year_of_study || '3rd Year'}
                   </div>
                 </div>
               ))}
