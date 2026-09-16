@@ -63,22 +63,22 @@ export default function PendingCheckPage() {
   }, []);
 
   const team = result?.team || {
-    team_name: 'Code hunter',
-    college_name: 'Rajiv Gandhi College of engineering and technology',
+    team_name: 'LifeGuard',
+    college_name: 'CSI college of engineering',
     category: 'Idea Pitch',
-    leader_name: 'Jeevitha R',
-    leader_email: 'jeevithaars837@gmail.com',
-    leader_phone: '8072989696',
-    amount_paid: 398.0,
-    razorpay_payment_id: 'pay_TaezlVcQsEz2IO',
+    leader_name: 'Priyanka M',
+    leader_email: 'priyankamarimuthu2006@gmail.com',
+    leader_phone: '6379759348',
+    amount_paid: 298.0,
+    razorpay_payment_id: 'pay_TcGkj43UHgc9Lt',
     payment_status: 'success',
-    project_title: 'Project Title SAFESHE AI – Predictive Personal Safety & Emergency Response system.',
-    domain: "Artificial intelligence and women 's personal safety",
+    project_title: 'SmartRoute',
+    domain: 'Artificial Intelligence and machine learning',
     project_description:
-      'SAFESHE AI uses AI to detect unusual movement, route changes, and other risk signals to predict potential danger. It alerts the woman early and can notify trusted contacts with her live location if the risk becomes high.',
+      'Smart Ambulance is an AI-based emergency system that detects an ambulance in traffic and identifies whether it is carrying an emergency case. It analyzes traffic conditions and gives priority to the ambulance by controlling traffic signals and alerting nearby vehicles. This helps reduce delays and allows the ambulance to reach the hospital faster.',
     members: [
-      { student_name: 'Jeevitha R', email: 'jeevithaars837@gmail.com', phone: '8072989696', department: 'B.tech CSE', year_of_study: '3rd Year', is_leader: true },
-      { student_name: 'Raajasree', email: 'raajasreesrinivassan098@gmail.com', phone: '7845656449', department: 'B.Tech CSE', year_of_study: '3rd Year', is_leader: false },
+      { student_name: 'Priyanka M', email: 'priyankamarimuthu2006@gmail.com', phone: '6379759348', department: 'B.Tech AI & DS', year_of_study: '3rd Year', is_leader: true },
+      { student_name: 'Angel J', email: 'angeljerald2109@gmail.com', phone: '8610368340', department: 'B.Tech AI & DS', year_of_study: '3rd Year', is_leader: false },
     ],
   };
 
@@ -101,7 +101,7 @@ export default function PendingCheckPage() {
                 </span>
               </div>
               <p className="text-[11px] text-gray-500 font-mono">
-                Target: Code hunter • pay_TaezlVcQsEz2IO
+                Target: LifeGuard • pay_TcGkj43UHgc9Lt
               </p>
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function PendingCheckPage() {
             <div>
               <h3 className="text-sm font-bold text-purple-900">Executing Payment Fix...</h3>
               <p className="text-xs text-purple-700 mt-0.5">
-                Connecting to MySQL, updating Code hunter to &apos;success&apos; with payment ID <code className="font-mono font-bold">pay_TaezlVcQsEz2IO</code>, syncing team members, and sending confirmation email.
+                Connecting to MySQL, updating LifeGuard to &apos;success&apos; with payment ID <code className="font-mono font-bold">pay_TcGkj43UHgc9Lt</code>, syncing team members, and sending confirmation email.
               </p>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function PendingCheckPage() {
                 Payment Status Successfully Updated to &ldquo;Success&rdquo;!
               </h3>
               <p className="text-xs text-emerald-700 mt-0.5">
-                Team <strong>Code hunter</strong> is now registered as paid (₹398.00) with Razorpay ID <code className="font-mono font-bold">pay_TaezlVcQsEz2IO</code>.
+                Team <strong>LifeGuard</strong> is now registered as paid (₹298.00) with Razorpay ID <code className="font-mono font-bold">pay_TcGkj43UHgc9Lt</code>.
               </p>
             </div>
           </div>
@@ -258,7 +258,7 @@ export default function PendingCheckPage() {
                   Success
                 </span>
                 <span className="text-[11px] font-mono text-gray-600 bg-white px-2 py-0.5 rounded border border-emerald-200">
-                  {team.razorpay_payment_id || 'pay_TaezlVcQsEz2IO'}
+                  {team.razorpay_payment_id || 'pay_TcGkj43UHgc9Lt'}
                 </span>
               </div>
             </div>
@@ -296,7 +296,7 @@ export default function PendingCheckPage() {
               </div>
               <div>
                 <span className="inline-block px-3 py-1 rounded-xl text-xs font-bold bg-purple-50 text-[#6C3B8F] border border-purple-100">
-                  {team.domain || "Artificial intelligence and women 's personal safety"}
+                  {team.domain || 'Artificial Intelligence and machine learning'}
                 </span>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
@@ -344,7 +344,7 @@ export default function PendingCheckPage() {
                     <div className="text-[11px] text-gray-500">{m.phone}</div>
                   </div>
                   <div className="pt-2 border-t border-gray-200/60 text-[11px] font-medium text-[#6C3B8F]">
-                    {m.department || 'B.tech CSE'} • {m.year_of_study || '3rd Year'}
+                    {m.department || 'B.Tech AI & DS'} • {m.year_of_study || '3rd Year'}
                   </div>
                 </div>
               ))}

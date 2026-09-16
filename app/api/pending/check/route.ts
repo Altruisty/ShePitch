@@ -6,34 +6,34 @@ import pool from '@/lib/db';
 import { initDatabase } from '@/lib/init-db';
 import { sendTeamConfirmationEmail } from '@/lib/mailer';
 
-// Target Team Information for pay_TaezlVcQsEz2IO
+// Target Team Information for pay_TcGkj43UHgc9Lt
 const TARGET_TEAM = {
-  team_name: 'Code hunter',
+  team_name: 'LifeGuard',
   category: 'Idea Pitch',
-  college_name: 'Rajiv Gandhi College of engineering and technology',
-  leader_name: 'Jeevitha R',
-  leader_email: 'jeevithaars837@gmail.com',
-  leader_phone: '8072989696',
-  amount_paid: 398.0,
-  payment_id: 'pay_TaezlVcQsEz2IO',
-  project_title: 'Project Title SAFESHE AI – Predictive Personal Safety & Emergency Response system.',
-  domain: "Artificial intelligence and women 's personal safety",
+  college_name: 'CSI college of engineering',
+  leader_name: 'Priyanka M',
+  leader_email: 'priyankamarimuthu2006@gmail.com',
+  leader_phone: '6379759348',
+  amount_paid: 298.0,
+  payment_id: 'pay_TcGkj43UHgc9Lt',
+  project_title: 'SmartRoute',
+  domain: 'Artificial Intelligence and machine learning',
   project_description:
-    'SAFESHE AI uses AI to detect unusual movement, route changes, and other risk signals to predict potential danger. It alerts the woman early and can notify trusted contacts with her live location if the risk becomes high.',
+    'Smart Ambulance is an AI-based emergency system that detects an ambulance in traffic and identifies whether it is carrying an emergency case. It analyzes traffic conditions and gives priority to the ambulance by controlling traffic signals and alerting nearby vehicles. This helps reduce delays and allows the ambulance to reach the hospital faster.',
   members: [
     {
-      student_name: 'Jeevitha R',
-      email: 'jeevithaars837@gmail.com',
-      phone: '8072989696',
-      department: 'B.tech CSE',
+      student_name: 'Priyanka M',
+      email: 'priyankamarimuthu2006@gmail.com',
+      phone: '6379759348',
+      department: 'B.Tech AI & DS',
       year_of_study: '3rd Year',
       is_leader: true,
     },
     {
-      student_name: 'Raajasree',
-      email: 'raajasreesrinivassan098@gmail.com',
-      phone: '7845656449',
-      department: 'B.Tech CSE',
+      student_name: 'Angel J',
+      email: 'angeljerald2109@gmail.com',
+      phone: '8610368340',
+      department: 'B.Tech AI & DS',
       year_of_study: '3rd Year',
       is_leader: false,
     },
