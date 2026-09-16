@@ -42,7 +42,7 @@ export default function PendingCheckPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Verification process failed');
+        throw new Error(data.error || 'Update process failed');
       }
       setResult(data);
       if (Array.isArray(data.logs)) {
@@ -63,22 +63,22 @@ export default function PendingCheckPage() {
   }, []);
 
   const team = result?.team || {
-    team_name: 'LifeGuard',
-    college_name: 'CSI college of engineering',
-    category: 'Idea Pitch',
-    leader_name: 'Priyanka M',
-    leader_email: 'priyankamarimuthu2006@gmail.com',
-    leader_phone: '6379759348',
-    amount_paid: 298.0,
-    razorpay_payment_id: 'pay_TcGkj43UHgc9Lt',
+    team_name: 'She Builds',
+    college_name: 'SRI VENKATESHWARA COLLEGE OF ENGINEERING',
+    category: 'Project Pitch',
+    leader_name: 'S.SWATHY',
+    leader_email: 'swathy25tp0444@svcet.ac.in',
+    leader_phone: '8438321499',
+    amount_paid: 398.0,
+    razorpay_payment_id: 'pay_TXc8rBRAUUeV6z',
     payment_status: 'success',
-    project_title: 'SmartRoute',
-    domain: 'Artificial Intelligence and machine learning',
+    project_title: 'Smart Nacro AI field drug detection & blockchain system',
+    domain: 'Artificial Intelligence, Computer Vision & Blockchain',
     project_description:
-      'Smart Ambulance is an AI-based emergency system that detects an ambulance in traffic and identifies whether it is carrying an emergency case. It analyzes traffic conditions and gives priority to the ambulance by controlling traffic signals and alerting nearby vehicles. This helps reduce delays and allows the ambulance to reach the hospital faster.',
+      'This project integrates AI and Computer Vision to detect narcotic substances in real-time at field locations, while a blockchain network ensures tamper-proof, secure storage of detection records and chain-of-custody. A Digital Twin of each seized sample preserves its chemical and visual signature as legally valid digital evidence, and Predictive Analytics on historical blockchain data helps identify likely trafficking hotspots and trails. Together, this creates an intelligent, transparent, and proactive system for narcotics detection and enforcement.',
     members: [
-      { student_name: 'Priyanka M', email: 'priyankamarimuthu2006@gmail.com', phone: '6379759348', department: 'B.Tech AI & DS', year_of_study: '3rd Year', is_leader: true },
-      { student_name: 'Angel J', email: 'angeljerald2109@gmail.com', phone: '8610368340', department: 'B.Tech AI & DS', year_of_study: '3rd Year', is_leader: false },
+      { student_name: 'S.SWATHY', email: 'swathy25tp0444@svcet.ac.in', phone: '8438321499', department: 'B.Tech-AI&DS', year_of_study: '2nd Year', is_leader: true },
+      { student_name: 'J.Oviya', email: 'oviya25tp0426@svcet.ac.in', phone: '8072706014', department: 'B.Tech-AI&DS', year_of_study: '2nd Year', is_leader: false },
     ],
   };
 
@@ -94,14 +94,14 @@ export default function PendingCheckPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-base sm:text-lg font-black text-gray-900 tracking-tight">
-                  ShePitch Payment Verification
+                  ShePitch Team Pitch Update
                 </h1>
                 <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">
                   MANUAL SYNC
                 </span>
               </div>
               <p className="text-[11px] text-gray-500 font-mono">
-                Target: LifeGuard • pay_TcGkj43UHgc9Lt
+                Target: She Builds • swathy25tp0444@svcet.ac.in
               </p>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function PendingCheckPage() {
               className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#6C3B8F] to-[#8E44AD] hover:opacity-95 shadow-md shadow-purple-300/40 flex items-center gap-2 transition-all disabled:opacity-50 cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-              <span>{loading ? 'Verifying...' : 'Re-run Sync'}</span>
+              <span>{loading ? 'Updating...' : 'Re-run Sync'}</span>
             </button>
           </div>
         </div>
@@ -134,9 +134,9 @@ export default function PendingCheckPage() {
           <div className="bg-purple-50/80 border border-purple-200 p-5 rounded-3xl flex items-center gap-3">
             <RefreshCw className="w-5 h-5 text-[#6C3B8F] animate-spin shrink-0" />
             <div>
-              <h3 className="text-sm font-bold text-purple-900">Executing Payment Fix...</h3>
+              <h3 className="text-sm font-bold text-purple-900">Updating Pitch Details...</h3>
               <p className="text-xs text-purple-700 mt-0.5">
-                Connecting to MySQL, updating LifeGuard to &apos;success&apos; with payment ID <code className="font-mono font-bold">pay_TcGkj43UHgc9Lt</code>, syncing team members, and sending confirmation email.
+                Updating title, domain, and description for team <strong>She Builds</strong> in MySQL database.
               </p>
             </div>
           </div>
@@ -144,13 +144,13 @@ export default function PendingCheckPage() {
           <div className="bg-rose-50 border border-rose-200 p-5 rounded-3xl flex items-start gap-3">
             <XCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-sm font-bold text-rose-900">Payment Verification Failed</h3>
+              <h3 className="text-sm font-bold text-rose-900">Pitch Update Failed</h3>
               <p className="text-xs text-rose-700 mt-1">{error}</p>
               <button
                 onClick={runVerification}
                 className="mt-3 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors"
               >
-                Retry Verification
+                Retry Update
               </button>
             </div>
           </div>
@@ -161,10 +161,10 @@ export default function PendingCheckPage() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-emerald-900">
-                Payment Status Successfully Updated to &ldquo;Success&rdquo;!
+                Pitch Proposal Successfully Updated!
               </h3>
               <p className="text-xs text-emerald-700 mt-0.5">
-                Team <strong>LifeGuard</strong> is now registered as paid (₹298.00) with Razorpay ID <code className="font-mono font-bold">pay_TcGkj43UHgc9Lt</code>.
+                Team <strong>She Builds</strong> proposal title, domain, and description have been updated in the database.
               </p>
             </div>
           </div>
@@ -187,7 +187,7 @@ export default function PendingCheckPage() {
 
           <div className="p-5 font-mono text-xs space-y-2 max-h-80 overflow-y-auto scrollbar-thin">
             {logs.length === 0 ? (
-              <div className="text-gray-500 italic">Waiting for verification output...</div>
+              <div className="text-gray-500 italic">Waiting for update output...</div>
             ) : (
               logs.map((log, idx) => {
                 const badgeColor =
@@ -233,7 +233,7 @@ export default function PendingCheckPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
             <div>
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-[#6C3B8F]/10 text-[#6C3B8F] uppercase tracking-wider">
-                {team.category || 'IDEA PITCH'}
+                {team.category || 'PROJECT PITCH'}
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">
                 {team.team_name}
@@ -258,7 +258,7 @@ export default function PendingCheckPage() {
                   Success
                 </span>
                 <span className="text-[11px] font-mono text-gray-600 bg-white px-2 py-0.5 rounded border border-emerald-200">
-                  {team.razorpay_payment_id || 'pay_TcGkj43UHgc9Lt'}
+                  {team.razorpay_payment_id || 'pay_TXc8rBRAUUeV6z'}
                 </span>
               </div>
             </div>
@@ -296,7 +296,7 @@ export default function PendingCheckPage() {
               </div>
               <div>
                 <span className="inline-block px-3 py-1 rounded-xl text-xs font-bold bg-purple-50 text-[#6C3B8F] border border-purple-100">
-                  {team.domain || 'Artificial Intelligence and machine learning'}
+                  {team.domain || 'Artificial Intelligence, Computer Vision & Blockchain'}
                 </span>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
@@ -308,7 +308,7 @@ export default function PendingCheckPage() {
           {/* Pitch Proposal Details */}
           <div className="bg-purple-50/30 rounded-2xl p-5 border border-purple-100 space-y-2">
             <div className="text-xs font-bold uppercase tracking-wider text-[#6C3B8F]">
-              Pitch Proposal
+              Updated Pitch Proposal
             </div>
             <h4 className="text-sm font-black text-gray-900">{team.project_title}</h4>
             <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
@@ -344,7 +344,7 @@ export default function PendingCheckPage() {
                     <div className="text-[11px] text-gray-500">{m.phone}</div>
                   </div>
                   <div className="pt-2 border-t border-gray-200/60 text-[11px] font-medium text-[#6C3B8F]">
-                    {m.department || 'B.Tech AI & DS'} • {m.year_of_study || '3rd Year'}
+                    {m.department || 'B.Tech-AI&DS'} • {m.year_of_study || '2nd Year'}
                   </div>
                 </div>
               ))}
