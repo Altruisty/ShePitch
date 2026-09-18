@@ -63,22 +63,21 @@ export default function PendingCheckPage() {
   }, []);
 
   const team = result?.team || {
-    team_name: 'Edvora',
-    college_name: 'Ramco Institute of Technology',
-    category: 'Idea Pitch',
-    leader_name: 'VASANTH VAISNAVI T',
-    leader_email: '953625148058@ritrjpm.ac.in',
-    leader_phone: '9500865477',
-    amount_paid: 398.0,
-    razorpay_payment_id: 'pay_TZbb16CGD7BsRD',
+    team_name: 'Bytestrom',
+    college_name: 'Sri Venkateshwaraa College of Engineering and Technology',
+    category: 'Project Pitch',
+    leader_name: 'Vaishali I',
+    leader_email: 'vaishali24td0852@svcet.ac.in',
+    leader_phone: '9600805734',
+    amount_paid: 796.0,
+    razorpay_payment_id: 'pay_TXaiDvC9m9PsEa',
     payment_status: 'success',
-    project_title: 'LearnLoop AI',
-    domain: 'Education & Smart Library',
+    project_title: 'VOICE4HEALTH : AI-Powered Voice Healthcare for Every Phone — Enable From the First Call',
+    domain: 'Health care',
     project_description:
-      'LearnLoop AI is an AI-powered active learning platform that transforms syllabi, exam topics, books, and knowledge content into short, visual, interactive, and personalized learning experiences. Students and exam aspirants can learn through 3–5 minute AI-generated lessons, interactive quizzes, voice-based answers, teach-back activities, adaptive recommendations, and gamified progress with XP and levels. The Smart Library module converts books and knowledge topics into simple visual stories, short episodes, audio explanations, timelines, and multilingual content. Voice-first and age-adaptive features make knowledge more accessible to children, adults, and senior users. Instead of simply watching or reading content, LearnLoop AI helps users learn, recall, explain, practice, and improve.',
+      'AI-Powered Voice Healthcare for Every Phone — Enable From the First Call Voice4Health is an AI-powered, voice-first healthcare system designed to provide accessible preliminary healthcare screening through a basic phone by calling 103, without requiring a smartphone, continuous internet access, or advanced digital literacy.',
     members: [
-      { student_name: 'VASANTH VAISNAVI T', email: '953625148058@ritrjpm.ac.in', phone: '9500865477', department: 'CSE(AIML)', year_of_study: '2nd Year', is_leader: true },
-      { student_name: 'Ramalakshmi S', email: '953625148042@ritrjpm.ac.in', phone: '8754966378', department: 'CSE(AIML)', year_of_study: '2nd Year', is_leader: false },
+      { student_name: 'Vaishali I', email: 'vaishali24td0852@svcet.ac.in', phone: '9600805734', department: 'B.Tech CSE', year_of_study: '3rd Year', is_leader: true },
     ],
   };
 
@@ -94,14 +93,14 @@ export default function PendingCheckPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-base sm:text-lg font-black text-gray-900 tracking-tight">
-                  ShePitch Team Update
+                  ShePitch College Name Update
                 </h1>
                 <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">
-                  NAME & PITCH SYNC
+                  MANUAL SYNC
                 </span>
               </div>
               <p className="text-[11px] text-gray-500 font-mono">
-                Target: Edvora (Leader: 953625148058@ritrjpm.ac.in)
+                Target: Bytestrom (Leader: vaishali24td0852@svcet.ac.in)
               </p>
             </div>
           </div>
@@ -134,9 +133,9 @@ export default function PendingCheckPage() {
           <div className="bg-purple-50/80 border border-purple-200 p-5 rounded-3xl flex items-center gap-3">
             <RefreshCw className="w-5 h-5 text-[#6C3B8F] animate-spin shrink-0" />
             <div>
-              <h3 className="text-sm font-bold text-purple-900">Updating Team Details...</h3>
+              <h3 className="text-sm font-bold text-purple-900">Updating College Name...</h3>
               <p className="text-xs text-purple-700 mt-0.5">
-                Updating team name to <strong>Edvora</strong>, title to <strong>LearnLoop AI</strong>, and domain/description in MySQL.
+                Updating college name to <strong>Sri Venkateshwaraa College of Engineering and Technology</strong> for team <strong>Bytestrom</strong> in MySQL.
               </p>
             </div>
           </div>
@@ -144,7 +143,7 @@ export default function PendingCheckPage() {
           <div className="bg-rose-50 border border-rose-200 p-5 rounded-3xl flex items-start gap-3">
             <XCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-sm font-bold text-rose-900">Update Failed</h3>
+              <h3 className="text-sm font-bold text-rose-900">College Name Update Failed</h3>
               <p className="text-xs text-rose-700 mt-1">{error}</p>
               <button
                 onClick={runVerification}
@@ -161,10 +160,10 @@ export default function PendingCheckPage() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-emerald-900">
-                Team Name & Pitch Proposal Successfully Updated!
+                College Name Successfully Updated!
               </h3>
               <p className="text-xs text-emerald-700 mt-0.5">
-                Team name is now <strong>Edvora</strong> with proposal title <strong>LearnLoop AI</strong> in Education &amp; Smart Library.
+                Team <strong>Bytestrom</strong> is now linked to <strong>Sri Venkateshwaraa College of Engineering and Technology</strong>.
               </p>
             </div>
           </div>
@@ -233,14 +232,16 @@ export default function PendingCheckPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
             <div>
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-[#6C3B8F]/10 text-[#6C3B8F] uppercase tracking-wider">
-                {team.category || 'IDEA PITCH'}
+                {team.category || 'PROJECT PITCH'}
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">
                 {team.team_name}
               </h2>
-              <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                <Building2 className="w-3.5 h-3.5 text-gray-400" />
-                <span>{team.college_name}</span>
+              <div className="flex items-center gap-2 text-xs text-gray-700 font-semibold mt-1">
+                <Building2 className="w-4 h-4 text-[#6C3B8F]" />
+                <span className="text-[#6C3B8F] bg-purple-50 px-2.5 py-0.5 rounded-lg border border-purple-100">
+                  {team.college_name}
+                </span>
               </div>
             </div>
 
@@ -258,7 +259,7 @@ export default function PendingCheckPage() {
                   Success
                 </span>
                 <span className="text-[11px] font-mono text-gray-600 bg-white px-2 py-0.5 rounded border border-emerald-200">
-                  {team.razorpay_payment_id || 'pay_TZbb16CGD7BsRD'}
+                  {team.razorpay_payment_id || 'pay_TXaiDvC9m9PsEa'}
                 </span>
               </div>
             </div>
@@ -296,7 +297,7 @@ export default function PendingCheckPage() {
               </div>
               <div>
                 <span className="inline-block px-3 py-1 rounded-xl text-xs font-bold bg-purple-50 text-[#6C3B8F] border border-purple-100">
-                  {team.domain || 'Education & Smart Library'}
+                  {team.domain || 'Health care'}
                 </span>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
@@ -308,47 +309,12 @@ export default function PendingCheckPage() {
           {/* Pitch Proposal Details */}
           <div className="bg-purple-50/30 rounded-2xl p-5 border border-purple-100 space-y-2">
             <div className="text-xs font-bold uppercase tracking-wider text-[#6C3B8F]">
-              Updated Pitch Proposal
+              Pitch Proposal
             </div>
             <h4 className="text-sm font-black text-gray-900">{team.project_title}</h4>
             <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
               {team.project_description}
             </p>
-          </div>
-
-          {/* All Team Members */}
-          <div className="space-y-3 pt-2">
-            <h4 className="text-sm font-black text-gray-900 flex items-center gap-2">
-              <Users className="w-4 h-4 text-[#6C3B8F]" />
-              <span>All Team Members ({team.members?.length || 2})</span>
-            </h4>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {(team.members || []).map((m: any, idx: number) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-2xl border border-gray-100 bg-gray-50/60 flex flex-col justify-between space-y-2"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="text-xs font-bold text-gray-900">{m.student_name}</span>
-                      {m.is_leader ? (
-                        <span className="text-[10px] font-extrabold bg-[#6C3B8F] text-white px-2 py-0.5 rounded-full">
-                          Leader
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-semibold text-gray-400">Member {idx + 1}</span>
-                      )}
-                    </div>
-                    <div className="text-[11px] text-gray-500 mt-1 break-all">{m.email}</div>
-                    <div className="text-[11px] text-gray-500">{m.phone}</div>
-                  </div>
-                  <div className="pt-2 border-t border-gray-200/60 text-[11px] font-medium text-[#6C3B8F]">
-                    {m.department || 'CSE(AIML)'} • {m.year_of_study || '2nd Year'}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </main>

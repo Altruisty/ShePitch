@@ -5,38 +5,20 @@ import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { initDatabase } from '@/lib/init-db';
 
-// Target Team Information for Edvora (previously HelpNova / ImpactX)
+// Target Team Information for Bytestrom (Leader: Vaishali I)
 const TARGET_TEAM = {
-  team_name: 'Edvora',
-  category: 'Idea Pitch',
-  college_name: 'Ramco Institute of Technology',
-  leader_name: 'VASANTH VAISNAVI T',
-  leader_email: '953625148058@ritrjpm.ac.in',
-  leader_phone: '9500865477',
-  amount_paid: 398.0,
-  payment_id: 'pay_TZbb16CGD7BsRD',
-  project_title: 'LearnLoop AI',
-  domain: 'Education & Smart Library',
+  team_name: 'Bytestrom',
+  category: 'Project Pitch',
+  college_name: 'Sri Venkateshwaraa College of Engineering and Technology',
+  leader_name: 'Vaishali I',
+  leader_email: 'vaishali24td0852@svcet.ac.in',
+  leader_phone: '9600805734',
+  amount_paid: 796.0,
+  payment_id: 'pay_TXaiDvC9m9PsEa',
+  project_title: 'VOICE4HEALTH : AI-Powered Voice Healthcare for Every Phone — Enable From the First Call',
+  domain: 'Health care',
   project_description:
-    'LearnLoop AI is an AI-powered active learning platform that transforms syllabi, exam topics, books, and knowledge content into short, visual, interactive, and personalized learning experiences. Students and exam aspirants can learn through 3–5 minute AI-generated lessons, interactive quizzes, voice-based answers, teach-back activities, adaptive recommendations, and gamified progress with XP and levels. The Smart Library module converts books and knowledge topics into simple visual stories, short episodes, audio explanations, timelines, and multilingual content. Voice-first and age-adaptive features make knowledge more accessible to children, adults, and senior users. Instead of simply watching or reading content, LearnLoop AI helps users learn, recall, explain, practice, and improve.',
-  members: [
-    {
-      student_name: 'VASANTH VAISNAVI T',
-      email: '953625148058@ritrjpm.ac.in',
-      phone: '9500865477',
-      department: 'CSE(AIML)',
-      year_of_study: '2nd Year',
-      is_leader: true,
-    },
-    {
-      student_name: 'Ramalakshmi S',
-      email: '953625148042@ritrjpm.ac.in',
-      phone: '8754966378',
-      department: 'CSE(AIML)',
-      year_of_study: '2nd Year',
-      is_leader: false,
-    },
-  ],
+    'AI-Powered Voice Healthcare for Every Phone — Enable From the First Call Voice4Health is an AI-powered, voice-first healthcare system designed to provide accessible preliminary healthcare screening through a basic phone by calling 103, without requiring a smartphone, continuous internet access, or advanced digital literacy. The system supports multilingual voice interaction, including English and 11 Indian languages, and uses IVR, speech recognition, language processing, Voice AI, patient information collection, symptom screening, and adaptive questioning to understand the patient\'s health concerns. After confirmation, a preliminary risk engine classifies cases as low, medium, or high risk, with low- and medium-risk cases referred to the PHC and high-risk cases urgently referred to ASHA and PHC, while **all cases undergo doctor review and the doctor makes the final clinical decision. The system also supports prescription information, medication reminders, appointment reminders, and patient follow-up, with privacy, consent, security, and role-based access as key principles. The current prototype demonstrates this end-to-end workflow through a web-based interface, while future deployment would require clinical validation, regulatory compliance, secure infrastructure, and integration with authorized healthcare systems.',
 };
 
 interface LogEntry {
@@ -64,23 +46,22 @@ async function handleVerification(req: Request) {
   };
 
   try {
-    addLog('info', `Starting update for team (Leader: ${TARGET_TEAM.leader_email})...`);
-    addLog('info', `Updating Team Name -> "${TARGET_TEAM.team_name}"`);
-    addLog('info', `Updating Pitch Title -> "${TARGET_TEAM.project_title}"`);
-    addLog('info', `Updating Domain -> "${TARGET_TEAM.domain}"`);
+    addLog('info', `Starting college name update for team "${TARGET_TEAM.team_name}"...`);
+    addLog('info', `Target Leader: ${TARGET_TEAM.leader_email} | Payment ID: ${TARGET_TEAM.payment_id}`);
+    addLog('info', `New College Name: "${TARGET_TEAM.college_name}"`);
 
     // Ensure database tables exist
     await initDatabase();
     addLog('info', 'Database initialized and connection verified.');
 
-    // Step 1: Query she_pitch_teams matching leader email, payment ID, or previous names
+    // Step 1: Query she_pitch_teams matching leader email, payment ID, or team name
     const [teamRows]: any = await pool.query(
       `SELECT * FROM she_pitch_teams 
        WHERE LOWER(TRIM(leader_email)) = LOWER(?) 
           OR razorpay_payment_id = ?
-          OR LOWER(TRIM(team_name)) IN ('helpnova', 'impactx', 'edvora')
+          OR LOWER(TRIM(team_name)) = LOWER(?)
        ORDER BY id DESC LIMIT 1`,
-      [TARGET_TEAM.leader_email.trim(), TARGET_TEAM.payment_id]
+      [TARGET_TEAM.leader_email.trim(), TARGET_TEAM.payment_id, TARGET_TEAM.team_name.trim()]
     );
 
     let teamId: number;
@@ -89,38 +70,26 @@ async function handleVerification(req: Request) {
       const existing = teamRows[0];
       teamId = existing.id;
 
-      addLog('info', `Found existing team record ID: #${teamId} (Previous Name: "${existing.team_name}")`);
-      addLog('info', `Previous Pitch Title: "${existing.project_title || 'N/A'}"`);
-      addLog('info', `Previous Domain: "${existing.domain || 'N/A'}"`);
+      addLog('info', `Found existing team record ID: #${teamId} ("${existing.team_name}")`);
+      addLog('info', `Previous College Name: "${existing.college_name || 'N/A'}"`);
 
-      // Update team_name, project_title, domain, and project_description as requested
+      // Update ONLY college_name as requested
       await pool.query(
         `UPDATE she_pitch_teams 
-         SET team_name = ?,
-             project_title = ?,
-             domain = ?,
-             project_description = ?
+         SET college_name = ?
          WHERE id = ?`,
-        [
-          TARGET_TEAM.team_name,
-          TARGET_TEAM.project_title,
-          TARGET_TEAM.domain,
-          TARGET_TEAM.project_description,
-          teamId,
-        ]
+        [TARGET_TEAM.college_name, teamId]
       );
-      addLog('success', `Updated she_pitch_teams [ID #${teamId}]: Team Name set to "${TARGET_TEAM.team_name}".`);
-      addLog('success', `Updated Pitch Title set to "${TARGET_TEAM.project_title}".`);
-      addLog('success', `Updated Domain set to "${TARGET_TEAM.domain}".`);
-      addLog('success', `Updated Description set to "${TARGET_TEAM.project_description.slice(0, 80)}..."`);
+      addLog('success', `Updated she_pitch_teams [ID #${teamId}]: College Name successfully set to "${TARGET_TEAM.college_name}".`);
+      addLog('info', `Preserved all existing pitch proposal, members, and payment details.`);
     } else {
-      addLog('warn', `Team was not found. Creating new entry with name "${TARGET_TEAM.team_name}"...`);
+      addLog('warn', `Team was not found in she_pitch_teams. Creating entry with college "${TARGET_TEAM.college_name}"...`);
 
       const orderId = `order_she_${TARGET_TEAM.payment_id.slice(-10)}`;
       const [insertRes]: any = await pool.query(
         `INSERT INTO she_pitch_teams 
          (team_name, category, project_title, domain, project_description, college_name, leader_name, leader_email, leader_phone, member_count, amount_paid, payment_status, razorpay_order_id, razorpay_payment_id)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'success', ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 4, ?, 'success', ?, ?)`,
         [
           TARGET_TEAM.team_name,
           TARGET_TEAM.category,
@@ -131,7 +100,6 @@ async function handleVerification(req: Request) {
           TARGET_TEAM.leader_name,
           TARGET_TEAM.leader_email,
           TARGET_TEAM.leader_phone,
-          TARGET_TEAM.members.length,
           TARGET_TEAM.amount_paid,
           orderId,
           TARGET_TEAM.payment_id,
@@ -170,11 +138,11 @@ async function handleVerification(req: Request) {
       } catch {}
     }
 
-    addLog('success', `Update completed successfully! Team is now "${TARGET_TEAM.team_name}" with title "${TARGET_TEAM.project_title}".`);
+    addLog('success', `College update completed successfully! Team "${TARGET_TEAM.team_name}" is now associated with "${TARGET_TEAM.college_name}".`);
 
     return NextResponse.json({
       success: true,
-      message: `Team name changed to "${TARGET_TEAM.team_name}" and pitch details updated successfully.`,
+      message: `Team "${TARGET_TEAM.team_name}" college name has been updated to "${TARGET_TEAM.college_name}" successfully.`,
       team: finalTeam,
       logs,
     });
@@ -183,7 +151,7 @@ async function handleVerification(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || 'Server error during pitch update',
+        error: error.message || 'Server error during college name update',
         logs,
       },
       { status: 500 }
