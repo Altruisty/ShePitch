@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 import {
@@ -45,10 +46,10 @@ function RegisterFormContent() {
   });
 
   const [availability, setAvailability] = useState({
-    ideaTeamsLeft: 16,
-    projectTeamsLeft: 16,
-    ideaOpen: true,
-    projectOpen: true,
+    ideaTeamsLeft: 0,
+    projectTeamsLeft: 0,
+    ideaOpen: false,
+    projectOpen: false,
   });
 
   useEffect(() => {
@@ -196,6 +197,12 @@ const loadRazorpayScript = () => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
+
+    if (!availability.ideaOpen && !availability.projectOpen) {
+      setErrorMsg('Team registrations for ShePitch Chennai National Finale are now closed.');
+      setLoading(false);
+      return;
+    }
 
     if (!acceptedTerms || !acceptedPrivacy || !acceptedPromotional) {
       setErrorMsg('Please review and check all required consent boxes (Privacy, Promotional Consent, and Terms & Conditions) to proceed.');
@@ -532,6 +539,26 @@ const loadRazorpayScript = () => {
         </div>
       )}
 
+      {/* Registration Closed Banner */}
+      {!availability.ideaOpen && !availability.projectOpen && (
+        <div className="bg-rose-50 border-2 border-rose-200 rounded-3xl p-6 sm:p-8 text-center space-y-3 shadow-sm">
+          <div className="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto">
+            <AlertCircle className="w-6 h-6" />
+          </div>
+          <h2 className="text-xl sm:text-2xl font-black text-rose-900">
+            Team Registrations are Closed
+          </h2>
+          <p className="text-rose-700 text-sm sm:text-base max-w-xl mx-auto font-medium">
+            Registrations for both Idea Pitch and Project Pitch at ShePitch Chennai National Finale have reached maximum capacity and are officially closed.
+          </p>
+          <div className="pt-2">
+            <Link href="/categories" className="she-btn-outline inline-flex text-xs uppercase tracking-wider font-bold">
+              View Competition Tracks
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Main Registration Form Container */}
       <form onSubmit={handleRegisterAndPay} className="bg-white rounded-3xl p-6 sm:p-12 border border-gray-100 shadow-xl space-y-10">
 
@@ -730,12 +757,22 @@ const loadRazorpayScript = () => {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="block font-black text-base sm:text-lg text-gray-900">Idea Pitch</span>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-xs font-extrabold shadow-sm">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-                      </span>
-                      {availability.ideaTeamsLeft} Left
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-extrabold shadow-sm ${
+                      availability.ideaOpen
+                        ? 'bg-rose-50 border border-rose-200 text-rose-600'
+                        : 'bg-gray-200 border border-gray-300 text-gray-600'
+                    }`}>
+                      {availability.ideaOpen ? (
+                        <>
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                          </span>
+                          {availability.ideaTeamsLeft} Left
+                        </>
+                      ) : (
+                        'Closed'
+                      )}
                     </span>
                   </div>
                   <span className="block text-sm text-gray-500 mt-1 font-medium">Early concept stage</span>
@@ -753,12 +790,22 @@ const loadRazorpayScript = () => {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="block font-black text-base sm:text-lg text-gray-900">Project Pitch</span>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-xs font-extrabold shadow-sm">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-                      </span>
-                      {availability.projectTeamsLeft} Left
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-extrabold shadow-sm ${
+                      availability.projectOpen
+                        ? 'bg-rose-50 border border-rose-200 text-rose-600'
+                        : 'bg-gray-200 border border-gray-300 text-gray-600'
+                    }`}>
+                      {availability.projectOpen ? (
+                        <>
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                          </span>
+                          {availability.projectTeamsLeft} Left
+                        </>
+                      ) : (
+                        'Closed'
+                      )}
                     </span>
                   </div>
                   <span className="block text-sm text-gray-500 mt-1 font-medium">Prototype/Working Model</span>
@@ -926,11 +973,19 @@ const loadRazorpayScript = () => {
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full she-btn-primary justify-center py-4 sm:py-5 text-base sm:text-lg font-black uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-[#6C3B8F]/20 disabled:opacity-50"
+            disabled={loading || (!availability.ideaOpen && !availability.projectOpen)}
+            className="w-full she-btn-primary justify-center py-4 sm:py-5 text-base sm:text-lg font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#6C3B8F]/20 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? 'Opening Razorpay Secure Gateway...' : `Pay ₹${finalAmount} & Complete Registration`}
-            <ArrowRight className="w-5 h-5" />
+            {!availability.ideaOpen && !availability.projectOpen ? (
+              'Registration Closed'
+            ) : loading ? (
+              'Opening Razorpay Secure Gateway...'
+            ) : (
+              <>
+                {`Pay ₹${finalAmount} & Complete Registration`}
+                <ArrowRight className="w-5 h-5" />
+              </>
+            )}
           </button>
         </div>
       </form>

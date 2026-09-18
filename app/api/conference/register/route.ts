@@ -4,8 +4,14 @@ import { initDatabase } from '@/lib/init-db';
 import { sendConferenceConfirmationEmail } from '@/lib/mailer';
 
 export async function POST(req: Request) {
+  return NextResponse.json(
+    { error: 'Conference registrations for ShePitch Chennai Edition are now closed.' },
+    { status: 400 }
+  );
+
   try {
     await initDatabase();
+
 
     const body = await req.json();
     const { full_name, email, phone, college_id, college_name, department, year_of_study } = body;

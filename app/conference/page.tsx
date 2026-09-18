@@ -45,47 +45,7 @@ export default function ConferencePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setErrorMsg('');
-
-    if (!acceptedTerms || !acceptedPrivacy || !acceptedPromotional) {
-      setErrorMsg('Please review and check all required consent boxes (Privacy, Promotional Consent, and Terms & Conditions) to proceed.');
-      setLoading(false);
-      return;
-    }
-
-    if (!formData.college_name || formData.college_name.trim() === '') {
-      setErrorMsg('Please enter your College / Institution Name.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch('/api/conference/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: formData.full_name,
-          email: formData.email,
-          phone: formData.phone,
-          college_name: formData.college_name,
-          department: formData.department,
-          year_of_study: formData.year_of_study,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to submit conference registration.');
-      }
-
-      setSuccessData(data.registration);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'An unexpected error occurred.');
-    } finally {
-      setLoading(false);
-    }
+    setErrorMsg('Conference registrations for ShePitch Chennai Edition are now closed.');
   };
 
   return (
@@ -93,11 +53,11 @@ export default function ConferencePage() {
       {/* Header Banner */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
         <div className="flex items-center justify-center gap-2 flex-wrap">
-          <span className="she-category-tag bg-green-50 text-green-700 border-green-200 text-xs">
-            FREE REGISTRATION
+          <span className="she-category-tag bg-rose-50 text-rose-700 border-rose-200 text-xs font-black">
+            REGISTRATION CLOSED
           </span>
           <span className="she-category-tag bg-purple-50 text-purple-700 border-purple-200 text-xs">
-            SINGLE PERSON REGISTRATION
+            CONFERENCE EDITION
           </span>
         </div>
 
@@ -111,7 +71,24 @@ export default function ConferencePage() {
         <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
           Join 1500+ attendees, 80+ industry mentors, and women leaders for keynotes, panel discussions, and tech innovation showcases.
         </p>
+      </div>
 
+      {/* Registration Closed Banner */}
+      <div className="bg-rose-50 border-2 border-rose-200 rounded-3xl p-6 sm:p-8 text-center space-y-3 shadow-sm">
+        <div className="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto">
+          <AlertCircle className="w-6 h-6" />
+        </div>
+        <h2 className="text-xl sm:text-2xl font-black text-rose-900">
+          Conference Registrations are Closed
+        </h2>
+        <p className="text-rose-700 text-sm sm:text-base max-w-xl mx-auto font-medium">
+          Registrations for ShePitch Conference Chennai Edition have reached full capacity and are officially closed. Thank you for the overwhelming response!
+        </p>
+        <div className="pt-2">
+          <Link href="/" className="she-btn-outline inline-flex text-xs uppercase tracking-wider font-bold">
+            Return to Homepage
+          </Link>
+        </div>
       </div>
 
       {/* Terms & Conditions Popup Modal */}
@@ -520,17 +497,10 @@ export default function ConferencePage() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={loading}
-              className="w-full she-btn-primary justify-center py-4 text-base font-black uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-[#6C3B8F]/20 disabled:opacity-50"
+              disabled={true}
+              className="w-full she-btn-primary justify-center py-4 text-base font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl opacity-60 cursor-not-allowed bg-gray-400"
             >
-              {loading ? (
-                <span>Registering Delegate...</span>
-              ) : (
-                <>
-                  <span>Complete Free Registration</span>
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
+              Registration Closed
             </button>
           </form>
         </motion.div>

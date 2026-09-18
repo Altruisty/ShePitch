@@ -10,10 +10,10 @@ import EventCountdown from '@/components/EventCountdown';
 
 export default function HomePage() {
   const [availability, setAvailability] = React.useState({
-    ideaTeamsLeft: 16,
-    projectTeamsLeft: 16,
-    ideaOpen: true,
-    projectOpen: true,
+    ideaTeamsLeft: 0,
+    projectTeamsLeft: 0,
+    ideaOpen: false,
+    projectOpen: false,
   });
 
   React.useEffect(() => {
@@ -286,13 +286,19 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-600 shadow-sm shrink-0">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-                  </span>
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full shadow-sm shrink-0 ${
+                  availability.ideaOpen
+                    ? 'bg-rose-50 border border-rose-200 text-rose-600'
+                    : 'bg-gray-100 border border-gray-200 text-gray-600'
+                }`}>
+                  {availability.ideaOpen && (
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                    </span>
+                  )}
                   <span className="text-xs sm:text-sm font-extrabold tracking-wide">
-                    {availability.ideaTeamsLeft} Slots Left
+                    {availability.ideaOpen ? `${availability.ideaTeamsLeft} Slots Left` : 'Closed'}
                   </span>
                 </div>
               </div>
@@ -345,13 +351,19 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-600 shadow-sm shrink-0">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-                  </span>
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full shadow-sm shrink-0 ${
+                  availability.projectOpen
+                    ? 'bg-rose-50 border border-rose-200 text-rose-600'
+                    : 'bg-gray-100 border border-gray-200 text-gray-600'
+                }`}>
+                  {availability.projectOpen && (
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                    </span>
+                  )}
                   <span className="text-xs sm:text-sm font-extrabold tracking-wide">
-                    {availability.projectTeamsLeft} Slots Left
+                    {availability.projectOpen ? `${availability.projectTeamsLeft} Slots Left` : 'Closed'}
                   </span>
                 </div>
               </div>

@@ -9,8 +9,14 @@ const razorpay = new Razorpay({
 });
 
 export async function POST(req: Request) {
+  return NextResponse.json(
+    { error: 'Team registrations for ShePitch Chennai National Finale are now closed.' },
+    { status: 400 }
+  );
+
   try {
     await initDatabase();
+
 
     const body = await req.json();
     const {
