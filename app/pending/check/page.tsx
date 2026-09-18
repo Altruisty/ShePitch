@@ -63,7 +63,7 @@ export default function PendingCheckPage() {
   }, []);
 
   const team = result?.team || {
-    team_name: 'HelpNova',
+    team_name: 'Edvora',
     college_name: 'Ramco Institute of Technology',
     category: 'Idea Pitch',
     leader_name: 'VASANTH VAISNAVI T',
@@ -94,14 +94,14 @@ export default function PendingCheckPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-base sm:text-lg font-black text-gray-900 tracking-tight">
-                  ShePitch Team Pitch Update
+                  ShePitch Team Update
                 </h1>
                 <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">
-                  MANUAL SYNC
+                  NAME & PITCH SYNC
                 </span>
               </div>
               <p className="text-[11px] text-gray-500 font-mono">
-                Target: HelpNova • 953625148058@ritrjpm.ac.in
+                Target: Edvora (Leader: 953625148058@ritrjpm.ac.in)
               </p>
             </div>
           </div>
@@ -134,9 +134,9 @@ export default function PendingCheckPage() {
           <div className="bg-purple-50/80 border border-purple-200 p-5 rounded-3xl flex items-center gap-3">
             <RefreshCw className="w-5 h-5 text-[#6C3B8F] animate-spin shrink-0" />
             <div>
-              <h3 className="text-sm font-bold text-purple-900">Updating Pitch Details...</h3>
+              <h3 className="text-sm font-bold text-purple-900">Updating Team Details...</h3>
               <p className="text-xs text-purple-700 mt-0.5">
-                Updating title, domain, and description for team <strong>HelpNova</strong> in MySQL database.
+                Updating team name to <strong>Edvora</strong>, title to <strong>LearnLoop AI</strong>, and domain/description in MySQL.
               </p>
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function PendingCheckPage() {
           <div className="bg-rose-50 border border-rose-200 p-5 rounded-3xl flex items-start gap-3">
             <XCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-sm font-bold text-rose-900">Pitch Update Failed</h3>
+              <h3 className="text-sm font-bold text-rose-900">Update Failed</h3>
               <p className="text-xs text-rose-700 mt-1">{error}</p>
               <button
                 onClick={runVerification}
@@ -161,10 +161,10 @@ export default function PendingCheckPage() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-emerald-900">
-                Pitch Proposal Successfully Updated!
+                Team Name & Pitch Proposal Successfully Updated!
               </h3>
               <p className="text-xs text-emerald-700 mt-0.5">
-                Team <strong>HelpNova</strong> proposal title, domain, and description have been updated in the database.
+                Team name is now <strong>Edvora</strong> with proposal title <strong>LearnLoop AI</strong> in Education &amp; Smart Library.
               </p>
             </div>
           </div>

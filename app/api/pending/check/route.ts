@@ -5,9 +5,9 @@ import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { initDatabase } from '@/lib/init-db';
 
-// Target Team Information for HelpNova (Leader: VASANTH VAISNAVI T)
+// Target Team Information for Edvora (previously HelpNova / ImpactX)
 const TARGET_TEAM = {
-  team_name: 'HelpNova',
+  team_name: 'Edvora',
   category: 'Idea Pitch',
   college_name: 'Ramco Institute of Technology',
   leader_name: 'VASANTH VAISNAVI T',
@@ -64,19 +64,21 @@ async function handleVerification(req: Request) {
   };
 
   try {
-    addLog('info', `Starting pitch details update for team "${TARGET_TEAM.team_name}"...`);
-    addLog('info', `Leader: ${TARGET_TEAM.leader_email} | Payment ID: ${TARGET_TEAM.payment_id}`);
+    addLog('info', `Starting update for team (Leader: ${TARGET_TEAM.leader_email})...`);
+    addLog('info', `Updating Team Name -> "${TARGET_TEAM.team_name}"`);
+    addLog('info', `Updating Pitch Title -> "${TARGET_TEAM.project_title}"`);
+    addLog('info', `Updating Domain -> "${TARGET_TEAM.domain}"`);
 
     // Ensure database tables exist
     await initDatabase();
     addLog('info', 'Database initialized and connection verified.');
 
-    // Step 1: Query she_pitch_teams for the specific team by email, payment ID, or team name
+    // Step 1: Query she_pitch_teams matching leader email, payment ID, or previous names
     const [teamRows]: any = await pool.query(
       `SELECT * FROM she_pitch_teams 
-       WHERE LOWER(TRIM(leader_email)) = LOWER(?)
+       WHERE LOWER(TRIM(leader_email)) = LOWER(?) 
           OR razorpay_payment_id = ?
-          OR LOWER(TRIM(team_name)) IN ('helpnova', 'impactx')
+          OR LOWER(TRIM(team_name)) IN ('helpnova', 'impactx', 'edvora')
        ORDER BY id DESC LIMIT 1`,
       [TARGET_TEAM.leader_email.trim(), TARGET_TEAM.payment_id]
     );
@@ -87,11 +89,11 @@ async function handleVerification(req: Request) {
       const existing = teamRows[0];
       teamId = existing.id;
 
-      addLog('info', `Found existing team record ID: #${teamId} (Name in DB: "${existing.team_name}")`);
+      addLog('info', `Found existing team record ID: #${teamId} (Previous Name: "${existing.team_name}")`);
       addLog('info', `Previous Pitch Title: "${existing.project_title || 'N/A'}"`);
       addLog('info', `Previous Domain: "${existing.domain || 'N/A'}"`);
 
-      // Update project_title, domain, project_description, and team_name
+      // Update team_name, project_title, domain, and project_description as requested
       await pool.query(
         `UPDATE she_pitch_teams 
          SET team_name = ?,
@@ -108,11 +110,11 @@ async function handleVerification(req: Request) {
         ]
       );
       addLog('success', `Updated she_pitch_teams [ID #${teamId}]: Team Name set to "${TARGET_TEAM.team_name}".`);
-      addLog('success', `Updated Pitch Title -> "${TARGET_TEAM.project_title}".`);
-      addLog('success', `Updated Domain -> "${TARGET_TEAM.domain}".`);
-      addLog('success', `Updated Description -> "${TARGET_TEAM.project_description.slice(0, 80)}..."`);
+      addLog('success', `Updated Pitch Title set to "${TARGET_TEAM.project_title}".`);
+      addLog('success', `Updated Domain set to "${TARGET_TEAM.domain}".`);
+      addLog('success', `Updated Description set to "${TARGET_TEAM.project_description.slice(0, 80)}..."`);
     } else {
-      addLog('warn', `Team "${TARGET_TEAM.team_name}" was not found in she_pitch_teams. Creating team entry with updated pitch proposal...`);
+      addLog('warn', `Team was not found. Creating new entry with name "${TARGET_TEAM.team_name}"...`);
 
       const orderId = `order_she_${TARGET_TEAM.payment_id.slice(-10)}`;
       const [insertRes]: any = await pool.query(
@@ -137,7 +139,7 @@ async function handleVerification(req: Request) {
       );
 
       teamId = insertRes.insertId;
-      addLog('success', `Created team record in she_pitch_teams with ID #${teamId} with new pitch proposal.`);
+      addLog('success', `Created team record in she_pitch_teams with ID #${teamId}.`);
     }
 
     // Step 2: Final query to return verified state
@@ -168,11 +170,11 @@ async function handleVerification(req: Request) {
       } catch {}
     }
 
-    addLog('success', `Pitch proposal update completed successfully for Team "${TARGET_TEAM.team_name}"!`);
+    addLog('success', `Update completed successfully! Team is now "${TARGET_TEAM.team_name}" with title "${TARGET_TEAM.project_title}".`);
 
     return NextResponse.json({
       success: true,
-      message: `Team "${TARGET_TEAM.team_name}" pitch title, domain, and description have been updated successfully.`,
+      message: `Team name changed to "${TARGET_TEAM.team_name}" and pitch details updated successfully.`,
       team: finalTeam,
       logs,
     });
