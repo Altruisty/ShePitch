@@ -42,7 +42,7 @@ export default function PendingCheckPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Verification process failed');
+        throw new Error(data.error || 'Update process failed');
       }
       setResult(data);
       if (Array.isArray(data.logs)) {
@@ -63,7 +63,7 @@ export default function PendingCheckPage() {
   }, []);
 
   const team = result?.team || {
-    team_name: 'ImpactX',
+    team_name: 'HelpNova',
     college_name: 'Ramco Institute of Technology',
     category: 'Idea Pitch',
     leader_name: 'VASANTH VAISNAVI T',
@@ -72,10 +72,10 @@ export default function PendingCheckPage() {
     amount_paid: 398.0,
     razorpay_payment_id: 'pay_TZbb16CGD7BsRD',
     payment_status: 'success',
-    project_title: 'NeedNear – Smart Community Help Platform',
-    domain: 'SocialTech',
+    project_title: 'LearnLoop AI',
+    domain: 'Education & Smart Library',
     project_description:
-      'NeedNear is an AI-powered web platform that connects people who need local assistance with suitable, verified volunteers nearby. Users can post requests such as elderly assistance, medicine pickup, emergency support, transportation help, or other community needs. The platform uses AI-based urgency detection and smart matching to identify the most suitable available volunteer based on location, skills, availability, urgency, and trust score. The platform also provides real-time request tracking, volunteer trust scores, multilingual/voice-based requests, and automatic escalation when no suitable volunteer is available. This helps communities respond to genuine needs faster, more safely, and more efficiently.',
+      'LearnLoop AI is an AI-powered active learning platform that transforms syllabi, exam topics, books, and knowledge content into short, visual, interactive, and personalized learning experiences. Students and exam aspirants can learn through 3–5 minute AI-generated lessons, interactive quizzes, voice-based answers, teach-back activities, adaptive recommendations, and gamified progress with XP and levels. The Smart Library module converts books and knowledge topics into simple visual stories, short episodes, audio explanations, timelines, and multilingual content. Voice-first and age-adaptive features make knowledge more accessible to children, adults, and senior users. Instead of simply watching or reading content, LearnLoop AI helps users learn, recall, explain, practice, and improve.',
     members: [
       { student_name: 'VASANTH VAISNAVI T', email: '953625148058@ritrjpm.ac.in', phone: '9500865477', department: 'CSE(AIML)', year_of_study: '2nd Year', is_leader: true },
       { student_name: 'Ramalakshmi S', email: '953625148042@ritrjpm.ac.in', phone: '8754966378', department: 'CSE(AIML)', year_of_study: '2nd Year', is_leader: false },
@@ -94,14 +94,14 @@ export default function PendingCheckPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-base sm:text-lg font-black text-gray-900 tracking-tight">
-                  ShePitch Payment Verification
+                  ShePitch Team Pitch Update
                 </h1>
                 <span className="bg-purple-100 text-[#6C3B8F] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">
                   MANUAL SYNC
                 </span>
               </div>
               <p className="text-[11px] text-gray-500 font-mono">
-                Target: ImpactX • pay_TZbb16CGD7BsRD
+                Target: HelpNova • 953625148058@ritrjpm.ac.in
               </p>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function PendingCheckPage() {
               className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#6C3B8F] to-[#8E44AD] hover:opacity-95 shadow-md shadow-purple-300/40 flex items-center gap-2 transition-all disabled:opacity-50 cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-              <span>{loading ? 'Verifying...' : 'Re-run Sync'}</span>
+              <span>{loading ? 'Updating...' : 'Re-run Sync'}</span>
             </button>
           </div>
         </div>
@@ -134,9 +134,9 @@ export default function PendingCheckPage() {
           <div className="bg-purple-50/80 border border-purple-200 p-5 rounded-3xl flex items-center gap-3">
             <RefreshCw className="w-5 h-5 text-[#6C3B8F] animate-spin shrink-0" />
             <div>
-              <h3 className="text-sm font-bold text-purple-900">Executing Payment Fix...</h3>
+              <h3 className="text-sm font-bold text-purple-900">Updating Pitch Details...</h3>
               <p className="text-xs text-purple-700 mt-0.5">
-                Connecting to MySQL, updating ImpactX to &apos;success&apos; with payment ID <code className="font-mono font-bold">pay_TZbb16CGD7BsRD</code>, syncing team members, and sending confirmation email.
+                Updating title, domain, and description for team <strong>HelpNova</strong> in MySQL database.
               </p>
             </div>
           </div>
@@ -144,13 +144,13 @@ export default function PendingCheckPage() {
           <div className="bg-rose-50 border border-rose-200 p-5 rounded-3xl flex items-start gap-3">
             <XCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="text-sm font-bold text-rose-900">Payment Verification Failed</h3>
+              <h3 className="text-sm font-bold text-rose-900">Pitch Update Failed</h3>
               <p className="text-xs text-rose-700 mt-1">{error}</p>
               <button
                 onClick={runVerification}
                 className="mt-3 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors"
               >
-                Retry Verification
+                Retry Update
               </button>
             </div>
           </div>
@@ -161,10 +161,10 @@ export default function PendingCheckPage() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-emerald-900">
-                Payment Status Successfully Updated to &ldquo;Success&rdquo;!
+                Pitch Proposal Successfully Updated!
               </h3>
               <p className="text-xs text-emerald-700 mt-0.5">
-                Team <strong>ImpactX</strong> is now registered as paid (₹398.00) with Razorpay ID <code className="font-mono font-bold">pay_TZbb16CGD7BsRD</code>.
+                Team <strong>HelpNova</strong> proposal title, domain, and description have been updated in the database.
               </p>
             </div>
           </div>
@@ -187,7 +187,7 @@ export default function PendingCheckPage() {
 
           <div className="p-5 font-mono text-xs space-y-2 max-h-80 overflow-y-auto scrollbar-thin">
             {logs.length === 0 ? (
-              <div className="text-gray-500 italic">Waiting for verification output...</div>
+              <div className="text-gray-500 italic">Waiting for update output...</div>
             ) : (
               logs.map((log, idx) => {
                 const badgeColor =
@@ -296,7 +296,7 @@ export default function PendingCheckPage() {
               </div>
               <div>
                 <span className="inline-block px-3 py-1 rounded-xl text-xs font-bold bg-purple-50 text-[#6C3B8F] border border-purple-100">
-                  {team.domain || 'SocialTech'}
+                  {team.domain || 'Education & Smart Library'}
                 </span>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
@@ -308,7 +308,7 @@ export default function PendingCheckPage() {
           {/* Pitch Proposal Details */}
           <div className="bg-purple-50/30 rounded-2xl p-5 border border-purple-100 space-y-2">
             <div className="text-xs font-bold uppercase tracking-wider text-[#6C3B8F]">
-              Pitch Proposal
+              Updated Pitch Proposal
             </div>
             <h4 className="text-sm font-black text-gray-900">{team.project_title}</h4>
             <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
